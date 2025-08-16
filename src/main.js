@@ -53,10 +53,12 @@ document.querySelector('#app').innerHTML = `
       <div class="progress-bar-container">
         <div class="progress-info">
           <span class="progress-count">3/10</span>
-          <span class="progress-percentage">30%</span>
         </div>
         <div class="progress-bar">
           <div class="progress-fill"></div>
+        </div>
+        <div class="progress-info">
+          <span class="progress-percentage">30%</span>
         </div>
       </div>
       <p class="progress-label">Progress Bar</p>
