@@ -28,9 +28,7 @@ document.querySelector('#app').innerHTML = `
         
         <div class="task-item completed">
           <div class="checkbox checked">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+               
           </div>
           <span class="task-text">Organise Notes</span>
         </div>
@@ -67,29 +65,29 @@ document.querySelector('#app').innerHTML = `
 `
 
 // Add interactive functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const taskItems = document.querySelectorAll('.task-item');
   const progressCount = document.querySelector('.progress-count');
   const progressPercentage = document.querySelector('.progress-percentage');
   const progressFill = document.querySelector('.progress-fill');
-  
+
   let completedTasks = 3;
   const totalTasks = 10;
-  
+
   function updateProgress() {
     const percentage = Math.round((completedTasks / totalTasks) * 100);
     progressCount.textContent = `${completedTasks}/${totalTasks}`;
     progressPercentage.textContent = `${percentage}%`;
     progressFill.style.width = `${percentage}%`;
   }
-  
+
   taskItems.forEach(taskItem => {
     const checkbox = taskItem.querySelector('.checkbox');
     const taskText = taskItem.querySelector('.task-text');
-    
-    checkbox.addEventListener('click', function() {
+
+    checkbox.addEventListener('click', function () {
       const isCompleted = taskItem.classList.contains('completed');
-      
+
       if (isCompleted) {
         // Uncheck the task
         taskItem.classList.remove('completed');
@@ -107,11 +105,11 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         completedTasks++;
       }
-      
+
       updateProgress();
     });
   });
-  
+
   // Initialize progress
   updateProgress();
 });
