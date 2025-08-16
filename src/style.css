@@ -42,8 +42,8 @@ body {
   width: 100%;
   position: relative;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border-right: 5px solid #bee5fc;
-  border-bottom: 5px solid #bee5fc;
+  border-right: 4px solid #bee5fc;
+  border-bottom: 4px solid #bee5fc;
 }
 
 .card-title {
@@ -134,8 +134,8 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  border-right: 4px solid #bee5fc;
-  border-bottom: 4px solid #bee5fc;
+  border-right: 3px solid #bee5fc;
+  border-bottom: 3px solid #bee5fc;
   font-size: 14px;
 }
 
@@ -148,7 +148,7 @@ body {
 
 .progress-count,
 .progress-percentage {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: #ffffff;
 }
