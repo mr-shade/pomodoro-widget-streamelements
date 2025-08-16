@@ -11,7 +11,7 @@ document.querySelector('#app').innerHTML = `
         <div class="task-item completed">
           <div class="checkbox checked">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 8L6 12L14 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <span class="task-text">Hydrate</span>
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         checkbox.classList.add('checked');
         checkbox.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 8L6 12L14 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         `;
         completedTasks++;
