@@ -103,20 +103,19 @@ body {
 }
 
 .more-tasks-btn {
-  position: absolute;
-  bottom: 14px;
-  left: 32px;
-  background: #6aaafe;
-  color: #1a237e;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 4px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  /* margin-top: 4px; */
+    position: absolute;
+    bottom: 14px;
+    left: 30px;
+    background: #6aaafe;
+    color: #1a237e;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 2px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    /* margin-top: 4px; */
 }
-
 .progress-section {
   display: flex;
   flex-direction: column;
