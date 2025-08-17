@@ -32,25 +32,19 @@ class PomodoroTimer {
     getDefaultFields() {
         return {
             pomodoroMinutes: 25,
-            bgColor: "#B794F6",
-            bgGradientEnd: "#805AD5",
             cardColor: "#1A202C",
             cardBorderColor: "#FBD38D",
             timerCardStart: "#63B3ED",
             timerCardEnd: "#4299E1",
             playBtnColor: "#63B3ED",
             playBtnIconColor: "#FFFFFF",
-            timerTextColor: "#FFFFFF",
-            titleTextColor: "#1A202C"
+            timerTextColor: "#FFFFFF"
         };
     }
 
     applyCustomColors() {
-        // Only apply background gradient if not in transparent mode (StreamElements)
-        // In StreamElements, the overlay background will be transparent
-        if (!this.isStreamElementsMode()) {
-            document.body.style.background = `linear-gradient(135deg, ${this.fieldData.bgColor} 0%, ${this.fieldData.bgGradientEnd} 100%)`;
-        }
+        // Never apply background - keep transparent for StreamElements
+        // Background will be handled by the stream overlay system
         
         // Apply card colors
         const timerWidget = document.querySelector('.timer-widget');
@@ -85,12 +79,6 @@ class PomodoroTimer {
         }
     }
 
-    isStreamElementsMode() {
-        // Check if we're in StreamElements environment
-        return (typeof obj !== 'undefined' && obj.detail && obj.detail.fieldData) || 
-               (typeof window !== 'undefined' && window.SE_API && window.SE_API.getFieldData);
-    }
-
     initializeCommands() {
         // Mock StreamElements API for development
         if (typeof window !== 'undefined' && !window.SE_API) {
@@ -122,8 +110,9 @@ class PomodoroTimer {
     }
 
     setupDevCommandTesting() {
-        // Add development command testing interface
-        if (!document.querySelector('#dev-commands')) {
+        // Only add development command testing interface in development mode
+        // Don't show in StreamElements production environment
+        if (this.isDevelopmentMode() && !document.querySelector('#dev-commands')) {
             const devDiv = document.createElement('div');
             devDiv.id = 'dev-commands';
             devDiv.style.cssText = `
@@ -145,6 +134,13 @@ class PomodoroTimer {
             `;
             document.body.appendChild(devDiv);
         }
+    }
+
+    isDevelopmentMode() {
+        // Check if we're in development mode (not StreamElements)
+        // Development mode: no obj.detail.fieldData and no SE_API
+        return !(typeof obj !== 'undefined' && obj.detail && obj.detail.fieldData) && 
+               !(typeof window !== 'undefined' && window.SE_API && window.SE_API.getFieldData);
     }
 
     handleCommand(data) {

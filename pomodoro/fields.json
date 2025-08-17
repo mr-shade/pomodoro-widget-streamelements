@@ -10,20 +10,6 @@
       "description": "Duration of each Pomodoro session in minutes"
     },
     {
-      "name": "Background Color",
-      "id": "bgColor",
-      "type": "color",
-      "default": "#B794F6",
-      "description": "Background gradient start color"
-    },
-    {
-      "name": "Background Gradient End",
-      "id": "bgGradientEnd",
-      "type": "color",
-      "default": "#805AD5",
-      "description": "Background gradient end color"
-    },
-    {
       "name": "Card Color",
       "id": "cardColor",
       "type": "color",
