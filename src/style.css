@@ -59,6 +59,28 @@ body {
   flex-direction: column;
   gap: 24px;
   margin-bottom: 32px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #6aaafe transparent;
+}
+
+.task-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background: #6aaafe;
+  border-radius: 3px;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+  background: #5c7afc;
 }
 
 .task-item {
@@ -101,20 +123,50 @@ body {
   text-decoration: line-through;
   opacity: 0.8;
 }
+
+.hidden-task {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.hidden-task.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 .more-tasks-btn {
     position: absolute;
     bottom: 14px;
-    /* left: 30px; */
+    /* right: 32px; */
     background: #6aaafe;
     color: #1a237e;
-    /* font-size: 18px; */
+    font-size: 14px;
     font-weight: 700;
-    padding: 2px;
-    border-radius: 4px;
+    padding: 4px 4px;
+    border-radius: 6px;
     border: none;
     cursor: pointer;
-    height: 24px;
-    width: 24px;
+    height: 28px;
+    min-width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.more-tasks-btn:hover {
+    background: #5c7afc;
+    color: white;
+    transform: scale(1.05);
+}
+
+.more-tasks-btn:active {
+    transform: scale(0.95);
+}
+
+.more-tasks-btn.hidden {
+    display: none;
 }
 
 .progress-section {
