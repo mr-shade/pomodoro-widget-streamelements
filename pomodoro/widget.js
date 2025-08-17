@@ -43,17 +43,9 @@ class PomodoroTimer {
     }
 
     applyCustomColors() {
-        // Never apply background - keep transparent for StreamElements
-        // Background will be handled by the stream overlay system
+        // Keep completely transparent for StreamElements
+        // Only apply gradient to timer cards and buttons, no widget background
         
-        // Apply card colors
-        const timerWidget = document.querySelector('.timer-widget');
-        if (timerWidget) {
-            timerWidget.style.background = this.fieldData.cardColor;
-            timerWidget.style.borderRightColor = this.fieldData.cardBorderColor;
-            timerWidget.style.borderBottomColor = this.fieldData.cardBorderColor;
-        }
-
         // Apply timer card colors
         const timeCards = document.querySelectorAll('.time-card');
         timeCards.forEach(card => {

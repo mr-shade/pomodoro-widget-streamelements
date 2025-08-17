@@ -94,6 +94,10 @@ body {
 }
 
 /* Development command buttons styling */
+
+#dev-commands {
+    display: none;
+}
 #dev-commands button {
     background: #4299E1;
     color: white;
