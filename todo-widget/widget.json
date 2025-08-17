@@ -1,20 +1,25 @@
 {
-  "headerTitle": {
-    "type": "text",
-    "label": "Card Title",
-    "value": "MY TASKS"
+  "cardTitleColor": {
+    "type": "colorpicker",
+    "label": "Card Title Color",
+    "value": "#feb6de"
   },
-  "pageTitle": {
-    "type": "text",
-    "label": "Page Title",
-    "value": "Tasklist"
+  "taskTextColor": {
+    "type": "colorpicker",
+    "label": "Task Text Color",
+    "value": "#ffffff"
   },
-  "progressLabel": {
-    "type": "text",
-    "label": "Progress Label",
-    "value": "Progress Bar"
+  "tickColor": {
+    "type": "colorpicker",
+    "label": "Checkbox Tick Color",
+    "value": "#6aacfd"
   },
-  "cardColor": {
+  "checkboxBorderColor": {
+    "type": "colorpicker",
+    "label": "Checkbox Border Color",
+    "value": "#ffffff"
+  },
+  "cardBackgroundColor": {
     "type": "colorpicker",
     "label": "Card Background Color",
     "value": "#010161"
@@ -24,24 +29,25 @@
     "label": "Card Border Color",
     "value": "#bee5fc"
   },
-  "titleColor": {
-    "type": "colorpicker",
-    "label": "Card Title Color",
-    "value": "#feb6de"
+  "fontFamily": {
+    "type": "dropdown",
+    "label": "Font Family",
+    "value": "system",
+    "options": {
+      "system": "System Default",
+      "arial": "Arial",
+      "helvetica": "Helvetica",
+      "roboto": "Roboto",
+      "georgia": "Georgia",
+      "times": "Times New Roman"
+    }
   },
-  "textColor": {
-    "type": "colorpicker",
-    "label": "Task Text Color",
-    "value": "#ffffff"
-  },
-  "checkboxColor": {
-    "type": "colorpicker",
-    "label": "Checkbox Check Color",
-    "value": "#6aacfd"
-  },
-  "buttonColor": {
-    "type": "colorpicker",
-    "label": "More Tasks Button Color",
-    "value": "#6aaafe"
+  "fontSize": {
+    "type": "slider",
+    "label": "Font Size",
+    "value": 18,
+    "min": 14,
+    "max": 24,
+    "step": 1
   }
 }

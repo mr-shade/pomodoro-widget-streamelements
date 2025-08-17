@@ -1,6 +1,20 @@
-# StreamElements TODO List Widget
+# StreamElements TODO List W## Customization Options
 
-A beautiful TODO list widget for StreamElements that preserves the original design with customizable colors and chat command integration.
+The widget provides these essential customization options through the StreamElements dashboard:
+
+### Color Settings
+- **Card Title Color**: Color for the "MY TASKS" title (default: #feb6de - pink)
+- **Task Text Color**: Color for task text (default: #ffffff - white)
+- **Tick Color**: Color for completed task checkmarks (default: #6aacfd - blue)
+- **Checkbox Border Color**: Border color for task checkboxes (default: #ffffff - white)
+- **Card Background Color**: Background color of the main card (default: #010161 - dark blue)
+- **Card Border Color**: Border color of the main card (default: #bee5fc - light blue)
+
+### Typography Settings
+- **Font Family**: Choose from System, Arial, Helvetica, Roboto, Georgia, or Times
+- **Font Size**: Adjustable from 14px to 24px (default: 18px)
+
+All color changes apply dynamically through the StreamElements field data system.eautiful TODO list widget for StreamElements that preserves the original design with customizable colors and chat command integration.
 
 ## Files
 

@@ -5,6 +5,7 @@ class TodoWidget {
     this.completedTasks = 3;
     this.totalTasks = 10; // All 10 tasks are visible by default
     this.fieldData = this.getFieldData();
+    console.log("Hehe fielddata is here.... ", this.fieldData)
     
     this.init();
   }
@@ -17,17 +18,14 @@ class TodoWidget {
     
     // Fallback values for development/testing
     return {
-      headerTitle: "MY TASKS",
-      pageTitle: "Tasklist",
-      progressLabel: "Progress Bar",
-      cardColor: "#010161",
+      cardTitleColor: "#feb6de",
+      taskTextColor: "#ffffff", 
+      tickColor: "#6aacfd",
+      checkboxBorderColor: "#ffffff",
+      cardBackgroundColor: "#010161",
       cardBorderColor: "#bee5fc",
-      titleColor: "#feb6de",
-      textColor: "#ffffff",
-      checkboxColor: "#6aacfd",
-      buttonColor: "#6aaafe",
-      progressBg: "linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%)",
-      progressFill: "linear-gradient(90deg, #b988fe 0%, #c696ff 30%, #9088fe 60%, #5c7afc 80%, #5c7afc 100%)"
+      fontFamily: "system",
+      fontSize: 18
     };
   }
 
@@ -44,52 +42,56 @@ class TodoWidget {
   }
 
   applyCustomColors() {
-    // Apply customizable text content
-    const cardTitle = document.querySelector('.card-title');
-    const pageTitle = document.querySelector('.page-title');
-    const progressLabel = document.querySelector('.progress-label');
+    const fieldData = this.getFieldData();
+    
+    // Apply card background and border colors
     const taskCard = document.querySelector('.task-card');
-    const progressContainer = document.querySelector('.progress-bar-container');
-    const progressFill = document.querySelector('.progress-fill');
-
-    if (cardTitle) cardTitle.textContent = this.fieldData.headerTitle;
-    if (pageTitle) pageTitle.textContent = this.fieldData.pageTitle;
-    if (progressLabel) progressLabel.textContent = this.fieldData.progressLabel;
-
-    // Apply colors if customized
     if (taskCard) {
-      taskCard.style.background = this.fieldData.cardColor;
-      taskCard.style.borderRightColor = this.fieldData.cardBorderColor;
-      taskCard.style.borderBottomColor = this.fieldData.cardBorderColor;
+      taskCard.style.background = fieldData.cardBackgroundColor;
+      taskCard.style.borderRightColor = fieldData.cardBorderColor;
+      taskCard.style.borderBottomColor = fieldData.cardBorderColor;
     }
-
+    
+    // Apply title color
+    const cardTitle = document.querySelector('.card-title');
     if (cardTitle) {
-      cardTitle.style.color = this.fieldData.titleColor;
+      cardTitle.style.color = fieldData.cardTitleColor;
     }
-
-    if (progressContainer) {
-      progressContainer.style.background = this.fieldData.progressBg;
-    }
-
-    if (progressFill) {
-      progressFill.style.background = this.fieldData.progressFill;
-    }
-
-    // Apply text colors
+    
+    // Apply task text color
     document.querySelectorAll('.task-text').forEach(text => {
-      text.style.color = this.fieldData.textColor;
+      text.style.color = fieldData.taskTextColor;
     });
-
-    // Apply checkbox colors
-    document.querySelectorAll('.checkbox svg').forEach(svg => {
-      svg.style.color = this.fieldData.checkboxColor;
+    
+    // Apply checkbox border color and tick color
+    document.querySelectorAll('.checkbox').forEach(checkbox => {
+      checkbox.style.borderColor = fieldData.checkboxBorderColor;
+      
+      // Update the tick mark color for checked items
+      const tickMark = checkbox.querySelector('.tick-mark');
+      if (tickMark) {
+        tickMark.style.color = fieldData.tickColor;
+      }
     });
-
-    // Apply button color
-    const moreBtn = document.querySelector('.more-tasks-btn');
-    if (moreBtn) {
-      moreBtn.style.background = this.fieldData.buttonColor;
+    
+    // Apply font family and size to the main card
+    if (taskCard) {
+      taskCard.style.fontFamily = this.getFontFamily(fieldData.fontFamily);
+      taskCard.style.fontSize = fieldData.fontSize + 'px';
     }
+  }
+  
+  getFontFamily(fontOption) {
+    const fontMap = {
+      'system': '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+      'arial': 'Arial, sans-serif',
+      'helvetica': 'Helvetica, Arial, sans-serif',
+      'roboto': 'Roboto, sans-serif',
+      'georgia': 'Georgia, serif',
+      'times': 'Times New Roman, serif'
+    };
+    
+    return fontMap[fontOption] || fontMap['system'];
   }
 
   setupEventListeners() {
