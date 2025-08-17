@@ -1,0 +1,91 @@
+{
+  "fields": [
+    {
+      "name": "Background Color",
+      "id": "bgColor",
+      "type": "color",
+      "default": "#B794F6",
+      "description": "Background gradient start color"
+    },
+    {
+      "name": "Background Gradient End",
+      "id": "bgGradientEnd",
+      "type": "color",
+      "default": "#805AD5",
+      "description": "Background gradient end color"
+    },
+    {
+      "name": "Card Color",
+      "id": "cardColor",
+      "type": "color",
+      "default": "#1A202C",
+      "description": "Widget card background color"
+    },
+    {
+      "name": "Card Border Color",
+      "id": "cardBorderColor",
+      "type": "color",
+      "default": "#FBD38D",
+      "description": "Widget card border color"
+    },
+    {
+      "name": "Timer Card Gradient Start",
+      "id": "timerCardStart",
+      "type": "color",
+      "default": "#63B3ED",
+      "description": "Timer card gradient start color"
+    },
+    {
+      "name": "Timer Card Gradient End",
+      "id": "timerCardEnd",
+      "type": "color",
+      "default": "#4299E1",
+      "description": "Timer card gradient end color"
+    },
+    {
+      "name": "Play Button Color",
+      "id": "playBtnColor",
+      "type": "color",
+      "default": "#63B3ED",
+      "description": "Play button background color"
+    },
+    {
+      "name": "Play Button Icon Color",
+      "id": "playBtnIconColor",
+      "type": "color",
+      "default": "#FFFFFF",
+      "description": "Play button icon color"
+    },
+    {
+      "name": "Timer Text Color",
+      "id": "timerTextColor",
+      "type": "color",
+      "default": "#FFFFFF",
+      "description": "Timer number color"
+    },
+    {
+      "name": "Title Text Color",
+      "id": "titleTextColor",
+      "type": "color",
+      "default": "#1A202C",
+      "description": "Title text color"
+    }
+  ],
+  "commands": [
+    {
+      "name": "Start Pomodoro",
+      "command": "!start",
+      "description": "Start the Pomodoro timer"
+    },
+    {
+      "name": "Pause Pomodoro",
+      "command": "!pause",
+      "description": "Pause the Pomodoro timer"
+    },
+    {
+      "name": "Reset Pomodoro",
+      "command": "!reset",
+      "description": "Reset the Pomodoro timer"
+    }
+  ]
+}

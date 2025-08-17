@@ -106,3 +106,31 @@ body {
     text-align: center;
     letter-spacing: -0.5px;
 }
+
+/* Development command buttons styling */
+#dev-commands button {
+    background: #4299E1;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+#dev-commands button:hover {
+    background: #3182CE;
+}
+
+/* Notification animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
