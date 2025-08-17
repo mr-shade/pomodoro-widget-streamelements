@@ -1,6 +1,15 @@
 {
   "fields": [
     {
+      "name": "Pomodoro Duration (minutes)",
+      "id": "pomodoroMinutes",
+      "type": "number",
+      "default": 25,
+      "min": 1,
+      "max": 120,
+      "description": "Duration of each Pomodoro session in minutes"
+    },
+    {
       "name": "Background Color",
       "id": "bgColor",
       "type": "color",

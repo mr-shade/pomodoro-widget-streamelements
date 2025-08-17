@@ -1,10 +1,11 @@
 class PomodoroTimer {
     constructor() {
-        this.minutes = 25;
+        this.fieldData = this.getFieldData();
+        this.minutes = this.fieldData.pomodoroMinutes || 25;
         this.seconds = 0;
+        this.defaultMinutes = this.fieldData.pomodoroMinutes || 25;
         this.isRunning = false;
         this.interval = null;
-        this.fieldData = this.getFieldData();
 
         this.initializeElements();
         this.applyCustomColors();
@@ -30,6 +31,7 @@ class PomodoroTimer {
 
     getDefaultFields() {
         return {
+            pomodoroMinutes: 25,
             bgColor: "#B794F6",
             bgGradientEnd: "#805AD5",
             cardColor: "#1A202C",
@@ -44,8 +46,11 @@ class PomodoroTimer {
     }
 
     applyCustomColors() {
-        // Apply background gradient
-        document.body.style.background = `linear-gradient(135deg, ${this.fieldData.bgColor} 0%, ${this.fieldData.bgGradientEnd} 100%)`;
+        // Only apply background gradient if not in transparent mode (StreamElements)
+        // In StreamElements, the overlay background will be transparent
+        if (!this.isStreamElementsMode()) {
+            document.body.style.background = `linear-gradient(135deg, ${this.fieldData.bgColor} 0%, ${this.fieldData.bgGradientEnd} 100%)`;
+        }
         
         // Apply card colors
         const timerWidget = document.querySelector('.timer-widget');
@@ -73,16 +78,17 @@ class PomodoroTimer {
             number.style.color = this.fieldData.timerTextColor;
         });
 
-        const title = document.querySelector('.title');
-        if (title) {
-            title.style.color = this.fieldData.titleTextColor;
-        }
-
         // Apply play button icon color
         const playButtonIcon = document.querySelector('.play-button svg path');
         if (playButtonIcon) {
             playButtonIcon.setAttribute('fill', this.fieldData.playBtnIconColor);
         }
+    }
+
+    isStreamElementsMode() {
+        // Check if we're in StreamElements environment
+        return (typeof obj !== 'undefined' && obj.detail && obj.detail.fieldData) || 
+               (typeof window !== 'undefined' && window.SE_API && window.SE_API.getFieldData);
     }
 
     initializeCommands() {
@@ -270,7 +276,7 @@ class PomodoroTimer {
 
     resetTimer() {
         this.pauseTimer();
-        this.minutes = 25;
+        this.minutes = this.defaultMinutes;
         this.seconds = 0;
         this.updateDisplay();
     }

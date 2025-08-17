@@ -5,19 +5,13 @@
 }
 
 body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #b4abfa 0%, #b4abfa 50%, #95a9ff 100%);
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 60px;
+    min-height: 100vh;
+    width: 100%;
 }
 
 .timer-widget {
@@ -97,14 +91,6 @@ body {
 
 .play-button svg {
     margin-left: 2px;
-}
-
-.title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1A202C;
-    text-align: center;
-    letter-spacing: -0.5px;
 }
 
 /* Development command buttons styling */
