@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #b4abfa 0%, #b4abfa 50%, #95a9ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+}
+
+.timer-widget {
+    background: #010161;
+    border-radius: 24px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    /* border: 3px solid #FBD38D; */
+    border-right: 3px solid #fcfabc;
+    border-bottom: 3px solid #fcfabc;
+    font-size: 14px;
+}
+
+.timer-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-section {
+    display: flex;
+    gap: 4px;
+}
+
+.time-card {
+    background: #6caaff;
+    border-radius: 12px;
+    width: 74px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.time-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #010160;
+    transform: translateY(-0.5px);
+}
+
+.time-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1;
+}
+
+.play-button {
+    background: linear-gradient(135deg, #63B3ED 0%, #4299E1 100%);
+    border-radius: 8px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    margin-left: 8px;
+}
+
+.play-button:hover {
+    transform: scale(1.05);
+}
+
+.play-button:active {
+    transform: scale(0.95);
+}
+
+.play-button svg {
+    margin-left: 2px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1A202C;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
