@@ -39,9 +39,10 @@ A beautiful TODO list widget for StreamElements that preserves the original desi
 
 ## Default Tasks
 
-The widget comes with 10 sample tasks:
-- **Visible (5 tasks)**: 3 completed (Hydrate, Clean desk, Organize notes), 2 pending (Reply emails, Finish homework)
-- **Hidden (5 tasks)**: Shown when clicking "5+" button (Call mom, Buy groceries, etc.)
+The widget shows all 10 tasks by default:
+- **Completed (3 tasks)**: Hydrate, Clean desk, Organize notes  
+- **Pending (7 tasks)**: Reply emails, Finish homework, Call mom, Buy groceries, Schedule dentist appointment, Update resume, Plan weekend trip
+- **Scrollable**: When needed, a scrollbar appears to navigate through all tasks
 
 ## Installation
 
@@ -64,9 +65,9 @@ The widget comes with 10 sample tasks:
 
 ### **Interactive Features**
 - Click checkboxes to mark tasks complete/incomplete
-- Click "5+" button to reveal 5 additional tasks
-- Smooth scrolling when expanding task list
+- Automatic scrollbar when task list exceeds container height
 - Real-time progress tracking (shows X/Y tasks and percentage)
+- Smooth hover effects and transitions
 
 ### **Streamer Customization**
 - Change all text labels through StreamElements dashboard

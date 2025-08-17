@@ -126,52 +126,6 @@ body {
   opacity: 0.8;
 }
 
-.hidden-task {
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-}
-
-.hidden-task.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.more-tasks-btn {
-  position: absolute;
-  bottom: 14px;
-  right: 32px;
-  background: #6aaafe;
-  color: #1a237e;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 4px 4px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  height: 28px;
-  min-width: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.more-tasks-btn:hover {
-  background: #5c7afc;
-  color: white;
-  transform: scale(1.05);
-}
-
-.more-tasks-btn:active {
-  transform: scale(0.95);
-}
-
-.more-tasks-btn.hidden {
-  display: none;
-}
-
 .progress-section {
   display: flex;
   flex-direction: column;

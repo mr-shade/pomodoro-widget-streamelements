@@ -3,8 +3,7 @@
 class TodoWidget {
   constructor() {
     this.completedTasks = 3;
-    this.totalTasks = 10;
-    this.showingHiddenTasks = false;
+    this.totalTasks = 10; // All 10 tasks are visible by default
     this.fieldData = this.getFieldData();
     
     this.init();
@@ -95,20 +94,11 @@ class TodoWidget {
 
   setupEventListeners() {
     const taskItems = document.querySelectorAll('.task-item');
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    const hiddenTasks = document.querySelectorAll('.hidden-task');
 
-    // Add event listeners to existing tasks
+    // Add event listeners to all tasks
     taskItems.forEach(taskItem => {
       this.addTaskEventListeners(taskItem);
     });
-
-    // Show more tasks functionality
-    if (showMoreBtn) {
-      showMoreBtn.addEventListener('click', () => {
-        this.toggleHiddenTasks(hiddenTasks, showMoreBtn);
-      });
-    }
   }
 
   addTaskEventListeners(taskItem) {
@@ -138,72 +128,6 @@ class TodoWidget {
 
         this.updateProgress();
       });
-    }
-  }
-
-  toggleHiddenTasks(hiddenTasks, showMoreBtn) {
-    if (!this.showingHiddenTasks) {
-      // Show hidden tasks
-      hiddenTasks.forEach((task, index) => {
-        setTimeout(() => {
-          task.style.display = 'flex';
-          // Force reflow
-          task.offsetHeight;
-          task.classList.add('show');
-
-          // Add event listeners to newly shown tasks
-          this.addTaskEventListeners(task);
-        }, index * 100); // Stagger the animation
-      });
-
-      // Update total tasks count
-      this.totalTasks = 15;
-      this.updateProgress();
-
-      // Update button text and hide it
-      showMoreBtn.textContent = 'Less';
-      this.showingHiddenTasks = true;
-
-      // Scroll to show the new tasks
-      setTimeout(() => {
-        const taskList = document.querySelector('.task-list');
-        if (taskList) {
-          taskList.scrollTo({
-            top: taskList.scrollHeight,
-            behavior: 'smooth'
-          });
-        }
-      }, hiddenTasks.length * 100 + 200);
-
-    } else {
-      // Hide tasks
-      hiddenTasks.forEach((task, index) => {
-        setTimeout(() => {
-          task.classList.remove('show');
-          setTimeout(() => {
-            task.style.display = 'none';
-          }, 300); // Wait for animation to complete
-        }, index * 50);
-      });
-
-      // Update total tasks count
-      this.totalTasks = 10;
-      this.updateProgress();
-
-      // Update button text
-      showMoreBtn.textContent = '5+';
-      this.showingHiddenTasks = false;
-
-      // Scroll back to top
-      setTimeout(() => {
-        const taskList = document.querySelector('.task-list');
-        if (taskList) {
-          taskList.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        }
-      }, 200);
     }
   }
 
@@ -332,7 +256,7 @@ class TodoWidget {
         <div><strong>!todo remove &lt;number&gt;</strong> - Remove task by number</div>
         <div><strong>!todo clear</strong> - Clear all tasks</div>
         <div><em>Click checkboxes to toggle tasks</em></div>
-        <div><em>Click "5+" to show/hide extra tasks</em></div>
+        <div><em>All 10 tasks shown with scrollbar</em></div>
       `;
       document.body.appendChild(devDiv);
     }
