@@ -6,7 +6,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        pomodoro: resolve(__dirname, 'pomodoro.html'),
+        pomodoro: resolve(__dirname, 'pomodoro'),
         commands: resolve(__dirname, 'commands.html')
       }
     }
