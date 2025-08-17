@@ -1,110 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TODO Widget</title>
-    <link rel="stylesheet" href="./widget.css">
+    <link rel="stylesheet" href="widget.css">
 </head>
+
 <body>
-    <div class="todo-widget">
-        <div class="todo-header">
-            <h1 class="todo-title">MY TASKS</h1>
-            <div class="todo-count">
-                <span class="count-text">3/10</span>
-            </div>
-        </div>
+    <div class="tasklist-container">
+        <h1 class="page-title">Tasklist</h1>
 
-        <div class="todo-container">
-            <div class="todo-list" id="todoList">
-                <!-- Default tasks (will be replaced by dynamic ones) -->
-                <div class="todo-item completed">
-                    <div class="item-number">1</div>
-                    <div class="todo-checkbox checked">✓</div>
-                    <span class="todo-text">Hydrate</span>
-                    <div class="priority-indicator priority-high"></div>
+        <div class="task-card">
+            <h2 class="card-title">MY TASKS</h2>
+
+            <div class="task-list">
+                <div class="task-item completed">
+                    <div class="checkbox checked">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span class="task-text">Hydrate</span>
                 </div>
 
-                <div class="todo-item completed">
-                    <div class="item-number">2</div>
-                    <div class="todo-checkbox checked">✓</div>
-                    <span class="todo-text">Clean my desk</span>
-                    <div class="priority-indicator priority-medium"></div>
+                <div class="task-item completed">
+                    <div class="checkbox checked">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span class="task-text">Clean my desk</span>
                 </div>
 
-                <div class="todo-item completed">
-                    <div class="item-number">3</div>
-                    <div class="todo-checkbox checked">✓</div>
-                    <span class="todo-text">Organise Notes</span>
-                    <div class="priority-indicator priority-low"></div>
+                <div class="task-item completed">
+                    <div class="checkbox checked">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span class="task-text">Organise Notes</span>
                 </div>
 
-                <div class="todo-item">
-                    <div class="item-number">4</div>
-                    <div class="todo-checkbox"></div>
-                    <span class="todo-text">Reply to emails</span>
-                    <div class="priority-indicator priority-high"></div>
+                <div class="task-item">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Reply to emails</span>
                 </div>
 
-                <div class="todo-item">
-                    <div class="item-number">5</div>
-                    <div class="todo-checkbox"></div>
-                    <span class="todo-text">Finish homework</span>
-                    <div class="priority-indicator priority-medium"></div>
+                <div class="task-item">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Finish homework</span>
                 </div>
 
                 <!-- Hidden tasks that will be shown when "5+" is clicked -->
-                <div class="todo-item hidden-task" style="display: none;">
-                    <div class="item-number">6</div>
-                    <div class="todo-checkbox"></div>
-                    <span class="todo-text">Call mom</span>
-                    <div class="priority-indicator priority-low"></div>
+                <div class="task-item hidden-task" style="display: none;">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Call mom</span>
                 </div>
 
-                <div class="todo-item hidden-task" style="display: none;">
-                    <div class="item-number">7</div>
-                    <div class="todo-checkbox"></div>
-                    <span class="todo-text">Buy groceries</span>
-                    <div class="priority-indicator priority-medium"></div>
+                <div class="task-item hidden-task" style="display: none;">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Buy groceries</span>
                 </div>
 
-                <div class="todo-item hidden-task" style="display: none;">
-                    <div class="item-number">8</div>
-                    <div class="todo-checkbox"></div>
-                    <span class="todo-text">Schedule dentist appointment</span>
-                    <div class="priority-indicator priority-high"></div>
+                <div class="task-item hidden-task" style="display: none;">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Schedule dentist appointment</span>
                 </div>
 
-                <div class="todo-item hidden-task" style="display: none;">
-                    <div class="item-number">9</div>
-                    <div class="todo-checkbox"></div>
-                    <span class="todo-text">Update resume</span>
-                    <div class="priority-indicator priority-low"></div>
+                <div class="task-item hidden-task" style="display: none;">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Update resume</span>
                 </div>
 
-                <div class="todo-item hidden-task" style="display: none;">
-                    <div class="item-number">10</div>
-                    <div class="todo-checkbox"></div>
-                    <span class="todo-text">Plan weekend trip</span>
-                    <div class="priority-indicator priority-medium"></div>
+                <div class="task-item hidden-task" style="display: none;">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Plan weekend trip</span>
                 </div>
             </div>
-            
-            <div class="empty-state" id="emptyState" style="display: none;">
-                <p class="empty-message">No tasks yet! Add one with !todo add &lt;task&gt;</p>
-            </div>
+
+            <div class="more-tasks-btn" id="showMoreBtn">5+</div>
         </div>
 
-        <div class="todo-footer">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-section">
+            <div class="progress-bar-container">
+                <div class="progress-info">
+                    <span class="progress-count">3/10</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-info">
+                    <span class="progress-percentage">30%</span>
+                </div>
             </div>
-            <p class="progress-text" id="progressText">3/10 tasks complete (30%)</p>
+            <p class="progress-label">Progress Bar</p>
         </div>
-
-        <div class="more-tasks-btn" id="showMoreBtn">5+</div>
     </div>
     
-    <script src="./widget.js"></script>
+    <script src="widget.js"></script>
 </body>
+
 </html>

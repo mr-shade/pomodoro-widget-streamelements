@@ -1,198 +1,47 @@
 {
-  "maxItems": {
-    "type": "slider",
-    "label": "Maximum TODO Items",
-    "value": 10,
-    "min": 3,
-    "max": 20,
-    "step": 1
+  "headerTitle": {
+    "type": "text",
+    "label": "Card Title",
+    "value": "MY TASKS"
   },
-  "displayMode": {
-    "type": "dropdown",
-    "label": "Display Mode",
-    "value": "overlay",
-    "options": {
-      "overlay": "Overlay (Transparent)",
-      "card": "Card Container",
-      "minimal": "Minimal List"
-    }
+  "pageTitle": {
+    "type": "text",
+    "label": "Page Title",
+    "value": "Tasklist"
   },
-  "animationStyle": {
-    "type": "dropdown",
-    "label": "Animation Style",
-    "value": "slide",
-    "options": {
-      "none": "No Animation",
-      "fade": "Fade In/Out",
-      "slide": "Slide In/Out",
-      "bounce": "Bounce Effect"
-    }
+  "progressLabel": {
+    "type": "text",
+    "label": "Progress Label",
+    "value": "Progress Bar"
   },
-  "showCompleted": {
-    "type": "checkbox",
-    "label": "Show Completed Items",
-    "value": true
-  },
-  "autoHideCompleted": {
-    "type": "slider",
-    "label": "Auto-hide Completed (seconds)",
-    "value": 5,
-    "min": 0,
-    "max": 30,
-    "step": 1
-  },
-  "showPriority": {
-    "type": "checkbox",
-    "label": "Show Priority Indicators",
-    "value": true
-  },
-  "showNumbers": {
-    "type": "checkbox",
-    "label": "Show Item Numbers",
-    "value": true
-  },
-  "fontFamily": {
-    "type": "dropdown",
-    "label": "Font Family",
-    "value": "Roboto",
-    "options": {
-      "Roboto": "Roboto",
-      "Arial": "Arial",
-      "Helvetica": "Helvetica",
-      "Georgia": "Georgia",
-      "Times": "Times New Roman",
-      "Courier": "Courier New",
-      "Verdana": "Verdana"
-    }
-  },
-  "fontSize": {
-    "type": "slider",
-    "label": "Font Size",
-    "value": 16,
-    "min": 12,
-    "max": 24,
-    "step": 1
-  },
-  "containerBg": {
+  "cardColor": {
     "type": "colorpicker",
-    "label": "Container Background",
-    "value": "#1A202C"
+    "label": "Card Background Color",
+    "value": "#010161"
   },
-  "containerBorder": {
+  "cardBorderColor": {
     "type": "colorpicker",
-    "label": "Container Border",
-    "value": "#2D3748"
+    "label": "Card Border Color",
+    "value": "#bee5fc"
   },
-  "containerOpacity": {
-    "type": "slider",
-    "label": "Container Opacity",
-    "value": 90,
-    "min": 0,
-    "max": 100,
-    "step": 5
-  },
-  "headerBg": {
+  "titleColor": {
     "type": "colorpicker",
-    "label": "Header Background",
-    "value": "#2D3748"
+    "label": "Card Title Color",
+    "value": "#feb6de"
   },
-  "headerText": {
+  "textColor": {
     "type": "colorpicker",
-    "label": "Header Text Color",
-    "value": "#FFFFFF"
-  },
-  "itemBg": {
-    "type": "colorpicker",
-    "label": "TODO Item Background",
-    "value": "#2D3748"
-  },
-  "itemBgHover": {
-    "type": "colorpicker",
-    "label": "TODO Item Hover Background",
-    "value": "#4A5568"
-  },
-  "itemText": {
-    "type": "colorpicker",
-    "label": "TODO Item Text",
-    "value": "#FFFFFF"
-  },
-  "itemCompletedText": {
-    "type": "colorpicker",
-    "label": "Completed Item Text",
-    "value": "#A0AEC0"
-  },
-  "itemCompletedBg": {
-    "type": "colorpicker",
-    "label": "Completed Item Background",
-    "value": "#1A202C"
-  },
-  "priorityHigh": {
-    "type": "colorpicker",
-    "label": "High Priority Color",
-    "value": "#F56565"
-  },
-  "priorityMedium": {
-    "type": "colorpicker",
-    "label": "Medium Priority Color",
-    "value": "#ED8936"
-  },
-  "priorityLow": {
-    "type": "colorpicker",
-    "label": "Low Priority Color",
-    "value": "#48BB78"
+    "label": "Task Text Color",
+    "value": "#ffffff"
   },
   "checkboxColor": {
     "type": "colorpicker",
-    "label": "Checkbox Color",
-    "value": "#63B3ED"
+    "label": "Checkbox Check Color",
+    "value": "#6aacfd"
   },
-  "checkboxChecked": {
+  "buttonColor": {
     "type": "colorpicker",
-    "label": "Checked Checkbox Color",
-    "value": "#48BB78"
-  },
-  "scrollbarColor": {
-    "type": "colorpicker",
-    "label": "Scrollbar Color",
-    "value": "#4A5568"
-  },
-  "borderRadius": {
-    "type": "slider",
-    "label": "Border Radius",
-    "value": 8,
-    "min": 0,
-    "max": 20,
-    "step": 1
-  },
-  "itemSpacing": {
-    "type": "slider",
-    "label": "Item Spacing",
-    "value": 8,
-    "min": 4,
-    "max": 16,
-    "step": 2
-  },
-  "headerTitle": {
-    "type": "text",
-    "label": "Header Title",
-    "value": "TODO List"
-  },
-  "emptyMessage": {
-    "type": "text",
-    "label": "Empty List Message",
-    "value": "No tasks yet! Add one with !todo add <task>"
-  },
-  "soundEnabled": {
-    "type": "checkbox",
-    "label": "Enable Sound Effects",
-    "value": true
-  },
-  "soundVolume": {
-    "type": "slider",
-    "label": "Sound Volume",
-    "value": 50,
-    "min": 0,
-    "max": 100,
-    "step": 10
+    "label": "More Tasks Button Color",
+    "value": "#6aaafe"
   }
 }
