@@ -101,21 +101,22 @@ body {
   text-decoration: line-through;
   opacity: 0.8;
 }
-
 .more-tasks-btn {
     position: absolute;
     bottom: 14px;
-    left: 30px;
+    /* left: 30px; */
     background: #6aaafe;
     color: #1a237e;
-    font-size: 18px;
+    /* font-size: 18px; */
     font-weight: 700;
     padding: 2px;
     border-radius: 4px;
     border: none;
     cursor: pointer;
-    /* margin-top: 4px; */
+    height: 24px;
+    width: 24px;
 }
+
 .progress-section {
   display: flex;
   flex-direction: column;
