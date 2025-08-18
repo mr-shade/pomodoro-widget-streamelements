@@ -50,6 +50,8 @@ class TodoWidget {
     const moreTasksBtn = document.querySelector('.more-tasks-btn');
     const taskItems = document.querySelectorAll('.task-item');
     
+    console.log(`updateMoreTasksButton: Found ${taskItems.length} tasks`);
+    
     if (moreTasksBtn && taskItems.length > 5) {
       const hiddenTasksCount = taskItems.length - 5;
       const moreTasksText = moreTasksBtn.querySelector('.more-tasks-text');
@@ -59,8 +61,10 @@ class TodoWidget {
       }
       
       moreTasksBtn.style.display = 'flex';
+      console.log(`5+ button shown with text: ${hiddenTasksCount}+`);
     } else if (moreTasksBtn) {
       moreTasksBtn.style.display = 'none';
+      console.log('5+ button hidden');
     }
   }
 
@@ -68,28 +72,37 @@ class TodoWidget {
     console.log("applyCustomStyling() called");
     console.log("Field data in applyCustomStyling:", this.fieldData);
     
+    // Provide default values if fieldData is not available
+    const fieldData = this.fieldData || {};
+    
     // Apply text content
     const pageTitle = document.querySelector('.page-title');
     if (pageTitle) {
-      pageTitle.textContent = this.fieldData.tasklistTitle || "Tasklist";
+      pageTitle.textContent = fieldData.tasklistTitle || "Tasklist";
     }
     
     const cardTitle = document.querySelector('.card-title');
     if (cardTitle) {
-      cardTitle.textContent = this.fieldData.cardTitle || "MY TASKS";
-      cardTitle.style.color = this.fieldData.cardTitleColor;
+      cardTitle.textContent = fieldData.cardTitle || "MY TASKS";
+      cardTitle.style.color = fieldData.cardTitleColor || "#feb6de";
+    }
+    
+    const progressLabel = document.querySelector('.progress-label');
+    if (progressLabel) {
+      progressLabel.textContent = fieldData.progressLabel || "Progress Bar";
+      progressLabel.style.color = fieldData.progressLabelColor || "#2c2c2c";
     }
     
     // Apply card background and border colors
     const taskCard = document.querySelector('.task-card');
     if (taskCard) {
       console.log("Found task-card element");
-      taskCard.style.background = this.fieldData.cardBackgroundColor;
-      taskCard.style.borderRightColor = this.fieldData.cardBorderColor;
-      taskCard.style.borderBottomColor = this.fieldData.cardBorderColor;
+      taskCard.style.background = fieldData.cardBackgroundColor || "#010161";
+      taskCard.style.borderRightColor = fieldData.cardBorderColor || "#bee5fc";
+      taskCard.style.borderBottomColor = fieldData.cardBorderColor || "#bee5fc";
       
       // Apply hover shadow color
-      const shadowColor = this.fieldData.cardHoverShadow || this.fieldData.cardBorderColor;
+      const shadowColor = fieldData.cardHoverShadow || fieldData.cardBorderColor || "#bee5fc";
       taskCard.style.setProperty('--hover-shadow-color', shadowColor);
     } else {
       console.log("task-card element not found");
@@ -240,7 +253,10 @@ class TodoWidget {
           this.completedTasks++;
         }
 
+        // Update the progress and recount tasks
+        this.countActualTasks();
         this.updateProgress();
+        console.log(`Task toggled. Completed: ${this.completedTasks}/${this.totalTasks}`);
       });
     }
   }
