@@ -1,275 +1,291 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    overflow: hidden;
 }
 
 .tasklist-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #2c2c2c;
-  align-self: flex-end;
-  margin-bottom: 10px;
-  margin-right: -80px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c2c2c;
+    align-self: flex-end;
+    margin-bottom: 10px;
+    margin-right: -80px;
 }
 
 .task-card {
-  background: #010161;
-  border-radius: 24px;
-  padding: 32px;
-  width: 100%;
-  position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border-right: 4px solid #bee5fc;
-  border-bottom: 4px solid #bee5fc;
-  transition: all 0.3s ease;
+    background: #010161;
+    border-radius: 24px;
+    padding: 32px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-right: 4px solid #bee5fc;
+    border-bottom: 4px solid #bee5fc;
+    transition: all 0.3s ease;
 }
 
 .task-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 48px rgba(190, 229, 252, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 48px rgba(190, 229, 252, 0.2);
 }
 
 .card-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #feb6de;
-  margin-bottom: 32px;
-  letter-spacing: 2px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #feb6de;
+    margin-bottom: 32px;
+    letter-spacing: 2px;
 }
 
 .task-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-bottom: 32px;
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: #6aaafe transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #6aaafe transparent;
 }
 
 .task-list::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 
 .task-list::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 .task-list::-webkit-scrollbar-thumb {
-  background: #6aaafe;
-  border-radius: 3px;
+    background: #6aaafe;
+    border-radius: 3px;
 }
 
 .task-list::-webkit-scrollbar-thumb:hover {
-  background: #5c7afc;
+    background: #5c7afc;
 }
 
 .task-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s ease;
 }
 
 .task-item:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.1);
+    transform: translateY(-1px);
+    filter: brightness(1.1);
 }
 
 .checkbox {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #ffffff;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ffffff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .checkbox:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .checkbox.checked {
-  background: transparent;
-  border-color: #ffffff;
+    background: transparent;
+    border-color: #ffffff;
 }
 
 .checkbox svg {
-  color: #6aacfd;
-  width: 14px;
-  height: 20px;
-  scale: 1.3;
-  margin-bottom: -4px;
+    color: #6aacfd;
+    width: 14px;
+    height: 20px;
+    scale: 1.3;
+    margin-bottom: -4px;
 }
 
 .task-text {
-  font-size: 18px;
-  color: #ffffff;
-  font-weight: 400;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 400;
 }
 
 .task-item.completed .task-text {
-  text-decoration: line-through;
-  opacity: 0.8;
+    text-decoration: line-through;
+    opacity: 0.8;
 }
 
 /* 5+ More Tasks Button */
 .more-tasks-btn {
-  width: 64px;
-  height: 32px;
-  background: linear-gradient(135deg, #6aaafe 0%, #5c7afc 100%);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin: 8px 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 64px;
+    height: 32px;
+    background: linear-gradient(135deg, #6aaafe 0%, #5c7afc 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 8px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .more-tasks-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .more-tasks-btn span {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-  letter-spacing: 0.5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
 }
 
 .progress-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
 }
 
 .progress-bar-container {
-  background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
-  border-radius: 32px;
-  padding: 10px 20px;
-  width: 100%;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border-right: 3px solid #bee5fc;
-  border-bottom: 3px solid #bee5fc;
-  font-size: 14px;
+    background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+    border-radius: 32px;
+    padding: 10px 20px;
+    width: 100%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-right: 3px solid #bee5fc;
+    border-bottom: 3px solid #bee5fc;
+    font-size: 14px;
 }
 
 .progress-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
 }
 
 .progress-count,
 .progress-percentage {
-  font-size: 12px;
-  font-weight: 600;
-  color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
 }
 
 .progress-bar {
-  flex: 1;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  overflow: hidden;
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .progress-fill {
-  height: 100%;
-  width: 30%;
-  background: linear-gradient(90deg, #b988fe 0%, #c696ff 30%, #9088fe 60%, #5c7afc 80%, #5c7afc 100%);
-  border-radius: 4px;
-  transition: width 0.3s ease;
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, #b988fe 0%, #c696ff 30%, #9088fe 60%, #5c7afc 80%, #5c7afc 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
 }
 
 .progress-label {
-  font-size: 24px;
-  font-weight: 700;
-  color: #2c2c2c;
-  margin-top: 8px;
-  margin-left: auto;
-  margin-right: 0;
-  text-align: right;
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin-top: 8px;
+    margin-left: auto;
+    margin-right: 0;
+    text-align: right;
 }
 
 /* Dev commands (only shown in development) */
 .dev-commands {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 15px;
-  border-radius: 8px;
-  color: white;
-  font-size: 12px;
-  max-width: 300px;
-  border: 1px solid #4299E1;
-  z-index: 1000;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    color: white;
+    font-size: 12px;
+    max-width: 300px;
+    border: 1px solid #4299E1;
+    z-index: 1000;
 }
 
 .dev-commands h4 {
-  margin-bottom: 10px;
-  color: #4299E1;
+    margin-bottom: 10px;
+    color: #4299E1;
 }
 
 .dev-commands div {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 480px) {
-  .page-title {
-    font-size: 36px;
-  }
+    .page-title {
+        font-size: 36px;
+    }
 
-  .card-title {
-    font-size: 24px;
-  }
+    .card-title {
+        font-size: 24px;
+    }
 
-  .task-card {
-    padding: 24px;
-  }
+    .task-card {
+        padding: 24px;
+    }
 
-  .progress-label {
-    font-size: 20px;
-  }
+    .progress-label {
+        font-size: 20px;
+    }
 
-  .tasklist-container {
-    max-width: 350px;
-  }
+    .tasklist-container {
+        max-width: 350px;
+    }
+}
+
+
+.more-tasks-btn {
+    width: 30px;
+    height: 30px;
+    background: #6caaff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    /* margin: 8px 0; */
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+    margin: -20px 0;
 }
