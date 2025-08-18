@@ -1,83 +1,79 @@
 
-// Original TODO functionality with StreamElements integration
+// StreamElements TODO Widget
+window.addEventListener('onWidgetLoad', function (obj) {
+  console.log("StreamElements widget loaded");
+  
+  // Get field data from StreamElements
+  const fieldData = obj.detail.fieldData;
+  console.log("Field data:", fieldData);
+  
+  // Initialize the TODO widget
+  const _todoWidget = new TodoWidget(fieldData);
+});
+
 class TodoWidget {
-  constructor() {
+  constructor(fieldData) {
     this.completedTasks = 3;
     this.totalTasks = 10; // All 10 tasks are visible by default
-    this.fieldData = this.getFieldData();
-    console.log("Hehe fielddata is here.... ", this.fieldData)
+    this.fieldData = fieldData;
+    console.log("TodoWidget fieldData:", this.fieldData);
     
     this.init();
   }
 
-  getFieldData() {
-    // Check if we're in StreamElements environment
-    if (typeof obj !== 'undefined' && obj.detail && obj.detail.fieldData) {
-      return obj.detail.fieldData;
-    }
-    
-    // Fallback values for development/testing
-    return {
-      cardTitleColor: "#feb6de",
-      taskTextColor: "#ffffff", 
-      tickColor: "#6aacfd",
-      checkboxBorderColor: "#ffffff",
-      cardBackgroundColor: "#010161",
-      cardBorderColor: "#bee5fc",
-      fontFamily: "system",
-      fontSize: 18
-    };
-  }
-
   init() {
+    console.log("TodoWidget init() called");
     this.applyCustomColors();
     this.setupEventListeners();
     this.updateProgress();
     this.initializeChatCommands();
-    
-    // Show dev commands in development mode
-    if (this.isDevelopmentMode()) {
-      this.showDevCommands();
-    }
+    console.log("TodoWidget initialization complete");
   }
 
   applyCustomColors() {
-    const fieldData = this.getFieldData();
+    console.log("applyCustomColors() called");
+    console.log("Field data in applyCustomColors:", this.fieldData);
     
     // Apply card background and border colors
     const taskCard = document.querySelector('.task-card');
     if (taskCard) {
-      taskCard.style.background = fieldData.cardBackgroundColor;
-      taskCard.style.borderRightColor = fieldData.cardBorderColor;
-      taskCard.style.borderBottomColor = fieldData.cardBorderColor;
+      console.log("Found task-card element");
+      taskCard.style.background = this.fieldData.cardBackgroundColor;
+      taskCard.style.borderRightColor = this.fieldData.cardBorderColor;
+      taskCard.style.borderBottomColor = this.fieldData.cardBorderColor;
+    } else {
+      console.log("task-card element not found");
     }
     
     // Apply title color
     const cardTitle = document.querySelector('.card-title');
     if (cardTitle) {
-      cardTitle.style.color = fieldData.cardTitleColor;
+      console.log("Found card-title element, applying color:", this.fieldData.cardTitleColor);
+      cardTitle.style.color = this.fieldData.cardTitleColor;
+    } else {
+      console.log("card-title element not found");
     }
     
     // Apply task text color
     document.querySelectorAll('.task-text').forEach(text => {
-      text.style.color = fieldData.taskTextColor;
+      text.style.color = this.fieldData.taskTextColor;
     });
     
     // Apply checkbox border color and tick color
     document.querySelectorAll('.checkbox').forEach(checkbox => {
-      checkbox.style.borderColor = fieldData.checkboxBorderColor;
+      checkbox.style.borderColor = this.fieldData.checkboxBorderColor;
       
       // Update the tick mark color for checked items
       const tickMark = checkbox.querySelector('.tick-mark');
       if (tickMark) {
-        tickMark.style.color = fieldData.tickColor;
+        tickMark.style.color = this.fieldData.tickColor;
       }
     });
     
     // Apply font family and size to the main card
     if (taskCard) {
-      taskCard.style.fontFamily = this.getFontFamily(fieldData.fontFamily);
-      taskCard.style.fontSize = fieldData.fontSize + 'px';
+      taskCard.style.fontFamily = this.getFontFamily(this.fieldData.fontFamily);
+      taskCard.style.fontSize = this.fieldData.fontSize + 'px';
     }
   }
   
@@ -151,15 +147,6 @@ class TodoWidget {
     if (window.SE_API) {
       window.SE_API.onMessage = (data) => {
         this.handleChatCommand(data);
-      };
-    }
-
-    // Mock SE_API for development
-    if (this.isDevelopmentMode() && !window.SE_API) {
-      window.SE_API = {
-        store: new Map(),
-        getStore: (key) => window.SE_API.store.get(key) || [],
-        setStore: (key, value) => window.SE_API.store.set(key, value)
       };
     }
   }
@@ -241,31 +228,4 @@ class TodoWidget {
     div.textContent = text;
     return div.innerHTML;
   }
-
-  isDevelopmentMode() {
-    return !(typeof obj !== 'undefined' && obj.detail && obj.detail.fieldData) && 
-           !(typeof window !== 'undefined' && window.SE_API && window.SE_API.getFieldData);
-  }
-
-  showDevCommands() {
-    if (!document.querySelector('.dev-commands')) {
-      const devDiv = document.createElement('div');
-      devDiv.className = 'dev-commands';
-      devDiv.innerHTML = `
-        <h4>TODO Widget Commands (Dev Mode)</h4>
-        <div><strong>!todo add &lt;task&gt;</strong> - Add a new task</div>
-        <div><strong>!todo complete &lt;number&gt;</strong> - Complete task by number</div>
-        <div><strong>!todo remove &lt;number&gt;</strong> - Remove task by number</div>
-        <div><strong>!todo clear</strong> - Clear all tasks</div>
-        <div><em>Click checkboxes to toggle tasks</em></div>
-        <div><em>All 10 tasks shown with scrollbar</em></div>
-      `;
-      document.body.appendChild(devDiv);
-    }
-  }
 }
-
-// Initialize the widget when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  new TodoWidget();
-});
