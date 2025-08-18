@@ -39,6 +39,12 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border-right: 4px solid #bee5fc;
   border-bottom: 4px solid #bee5fc;
+  transition: all 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 48px rgba(190, 229, 252, 0.2);
 }
 
 .card-title {
@@ -82,6 +88,12 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.task-item:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 
 .checkbox {
@@ -124,6 +136,33 @@ body {
 .task-item.completed .task-text {
   text-decoration: line-through;
   opacity: 0.8;
+}
+
+/* 5+ More Tasks Button */
+.more-tasks-btn {
+  width: 64px;
+  height: 32px;
+  background: linear-gradient(135deg, #6aaafe 0%, #5c7afc 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 8px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.more-tasks-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.more-tasks-btn span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
 }
 
 .progress-section {

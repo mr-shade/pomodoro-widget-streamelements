@@ -1,4 +1,14 @@
 {
+  "tasklistTitle": {
+    "type": "text",
+    "label": "Tasklist Title",
+    "value": "Tasklist"
+  },
+  "cardTitle": {
+    "type": "text",
+    "label": "Card Title",
+    "value": "MY TASKS"
+  },
   "cardTitleColor": {
     "type": "colorpicker",
     "label": "Card Title Color",
@@ -29,6 +39,36 @@
     "label": "Card Border Color",
     "value": "#bee5fc"
   },
+  "cardHoverShadow": {
+    "type": "colorpicker",
+    "label": "Card Hover Shadow Color",
+    "value": "#bee5fc"
+  },
+  "buttonColor": {
+    "type": "colorpicker",
+    "label": "More Tasks Button Color",
+    "value": "#6aaafe"
+  },
+  "progressBarStartColor": {
+    "type": "colorpicker",
+    "label": "Progress Bar Gradient Start",
+    "value": "#b988fe"
+  },
+  "progressBarEndColor": {
+    "type": "colorpicker",
+    "label": "Progress Bar Gradient End",
+    "value": "#5c7afc"
+  },
+  "progressBarBgColor": {
+    "type": "colorpicker",
+    "label": "Progress Bar Background",
+    "value": "#1a237e"
+  },
+  "scrollbarColor": {
+    "type": "colorpicker",
+    "label": "Scrollbar Color",
+    "value": "#6aaafe"
+  },
   "fontFamily": {
     "type": "dropdown",
     "label": "Font Family",
@@ -46,8 +86,67 @@
     "type": "slider",
     "label": "Font Size",
     "value": 18,
-    "min": 14,
-    "max": 24,
+    "min": 12,
+    "max": 28,
     "step": 1
+  },
+  "commandsEnabled": {
+    "type": "checkbox",
+    "label": "Enable Chat Commands",
+    "value": true
+  },
+  "allowedUsers": {
+    "type": "dropdown",
+    "label": "Who Can Use Commands",
+    "value": "everyone",
+    "options": {
+      "everyone": "Everyone",
+      "subscriber": "Subscribers Only",
+      "vip": "VIP Only",
+      "moderator": "Moderators Only",
+      "broadcaster": "Broadcaster Only"
+    }
+  },
+  "blacklistedUsers": {
+    "type": "text",
+    "label": "Blacklisted Users (comma separated)",
+    "value": ""
+  },
+  "soundEnabled": {
+    "type": "checkbox",
+    "label": "Enable Sound Effects",
+    "value": true
+  },
+  "soundVolume": {
+    "type": "slider",
+    "label": "Sound Volume",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 5
+  },
+  "taskCompleteSound": {
+    "type": "dropdown",
+    "label": "Task Complete Sound",
+    "value": "ding",
+    "options": {
+      "ding": "Ding",
+      "chime": "Chime", 
+      "pop": "Pop",
+      "beep": "Beep",
+      "none": "No Sound"
+    }
+  },
+  "allTasksCompleteSound": {
+    "type": "dropdown",
+    "label": "All Tasks Complete Sound",
+    "value": "fanfare",
+    "options": {
+      "fanfare": "Fanfare",
+      "celebration": "Celebration",
+      "applause": "Applause",
+      "success": "Success",
+      "none": "No Sound"
+    }
   }
 }

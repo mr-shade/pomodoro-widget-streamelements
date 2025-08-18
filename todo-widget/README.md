@@ -1,106 +1,126 @@
-# StreamElements TODO List W## Customization Options
+# StreamElements TODO Widget
 
-The widget provides these essential customization options through the StreamElements dashboard:
-
-### Color Settings
-- **Card Title Color**: Color for the "MY TASKS" title (default: #feb6de - pink)
-- **Task Text Color**: Color for task text (default: #ffffff - white)
-- **Tick Color**: Color for completed task checkmarks (default: #6aacfd - blue)
-- **Checkbox Border Color**: Border color for task checkboxes (default: #ffffff - white)
-- **Card Background Color**: Background color of the main card (default: #010161 - dark blue)
-- **Card Border Color**: Border color of the main card (default: #bee5fc - light blue)
-
-### Typography Settings
-- **Font Family**: Choose from System, Arial, Helvetica, Roboto, Georgia, or Times
-- **Font Size**: Adjustable from 14px to 24px (default: 18px)
-
-All color changes apply dynamically through the StreamElements field data system.eautiful TODO list widget for StreamElements that preserves the original design with customizable colors and chat command integration.
-
-## Files
-
-- `widget.html` - Main widget HTML structure (original design)
-- `widget.css` - Original styling adapted for StreamElements
-- `widget.js` - Interactive functionality with StreamElements integration
-- `widget.json` - Essential customization fields for StreamElements dashboard
+A comprehensive StreamElements widget for managing TODO lists with advanced chat integration, user permissions, and extensive customization options.
 
 ## Features
 
-### ✨ **Original Design Preserved**
-- Exact visual style from your original tasklist app
-- Blue gradient theme (`#010161` background, `#bee5fc` borders)
-- Pink header text (`#feb6de`) and purple/blue color scheme
-- Original task list with checkbox interactions
-- "5+" expandable task functionality (shows 5 more tasks)
-- Progress bar with gradient fill
-- Smooth animations and transitions
+### Core Functionality
+- ✅ **Dynamic Task Management**: Add, complete, remove, and clear tasks
+- ✅ **Smart "5+" Button**: Automatically shows/hides based on actual task count (appears when >5 tasks)
+- ✅ **Progress Tracking**: Visual progress bar with percentage and task count
+- ✅ **Sound Effects**: Customizable audio feedback for task completion and list completion
+- ✅ **Responsive Design**: Optimized for all screen sizes
 
-### 💬 **Chat Commands**
-- `!todo add <task>` - Add a new task to the list
-- `!todo complete <number>` - Mark task as completed by number  
-- `!todo remove <number>` - Remove task by number
-- `!todo clear` - Clear all tasks
+### Chat Commands & Permissions
+- 🔐 **User Permission System**: Support for viewers, subscribers, VIPs, moderators, and broadcasters
+- 🚫 **Blacklist Support**: Block specific users from interacting with the widget
+- 🔒 **Lock/Unlock Commands**: Moderators can lock widget to prevent task additions
+- 💬 **Chat Integration**: Full StreamElements chat command support
 
-### 🎨 **Customizable Elements**
-- **Card Title** - Change "MY TASKS" to any text
-- **Page Title** - Change "Tasklist" to any text  
-- **Progress Label** - Change "Progress Bar" to any text
-- **Card Background** - Customize the main card background color
-- **Card Border** - Customize the border color
-- **Title Color** - Customize the header text color
-- **Task Text** - Customize task text color
-- **Checkbox Color** - Customize the checkmark color
-- **Button Color** - Customize the "5+" button color
+#### Available Commands
+- `!addtask <text>` - Add a new task to the list
+- `!complete <number>` - Complete task by number (1, 2, 3, etc.)
+- `!remove <number>` - Remove task by number
+- `!clear` - Clear all tasks (if permitted)
+- `!lock` - Lock the widget (moderators only)
+- `!unlock` - Unlock the widget (moderators only)
 
-## Default Tasks
+### Extensive Customization (25+ Options)
 
-The widget shows all 10 tasks by default:
-- **Completed (3 tasks)**: Hydrate, Clean desk, Organize notes  
-- **Pending (7 tasks)**: Reply emails, Finish homework, Call mom, Buy groceries, Schedule dentist appointment, Update resume, Plan weekend trip
-- **Scrollable**: When needed, a scrollbar appears to navigate through all tasks
+#### Text Content
+- **Widget Title**: Custom title text and color
+- **Progress Label**: Custom progress text and color
+- **Sound Effects**: Volume control and custom sound selections
+
+#### Colors & Styling
+- **Card Background**: Custom background color with transparency
+- **Card Borders**: Customizable border colors
+- **Task Text**: Color customization for task text
+- **Checkbox**: Border and fill color customization
+- **Progress Bar**: Gradient customization with multiple color stops
+- **Scrollbar**: Custom scrollbar colors
+- **"5+" Button**: Background gradient and text color
+
+#### Permission Settings
+- **Add Task Permission**: Who can add tasks (everyone/subscriber/VIP/moderator/broadcaster)
+- **Complete Task Permission**: Who can complete tasks
+- **Remove Task Permission**: Who can remove tasks
+- **Clear Tasks Permission**: Who can clear all tasks
+- **Blacklist**: Comma-separated list of blocked usernames
+
+#### Typography
+- **Font Selection**: Choose from popular web fonts including:
+  - Arial, Helvetica, Georgia, Times New Roman
+  - Roboto, Open Sans, Lato, Montserrat
+  - Poppins, Inter, Source Sans Pro, Nunito
+  - System fonts and more
+
+#### Sound Options
+- **Task Complete Sound**: Choose from multiple completion sounds
+- **All Tasks Complete Sound**: Special sound when all tasks are finished
+- **Volume Control**: Adjust sound effect volume (0-100%)
 
 ## Installation
 
-1. Upload all 4 files to StreamElements:
-   - `widget.html`
-   - `widget.css`
-   - `widget.js`
-   - `widget.json`
+1. Copy the widget files to your StreamElements custom widget
+2. Upload `widget.html`, `widget.css`, `widget.js`, and `widget.json`
+3. Configure your desired settings in the widget fields
+4. Set up chat commands in StreamElements
 
-2. Configure colors and text in StreamElements dashboard
-3. Set up chat commands in StreamElements chat commands section
-4. Position widget in your overlay
+## Customization Guide
 
-## Usage
+### Basic Setup
+1. **Widget Title**: Set your desired title (default: "TODO")
+2. **Colors**: Choose colors that match your stream theme
+3. **Permissions**: Set who can interact with different functions
+4. **Sounds**: Enable audio feedback and set volume
 
-### **Viewer Interaction**
-- Viewers can add tasks via `!todo add <task>` command
-- Tasks appear in the list with smooth animations
-- Progress bar updates automatically as tasks are completed/added
+### Advanced Configuration
+1. **Blacklist Users**: Add usernames separated by commas to block them
+2. **Lock Widget**: Use moderator commands to control access
+3. **Custom Fonts**: Select fonts that match your brand
+4. **Progress Bar**: Customize the gradient colors for visual appeal
 
-### **Interactive Features**
-- Click checkboxes to mark tasks complete/incomplete
-- Automatic scrollbar when task list exceeds container height
-- Real-time progress tracking (shows X/Y tasks and percentage)
-- Smooth hover effects and transitions
+### Permission Levels
+- **everyone**: All viewers can use the command
+- **subscriber**: Subscribers and higher can use the command
+- **vip**: VIPs and higher can use the command
+- **moderator**: Moderators and broadcaster only
+- **broadcaster**: Broadcaster only
 
-### **Streamer Customization**
-- Change all text labels through StreamElements dashboard
-- Customize all colors to match your brand/overlay
-- Maintains original beautiful design aesthetic
+## Technical Details
 
-## Technical Features
+### StreamElements Integration
+- Uses `SE_API.onMessage` for chat command handling
+- Implements `onWidgetLoad` for initialization
+- Supports all StreamElements field data types
+- Badge-based permission checking
 
-- StreamElements API integration for chat commands
-- Preserves original smooth animations and interactions
-- Transparent background for stream overlays
-- Responsive design
-- Development mode with command reference overlay
-- Cross-browser compatibility
+### Sound System
+- Web Audio API implementation
+- Support for multiple audio formats
+- Volume control and sound selection
+- Non-blocking audio playback
 
-## Development Mode
+### Dynamic UI Features
+- Real-time task counting
+- Automatic "5+" button visibility
+- Smooth animations and transitions
+- Responsive hover effects
+- Custom scrollbar styling
 
-When testing locally, the widget shows additional development commands overlay with all available chat commands for easy testing.
+## Browser Compatibility
+- Chrome 60+
+- Firefox 55+
+- Safari 12+
+- Edge 79+
 
----
+## Support
 
-This widget gives you the exact beautiful design you created, now with the power of StreamElements chat integration and customization!
+This widget is designed for StreamElements and requires:
+- StreamElements overlay system
+- Chat integration enabled
+- Modern web browser
+- Audio support for sound effects
+
+For issues or feature requests, refer to the StreamElements documentation or community forums.
