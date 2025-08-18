@@ -8,18 +8,18 @@
   },
   "cardColor": {
     "type": "colorpicker",
-    "label": "Card Color",
-    "value": "#1A202C"
+    "label": "Timer Widget Background",
+    "value": "#010161"
   },
   "cardBorderColor": {
     "type": "colorpicker",
-    "label": "Card Border Color",
-    "value": "#FBD38D"
+    "label": "Timer Widget Border",
+    "value": "#fcfabc"
   },
   "timerCardStart": {
     "type": "colorpicker",
     "label": "Timer Card Gradient Start",
-    "value": "#63B3ED"
+    "value": "#6caaff"
   },
   "timerCardEnd": {
     "type": "colorpicker",
@@ -38,7 +38,7 @@
   },
   "timerTextColor": {
     "type": "colorpicker",
-    "label": "Timer Text Color",
+    "label": "Timer Number Color",
     "value": "#FFFFFF"
   }
 }

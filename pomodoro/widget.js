@@ -1,12 +1,26 @@
+// StreamElements Pomodoro Timer Widget
+window.addEventListener('onWidgetLoad', function (obj) {
+    console.log("StreamElements pomodoro widget loaded");
+    
+    // Get field data from StreamElements
+    const fieldData = obj.detail.fieldData;
+    console.log("Pomodoro field data:", fieldData);
+    
+    // Initialize the pomodoro timer
+    window.pomodoroTimer = new PomodoroTimer(fieldData);
+});
+
 class PomodoroTimer {
-    constructor() {
-        this.fieldData = this.getFieldData();
+    constructor(fieldData) {
+        this.fieldData = fieldData;
         this.minutes = this.fieldData.pomodoroMinutes || 25;
         this.seconds = 0;
         this.defaultMinutes = this.fieldData.pomodoroMinutes || 25;
         this.isRunning = false;
         this.interval = null;
 
+        console.log("PomodoroTimer initialized with field data:", this.fieldData);
+        
         this.initializeElements();
         this.applyCustomColors();
         this.updateDisplay();
@@ -14,37 +28,16 @@ class PomodoroTimer {
         this.initializeCommands();
     }
 
-    getFieldData() {
-        // Check if StreamElements field data exists
-        if (typeof window !== 'undefined' && window.SE_API && window.SE_API.getFieldData) {
-            return window.SE_API.getFieldData() || this.getDefaultFields();
-        }
-        
-        // Check for global obj.detail.fieldData (StreamElements pattern)
-        if (typeof obj !== 'undefined' && obj.detail && obj.detail.fieldData) {
-            return obj.detail.fieldData;
-        }
-
-        // Return default values for development environment
-        return this.getDefaultFields();
-    }
-
-    getDefaultFields() {
-        return {
-            pomodoroMinutes: 25,
-            cardColor: "#1A202C",
-            cardBorderColor: "#FBD38D",
-            timerCardStart: "#63B3ED",
-            timerCardEnd: "#4299E1",
-            playBtnColor: "#63B3ED",
-            playBtnIconColor: "#FFFFFF",
-            timerTextColor: "#FFFFFF"
-        };
-    }
-
     applyCustomColors() {
-        // Keep completely transparent for StreamElements
-        // Only apply gradient to timer cards and buttons, no widget background
+        console.log("Applying pomodoro colors with field data:", this.fieldData);
+        
+        // Apply timer widget background and border colors
+        const timerWidget = document.querySelector('.timer-widget');
+        if (timerWidget) {
+            timerWidget.style.backgroundColor = this.fieldData.cardColor || "#010161";
+            timerWidget.style.borderRightColor = this.fieldData.cardBorderColor || "#fcfabc";
+            timerWidget.style.borderBottomColor = this.fieldData.cardBorderColor || "#fcfabc";
+        }
         
         // Apply timer card colors
         const timeCards = document.querySelectorAll('.time-card');
@@ -72,72 +65,19 @@ class PomodoroTimer {
     }
 
     initializeCommands() {
-        // Mock StreamElements API for development
-        if (typeof window !== 'undefined' && !window.SE_API) {
-            window.SE_API = {
-                onMessage: (callback) => {
-                    window.seMessageCallback = callback;
-                },
-                store: {
-                    set: (key, value) => {
-                        localStorage.setItem(`se_${key}`, JSON.stringify(value));
-                    },
-                    get: (key) => {
-                        const item = localStorage.getItem(`se_${key}`);
-                        return item ? JSON.parse(item) : null;
-                    }
-                }
-            };
-        }
-
         // Listen for StreamElements messages
         if (window.SE_API && window.SE_API.onMessage) {
             window.SE_API.onMessage((data) => {
                 this.handleCommand(data);
             });
         }
-
-        // For development: Listen for manual command testing
-        this.setupDevCommandTesting();
-    }
-
-    setupDevCommandTesting() {
-        // Only add development command testing interface in development mode
-        // Don't show in StreamElements production environment
-        if (this.isDevelopmentMode() && !document.querySelector('#dev-commands')) {
-            const devDiv = document.createElement('div');
-            devDiv.id = 'dev-commands';
-            devDiv.style.cssText = `
-                position: fixed;
-                top: 10px;
-                right: 10px;
-                background: rgba(0,0,0,0.8);
-                color: white;
-                padding: 10px;
-                border-radius: 5px;
-                font-size: 12px;
-                z-index: 1000;
-            `;
-            devDiv.innerHTML = `
-                <div>Dev Commands:</div>
-                <button onclick="window.pomodoroTimer.handleCommand({message: '!start'})">!start</button>
-                <button onclick="window.pomodoroTimer.handleCommand({message: '!pause'})">!pause</button>
-                <button onclick="window.pomodoroTimer.handleCommand({message: '!reset'})">!reset</button>
-            `;
-            document.body.appendChild(devDiv);
-        }
-    }
-
-    isDevelopmentMode() {
-        // Check if we're in development mode (not StreamElements)
-        // Development mode: no obj.detail.fieldData and no SE_API
-        return !(typeof obj !== 'undefined' && obj.detail && obj.detail.fieldData) && 
-               !(typeof window !== 'undefined' && window.SE_API && window.SE_API.getFieldData);
     }
 
     handleCommand(data) {
         const message = data.message || data.text || '';
         const command = message.toLowerCase().trim();
+
+        console.log("Pomodoro command received:", command);
 
         switch (command) {
             case '!start':
@@ -160,32 +100,11 @@ class PomodoroTimer {
     }
 
     sendNotification(message) {
+        console.log(`Pomodoro: ${message}`);
+        
         // Send notification via StreamElements API if available
         if (window.SE_API && window.SE_API.sendMessage) {
             window.SE_API.sendMessage(message);
-        } else {
-            // Development notification
-            console.log(`Pomodoro: ${message}`);
-            
-            // Show visual notification
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 50px;
-                right: 10px;
-                background: #4299E1;
-                color: white;
-                padding: 10px 15px;
-                border-radius: 5px;
-                z-index: 1001;
-                animation: slideIn 0.3s ease;
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 3000);
         }
     }
 
@@ -298,34 +217,8 @@ class PomodoroTimer {
 
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.5);
-        } catch (_error) {
-            console.log('Audio notification not available');
+        } catch (error) {
+            console.log('Audio notification not available:', error);
         }
     }
 }
-
-// Initialize the timer when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    window.pomodoroTimer = new PomodoroTimer();
-});
-
-// Add some visual effects for better user experience
-document.addEventListener('DOMContentLoaded', () => {
-    const timeCards = document.querySelectorAll('.time-card');
-
-    // Add subtle animation to time cards when they update
-    timeCards.forEach(card => {
-        const observer = new MutationObserver(() => {
-            card.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-                card.style.transform = 'scale(1)';
-            }, 150);
-        });
-
-        observer.observe(card, {
-            childList: true,
-            subtree: true,
-            characterData: true
-        });
-    });
-});
