@@ -1,0 +1,60 @@
+{
+  "mainTitle": {
+    "type": "text",
+    "label": "Main Title",
+    "value": "Commands"
+  },
+  "commandsTitle": {
+    "type": "text", 
+    "label": "Commands Section Title",
+    "value": "!Commands"
+  },
+  "backgroundGradient": {
+    "type": "colorpicker",
+    "label": "Background Gradient Start",
+    "value": "#b3abfb"
+  },
+  "widgetBackground": {
+    "type": "colorpicker",
+    "label": "Widget Background Color",
+    "value": "#000160"
+  },
+  "widgetBorder": {
+    "type": "colorpicker",
+    "label": "Widget Border Color",
+    "value": "#bee7ff"
+  },
+  "titleColor": {
+    "type": "colorpicker",
+    "label": "Commands Title Color",
+    "value": "#ffb7e3"
+  },
+  "commandColor": {
+    "type": "colorpicker",
+    "label": "Command Text Color",
+    "value": "#63B3ED"
+  },
+  "separatorColor": {
+    "type": "colorpicker",
+    "label": "Separator Color",
+    "value": "#ffffff"
+  },
+  "underlineColor": {
+    "type": "colorpicker",
+    "label": "Underline Color",
+    "value": "#ffffff"
+  },
+  "fontFamily": {
+    "type": "dropdown",
+    "label": "Font Family",
+    "value": "system",
+    "options": {
+      "system": "System Font",
+      "arial": "Arial",
+      "helvetica": "Helvetica",
+      "roboto": "Roboto",
+      "georgia": "Georgia",
+      "times": "Times New Roman"
+    }
+  }
+}
