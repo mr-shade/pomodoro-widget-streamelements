@@ -133,7 +133,7 @@ class TodoWidget {
     // Apply more tasks button color
     const moreTasksBtn = document.querySelector('.more-tasks-btn');
     if (moreTasksBtn) {
-      moreTasksBtn.style.background = `linear-gradient(135deg, ${this.fieldData.buttonColor} 0%, #5c7afc 100%)`;
+      moreTasksBtn.style.background = this.fieldData.buttonColor || "#6aaafe";
     }
     
     // Apply progress bar colors
