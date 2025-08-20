@@ -40,5 +40,27 @@
     "type": "colorpicker",
     "label": "Timer Number Color",
     "value": "#FFFFFF"
+  },
+  "enableTickSound": {
+    "type": "dropdown",
+    "label": "Enable Tick Sound Every Second",
+    "value": "false",
+    "options": {
+      "true": "Enabled",
+      "false": "Disabled"
+    }
+  },
+  "tickSoundFile": {
+    "type": "sound-input",
+    "label": "Tick Sound File (MP3)",
+    "value": ""
+  },
+  "tickSoundVolume": {
+    "type": "slider",
+    "label": "Tick Sound Volume",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 5
   }
 }

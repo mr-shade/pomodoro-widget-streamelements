@@ -18,10 +18,20 @@ class PomodoroTimer {
         this.defaultMinutes = this.fieldData.pomodoroMinutes || 25;
         this.isRunning = false;
         this.interval = null;
+        
+        // Sound properties
+        this.tickSoundEnabled = this.fieldData.enableTickSound === 'true';
+        this.tickSoundFile = this.fieldData.tickSoundFile;
+        this.tickSoundVolume = (this.fieldData.tickSoundVolume || 50) / 100;
+        this.tickAudio = null;
 
         console.log("PomodoroTimer initialized with field data:", this.fieldData);
+        console.log("Tick sound enabled:", this.tickSoundEnabled);
+        console.log("Tick sound file:", this.tickSoundFile);
+        console.log("Tick sound volume:", this.tickSoundVolume);
         
         this.initializeElements();
+        this.initializeTickSound();
         this.applyCustomColors();
         this.updateDisplay();
         this.bindEvents();
@@ -114,6 +124,79 @@ class PomodoroTimer {
         this.timeNumbers = document.querySelectorAll('.time-number');
     }
 
+    initializeTickSound() {
+        if (this.tickSoundEnabled && this.tickSoundFile) {
+            try {
+                this.tickAudio = new Audio(this.tickSoundFile);
+                this.tickAudio.volume = this.tickSoundVolume;
+                this.tickAudio.preload = 'auto';
+                
+                // Test if the audio can be loaded
+                this.tickAudio.addEventListener('canplaythrough', () => {
+                    console.log('Tick sound loaded successfully');
+                });
+                
+                this.tickAudio.addEventListener('error', (e) => {
+                    console.error('Error loading tick sound:', e);
+                    this.tickSoundEnabled = false;
+                });
+            } catch (error) {
+                console.error('Error initializing tick sound:', error);
+                this.tickSoundEnabled = false;
+            }
+        }
+    }
+
+    playTickSound() {
+        if (this.tickSoundEnabled) {
+            // If custom audio file is available, use it
+            if (this.tickAudio) {
+                try {
+                    // Reset the audio to the beginning for repeated plays
+                    this.tickAudio.currentTime = 0;
+                    this.tickAudio.volume = this.tickSoundVolume;
+                    
+                    // Play the sound (returns a promise)
+                    const playPromise = this.tickAudio.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.log('Tick sound play failed:', error);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error playing tick sound:', error);
+                }
+            } else {
+                // Fallback: Generate a simple tick sound using Web Audio API
+                this.playFallbackTickSound();
+            }
+        }
+    }
+
+    playFallbackTickSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            // Create a short, sharp tick sound
+            oscillator.frequency.value = 1000;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(this.tickSoundVolume * 0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        } catch (error) {
+            console.log('Fallback tick sound not available:', error);
+        }
+    }
+
     updateDisplay() {
         const minutesStr = this.minutes.toString().padStart(2, '0');
         const secondsStr = this.seconds.toString().padStart(2, '0');
@@ -161,6 +244,9 @@ class PomodoroTimer {
     }
 
     tick() {
+        // Play tick sound every second when timer is running
+        this.playTickSound();
+        
         if (this.seconds > 0) {
             this.seconds--;
         } else if (this.minutes > 0) {
@@ -220,5 +306,22 @@ class PomodoroTimer {
         } catch (error) {
             console.log('Audio notification not available:', error);
         }
+    }
+
+    // Method to update tick sound settings if needed
+    updateTickSoundSettings(newFieldData) {
+        this.fieldData = newFieldData;
+        this.tickSoundEnabled = this.fieldData.enableTickSound === 'true';
+        this.tickSoundFile = this.fieldData.tickSoundFile;
+        this.tickSoundVolume = (this.fieldData.tickSoundVolume || 50) / 100;
+        
+        // Reinitialize tick sound with new settings
+        this.initializeTickSound();
+        
+        console.log('Tick sound settings updated:', {
+            enabled: this.tickSoundEnabled,
+            file: this.tickSoundFile,
+            volume: this.tickSoundVolume
+        });
     }
 }
