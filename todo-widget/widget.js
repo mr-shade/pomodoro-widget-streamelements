@@ -2,11 +2,11 @@
 // StreamElements TODO Widget
 window.addEventListener('onWidgetLoad', function (obj) {
   console.log("StreamElements widget loaded");
-  
+
   // Get field data from StreamElements
   const fieldData = obj.detail.fieldData;
   console.log("Field data:", fieldData);
-  
+
   // Initialize the TODO widget
   const _todoWidget = new TodoWidget(fieldData);
 });
@@ -18,14 +18,20 @@ class TodoWidget {
     this.fieldData = fieldData;
     this.blacklistedUsers = this.parseBlacklistedUsers(fieldData.blacklistedUsers);
     this.tasks = []; // Will store task data
+
+    // Sound properties
+    this.taskCompleteAudio = null;
+    this.allTasksCompleteAudio = null;
+
     console.log("TodoWidget fieldData:", this.fieldData);
-    
+
     this.init();
   }
 
   init() {
     console.log("TodoWidget init() called");
     this.countActualTasks();
+    this.initializeSounds();
     this.applyCustomStyling();
     this.setupEventListeners();
     this.updateProgress();
@@ -39,6 +45,40 @@ class TodoWidget {
     return blacklistString.split(',').map(user => user.trim().toLowerCase()).filter(user => user.length > 0);
   }
 
+  initializeSounds() {
+    // Initialize task complete sound
+    if (this.fieldData.taskCompleteSound && this.fieldData.taskCompleteSound !== 'none') {
+      try {
+        // Check if it's a custom sound file (URL or data URI)
+        if (this.fieldData.taskCompleteSound.startsWith('http') ||
+          this.fieldData.taskCompleteSound.startsWith('https') ||
+          this.fieldData.taskCompleteSound.startsWith('data:audio')) {
+          this.taskCompleteAudio = new Audio(this.fieldData.taskCompleteSound);
+          this.taskCompleteAudio.volume = (this.fieldData.taskCompleteSoundVolume || this.fieldData.soundVolume || 50) / 100;
+          this.taskCompleteAudio.preload = 'auto';
+        }
+      } catch (error) {
+        console.error('Error initializing task complete sound:', error);
+      }
+    }
+
+    // Initialize all tasks complete sound
+    if (this.fieldData.allTasksCompleteSound && this.fieldData.allTasksCompleteSound !== 'none') {
+      try {
+        // Check if it's a custom sound file (URL or data URI)
+        if (this.fieldData.allTasksCompleteSound.startsWith('http') ||
+          this.fieldData.allTasksCompleteSound.startsWith('https') ||
+          this.fieldData.allTasksCompleteSound.startsWith('data:audio')) {
+          this.allTasksCompleteAudio = new Audio(this.fieldData.allTasksCompleteSound);
+          this.allTasksCompleteAudio.volume = (this.fieldData.allTasksCompleteSoundVolume || this.fieldData.soundVolume || 50) / 100;
+          this.allTasksCompleteAudio.preload = 'auto';
+        }
+      } catch (error) {
+        console.error('Error initializing all tasks complete sound:', error);
+      }
+    }
+  }
+
   countActualTasks() {
     const taskItems = document.querySelectorAll('.task-item');
     this.totalTasks = taskItems.length;
@@ -49,17 +89,17 @@ class TodoWidget {
   updateMoreTasksButton() {
     const moreTasksBtn = document.querySelector('.more-tasks-btn');
     const taskItems = document.querySelectorAll('.task-item');
-    
+
     console.log(`updateMoreTasksButton: Found ${taskItems.length} tasks`);
-    
+
     if (moreTasksBtn && taskItems.length > 5) {
       const hiddenTasksCount = taskItems.length - 5;
       const moreTasksText = moreTasksBtn.querySelector('.more-tasks-text');
-      
+
       if (moreTasksText) {
         moreTasksText.textContent = `${hiddenTasksCount}+`;
       }
-      
+
       moreTasksBtn.style.display = 'flex';
       console.log(`5+ button shown with text: ${hiddenTasksCount}+`);
     } else if (moreTasksBtn) {
@@ -71,28 +111,28 @@ class TodoWidget {
   applyCustomStyling() {
     console.log("applyCustomStyling() called");
     console.log("Field data in applyCustomStyling:", this.fieldData);
-    
+
     // Provide default values if fieldData is not available
     const fieldData = this.fieldData || {};
-    
+
     // Apply text content
     const pageTitle = document.querySelector('.page-title');
     if (pageTitle) {
       pageTitle.textContent = fieldData.tasklistTitle || "Tasklist";
     }
-    
+
     const cardTitle = document.querySelector('.card-title');
     if (cardTitle) {
       cardTitle.textContent = fieldData.cardTitle || "MY TASKS";
       cardTitle.style.color = fieldData.cardTitleColor || "#feb6de";
     }
-    
+
     const progressLabel = document.querySelector('.progress-label');
     if (progressLabel) {
       progressLabel.textContent = fieldData.progressLabel || "Progress Bar";
       progressLabel.style.color = fieldData.progressLabelColor || "#2c2c2c";
     }
-    
+
     // Apply card background and border colors
     const taskCard = document.querySelector('.task-card');
     if (taskCard) {
@@ -100,30 +140,30 @@ class TodoWidget {
       taskCard.style.background = fieldData.cardBackgroundColor || "#010161";
       taskCard.style.borderRightColor = fieldData.cardBorderColor || "#bee5fc";
       taskCard.style.borderBottomColor = fieldData.cardBorderColor || "#bee5fc";
-      
+
       // Apply hover shadow color
       const shadowColor = fieldData.cardHoverShadow || fieldData.cardBorderColor || "#bee5fc";
       taskCard.style.setProperty('--hover-shadow-color', shadowColor);
     } else {
       console.log("task-card element not found");
     }
-    
+
     // Apply task text color
     document.querySelectorAll('.task-text').forEach(text => {
       text.style.color = this.fieldData.taskTextColor;
     });
-    
+
     // Apply checkbox border color and tick color
     document.querySelectorAll('.checkbox').forEach(checkbox => {
       checkbox.style.borderColor = this.fieldData.checkboxBorderColor;
-      
+
       // Update the tick mark color for checked items
       const tickMark = checkbox.querySelector('svg path');
       if (tickMark) {
         tickMark.setAttribute('stroke', this.fieldData.tickColor);
       }
     });
-    
+
     // Apply font family to the main card
     if (taskCard) {
       taskCard.style.fontFamily = this.getFontFamily(this.fieldData.fontFamily);
@@ -134,14 +174,14 @@ class TodoWidget {
     if (moreTasksBtn) {
       moreTasksBtn.style.background = this.fieldData.buttonColor || "#6aaafe";
     }
-    
+
     // Apply progress bar colors
     this.applyProgressBarStyling();
-    
+
     // Apply scrollbar colors
     this.applyScrollbarStyling();
   }
-  
+
   applyProgressBarStyling() {
     const progressBarContainer = document.querySelector('.progress-bar-container');
     if (progressBarContainer) {
@@ -151,7 +191,7 @@ class TodoWidget {
       progressBarContainer.style.borderRightColor = borderColor;
       progressBarContainer.style.borderBottomColor = borderColor;
     }
-    
+
     const progressFill = document.querySelector('.progress-fill');
     if (progressFill) {
       const startColor = this.fieldData.progressBarStartColor || "#b988fe";
@@ -159,18 +199,18 @@ class TodoWidget {
       progressFill.style.background = `linear-gradient(90deg, ${startColor} 0%, ${endColor} 100%)`;
     }
   }
-  
+
   applyScrollbarStyling() {
     const taskList = document.querySelector('.task-list');
     if (taskList) {
       const scrollbarColor = this.fieldData.scrollbarColor || "#6aaafe";
-      
+
       // Remove any existing scrollbar styles
       const existingStyle = document.getElementById('custom-scrollbar-style');
       if (existingStyle) {
         existingStyle.remove();
       }
-      
+
       // Create dynamic CSS for scrollbar
       const style = document.createElement('style');
       style.id = 'custom-scrollbar-style';
@@ -185,7 +225,7 @@ class TodoWidget {
       document.head.appendChild(style);
     }
   }
-  
+
   darkenColor(color, percent) {
     const num = parseInt(color.replace("#", ""), 16);
     const amt = Math.round(2.55 * percent);
@@ -194,7 +234,7 @@ class TodoWidget {
     const G = (num & 0x0000FF) - amt;
     return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (B < 255 ? B < 1 ? 0 : B : 255) * 0x100 + (G < 255 ? G < 1 ? 0 : G : 255)).toString(16).slice(1);
   }
-  
+
   getFontFamily(fontOption) {
     const fontMap = {
       'system': '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
@@ -204,7 +244,7 @@ class TodoWidget {
       'georgia': 'Georgia, serif',
       'times': 'Times New Roman, serif'
     };
-    
+
     return fontMap[fontOption] || fontMap['system'];
   }
 
@@ -233,7 +273,7 @@ class TodoWidget {
         top: taskList.scrollHeight,
         behavior: 'smooth'
       });
-      
+
       console.log('Scrolled to bottom of task list');
     }
   }
@@ -277,7 +317,7 @@ class TodoWidget {
     const progressFill = document.querySelector('.progress-fill');
 
     const percentage = Math.round((this.completedTasks / this.totalTasks) * 100);
-    
+
     if (progressCount) progressCount.textContent = `${this.completedTasks}/${this.totalTasks}`;
     if (progressPercentage) progressPercentage.textContent = `${percentage}%`;
     if (progressFill) progressFill.style.width = `${percentage}%`;
@@ -298,19 +338,19 @@ class TodoWidget {
       console.log("Commands are disabled");
       return false;
     }
-    
+
     const username = (data.username || data.displayName || '').toLowerCase();
-    
+
     // Check blacklist
     if (this.blacklistedUsers.includes(username)) {
       console.log(`User ${username} is blacklisted`);
       return false;
     }
-    
+
     // Check user permissions
     const allowedUsers = this.fieldData.allowedUsers || 'everyone';
     const badges = data.badges || [];
-    
+
     switch (allowedUsers) {
       case 'broadcaster':
         return badges.includes('broadcaster');
@@ -328,9 +368,62 @@ class TodoWidget {
 
   playSound(soundType) {
     if (!this.fieldData.soundEnabled) return;
-    
+
     const volume = (this.fieldData.soundVolume || 50) / 100;
-    
+
+    // Handle specific sound types with preloaded audio
+    if (soundType === 'taskCompleteSound' && this.taskCompleteAudio) {
+      try {
+        // Reset the audio to the beginning for repeated plays
+        this.taskCompleteAudio.currentTime = 0;
+        this.taskCompleteAudio.volume = (this.fieldData.taskCompleteSoundVolume || this.fieldData.soundVolume || 50) / 100;
+
+        // Play the sound (returns a promise)
+        const playPromise = this.taskCompleteAudio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.log('Task complete sound play failed:', error);
+            // Fallback to Web Audio API
+            this.playFallbackSound('ding');
+          });
+        }
+        console.log('Played task complete sound');
+        return;
+      } catch (error) {
+        console.error('Error playing task complete sound:', error);
+        // Fallback to Web Audio API
+        this.playFallbackSound('ding');
+        return;
+      }
+    }
+
+    if (soundType === 'allTasksCompleteSound' && this.allTasksCompleteAudio) {
+      try {
+        // Reset the audio to the beginning for repeated plays
+        this.allTasksCompleteAudio.currentTime = 0;
+        this.allTasksCompleteAudio.volume = (this.fieldData.allTasksCompleteSoundVolume || this.fieldData.soundVolume || 50) / 100;
+
+        // Play the sound (returns a promise)
+        const playPromise = this.allTasksCompleteAudio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.log('All tasks complete sound play failed:', error);
+            // Fallback to Web Audio API
+            this.playFallbackSound('fanfare');
+          });
+        }
+        console.log('Played all tasks complete sound');
+        return;
+      } catch (error) {
+        console.error('Error playing all tasks complete sound:', error);
+        // Fallback to Web Audio API
+        this.playFallbackSound('fanfare');
+        return;
+      }
+    }
+
     // Check if soundType is a URL (uploaded sound) or a predefined sound
     if (soundType && (soundType.startsWith('http') || soundType.startsWith('https') || soundType.startsWith('data:audio'))) {
       // Handle uploaded/custom sound files
@@ -345,42 +438,49 @@ class TodoWidget {
         console.log('Custom sound playback failed:', error);
       }
     } else {
-      // Handle predefined sounds
-      const soundMap = {
-        'ding': [800, 0.3],
-        'chime': [660, 0.4],
-        'pop': [1000, 0.2],
-        'beep': [440, 0.3],
-        'fanfare': [523, 0.5],
-        'celebration': [659, 0.6],
-        'applause': [880, 0.4],
-        'success': [1318, 0.5]
-      };
-      
-      const soundConfig = soundMap[soundType];
-      if (!soundConfig) return;
-      
-      try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+      // Handle predefined sounds with Web Audio API
+      this.playFallbackSound(soundType);
+    }
+  }
 
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+  playFallbackSound(soundType) {
+    const volume = (this.fieldData.soundVolume || 50) / 100;
 
-        oscillator.frequency.value = soundConfig[0];
-        oscillator.type = 'sine';
+    // Handle predefined sounds
+    const soundMap = {
+      'ding': [800, 0.3],
+      'chime': [660, 0.4],
+      'pop': [1000, 0.2],
+      'beep': [440, 0.3],
+      'fanfare': [523, 0.5],
+      'celebration': [659, 0.6],
+      'applause': [80, 0.4],
+      'success': [1318, 0.5]
+    };
 
-        gainNode.gain.setValueAtTime(volume * soundConfig[1], audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    const soundConfig = soundMap[soundType];
+    if (!soundConfig) return;
 
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.3);
-        
-        console.log(`Played predefined sound: ${soundType}`);
-      } catch (error) {
-        console.log('Predefined sound playback failed:', error);
-      }
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.frequency.value = soundConfig[0];
+      oscillator.type = 'sine';
+
+      gainNode.gain.setValueAtTime(volume * soundConfig[1], audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.3);
+
+      console.log(`Played fallback sound: ${soundType}`);
+    } catch (error) {
+      console.log('Fallback sound playback failed:', error);
     }
   }
 
@@ -445,11 +545,11 @@ class TodoWidget {
   applyTaskStyling(taskElement) {
     const taskText = taskElement.querySelector('.task-text');
     const checkbox = taskElement.querySelector('.checkbox');
-    
+
     if (taskText) {
       taskText.style.color = this.fieldData.taskTextColor;
     }
-    
+
     if (checkbox) {
       checkbox.style.borderColor = this.fieldData.checkboxBorderColor;
     }
@@ -462,12 +562,12 @@ class TodoWidget {
       const checkbox = task.querySelector('.checkbox');
       if (checkbox && !task.classList.contains('completed')) {
         checkbox.click(); // Trigger the click event
-        
+
         // Play task complete sound
-        this.playSound(this.fieldData.taskCompleteSound);
-        
+        this.playSound('taskCompleteSound');
+
         console.log(`Task ${taskId} completed by ${username}`);
-        
+
         // Check if all tasks are completed
         this.checkAllTasksComplete();
       }
@@ -477,10 +577,10 @@ class TodoWidget {
   checkAllTasksComplete() {
     const tasks = document.querySelectorAll('.task-item');
     const completedTasks = document.querySelectorAll('.task-item.completed');
-    
+
     if (tasks.length > 0 && tasks.length === completedTasks.length) {
       // All tasks completed!
-      this.playSound(this.fieldData.allTasksCompleteSound);
+      this.playSound('allTasksCompleteSound');
       console.log('All tasks completed! 🎉');
     }
   }
@@ -511,5 +611,23 @@ class TodoWidget {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  }
+
+  updateSoundSettings(newFieldData) {
+    this.fieldData = newFieldData;
+
+    // Update audio volumes if they exist
+    if (this.taskCompleteAudio) {
+      this.taskCompleteAudio.volume = (this.fieldData.taskCompleteSoundVolume || this.fieldData.soundVolume || 50) / 100;
+    }
+
+    if (this.allTasksCompleteAudio) {
+      this.allTasksCompleteAudio.volume = (this.fieldData.allTasksCompleteSoundVolume || this.fieldData.soundVolume || 50) / 100;
+    }
+
+    // Reinitialize sounds with new settings if sound files changed
+    this.initializeSounds();
+
+    console.log('Sound settings updated');
   }
 }

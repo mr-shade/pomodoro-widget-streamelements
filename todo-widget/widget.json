@@ -131,5 +131,21 @@
     "type": "sound",
     "label": "All Tasks Complete Sound",
     "value": "fanfare"
+  },
+  "taskCompleteSoundVolume": {
+    "type": "slider",
+    "label": "Task Complete Sound Volume",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 5
+  },
+  "allTasksCompleteSoundVolume": {
+    "type": "slider",
+    "label": "All Tasks Complete Sound Volume",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 5
   }
 }
