@@ -13,12 +13,23 @@ window.addEventListener('onWidgetLoad', function (obj) {
 class PomodoroTimer {
     constructor(fieldData) {
         this.fieldData = fieldData;
-        this.minutes = this.fieldData.pomodoroMinutes || 25;
-        this.seconds = 0;
+
+        // Stopwatch mode enabled?
+        this.stopwatchMode = this.fieldData.enableStopwatchMode === true || this.fieldData.enableStopwatchMode === "true";
+
         this.defaultMinutes = this.fieldData.pomodoroMinutes || 25;
         this.isRunning = false;
         this.interval = null;
-        
+
+        // Initialize timer values depending on mode
+        if (this.stopwatchMode) {
+            this.minutes = 0;
+            this.seconds = 0;
+        } else {
+            this.minutes = this.defaultMinutes;
+            this.seconds = 0;
+        }
+
         // Sound properties
         this.tickSoundEnabled = this.fieldData.enableTickSound === 'true';
         this.tickSoundFile = this.fieldData.tickSoundFile;
@@ -26,9 +37,7 @@ class PomodoroTimer {
         this.tickAudio = null;
 
         console.log("PomodoroTimer initialized with field data:", this.fieldData);
-        console.log("Tick sound enabled:", this.tickSoundEnabled);
-        console.log("Tick sound file:", this.tickSoundFile);
-        console.log("Tick sound volume:", this.tickSoundVolume);
+        console.log("Stopwatch mode:", this.stopwatchMode);
         
         this.initializeElements();
         this.initializeTickSound();
@@ -39,9 +48,6 @@ class PomodoroTimer {
     }
 
     applyCustomColors() {
-        console.log("Applying pomodoro colors with field data:", this.fieldData);
-        
-        // Apply timer widget background and border colors
         const timerWidget = document.querySelector('.timer-widget');
         if (timerWidget) {
             timerWidget.style.backgroundColor = this.fieldData.cardColor || "#010161";
@@ -49,25 +55,21 @@ class PomodoroTimer {
             timerWidget.style.borderBottomColor = this.fieldData.cardBorderColor || "#fcfabc";
         }
         
-        // Apply timer card colors
         const timeCards = document.querySelectorAll('.time-card');
         timeCards.forEach(card => {
             card.style.background = `linear-gradient(135deg, ${this.fieldData.timerCardStart} 0%, ${this.fieldData.timerCardEnd} 100%)`;
         });
 
-        // Apply play button colors
         const playButton = document.querySelector('.play-button');
         if (playButton) {
             playButton.style.background = `linear-gradient(135deg, ${this.fieldData.playBtnColor} 0%, ${this.fieldData.timerCardEnd} 100%)`;
         }
 
-        // Apply text colors
         const timeNumbers = document.querySelectorAll('.time-number');
         timeNumbers.forEach(number => {
             number.style.color = this.fieldData.timerTextColor;
         });
 
-        // Apply play button icon color
         const playButtonIcon = document.querySelector('.play-button svg path');
         if (playButtonIcon) {
             playButtonIcon.setAttribute('fill', this.fieldData.playBtnIconColor);
@@ -75,7 +77,6 @@ class PomodoroTimer {
     }
 
     initializeCommands() {
-        // Listen for StreamElements messages
         if (window.SE_API && window.SE_API.onMessage) {
             window.SE_API.onMessage((data) => {
                 this.handleCommand(data);
@@ -112,7 +113,6 @@ class PomodoroTimer {
     sendNotification(message) {
         console.log(`Pomodoro: ${message}`);
         
-        // Send notification via StreamElements API if available
         if (window.SE_API && window.SE_API.sendMessage) {
             window.SE_API.sendMessage(message);
         }
@@ -131,7 +131,6 @@ class PomodoroTimer {
                 this.tickAudio.volume = this.tickSoundVolume;
                 this.tickAudio.preload = 'auto';
                 
-                // Test if the audio can be loaded
                 this.tickAudio.addEventListener('canplaythrough', () => {
                     console.log('Tick sound loaded successfully');
                 });
@@ -149,14 +148,10 @@ class PomodoroTimer {
 
     playTickSound() {
         if (this.tickSoundEnabled) {
-            // If custom audio file is available, use it
             if (this.tickAudio) {
                 try {
-                    // Reset the audio to the beginning for repeated plays
                     this.tickAudio.currentTime = 0;
                     this.tickAudio.volume = this.tickSoundVolume;
-                    
-                    // Play the sound (returns a promise)
                     const playPromise = this.tickAudio.play();
                     
                     if (playPromise !== undefined) {
@@ -168,7 +163,6 @@ class PomodoroTimer {
                     console.error('Error playing tick sound:', error);
                 }
             } else {
-                // Fallback: Generate a simple tick sound using Web Audio API
                 this.playFallbackTickSound();
             }
         }
@@ -183,7 +177,6 @@ class PomodoroTimer {
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
 
-            // Create a short, sharp tick sound
             oscillator.frequency.value = 1000;
             oscillator.type = 'sine';
 
@@ -201,11 +194,8 @@ class PomodoroTimer {
         const minutesStr = this.minutes.toString().padStart(2, '0');
         const secondsStr = this.seconds.toString().padStart(2, '0');
 
-        // Update minutes display
         this.timeNumbers[0].textContent = minutesStr[0];
         this.timeNumbers[1].textContent = minutesStr[1];
-
-        // Update seconds display
         this.timeNumbers[2].textContent = secondsStr[0];
         this.timeNumbers[3].textContent = secondsStr[1];
     }
@@ -244,17 +234,31 @@ class PomodoroTimer {
     }
 
     tick() {
-        // Play tick sound every second when timer is running
         this.playTickSound();
-        
-        if (this.seconds > 0) {
-            this.seconds--;
-        } else if (this.minutes > 0) {
-            this.minutes--;
-            this.seconds = 59;
+
+        if (this.stopwatchMode) {
+            // Stopwatch mode: count up
+            if (this.minutes >= this.defaultMinutes && this.seconds >= 0) {
+                this.timerComplete();
+                return;
+            }
+
+            this.seconds++;
+            if (this.seconds >= 60) {
+                this.seconds = 0;
+                this.minutes++;
+            }
         } else {
-            this.timerComplete();
-            return;
+            // Countdown mode: count down
+            if (this.seconds > 0) {
+                this.seconds--;
+            } else if (this.minutes > 0) {
+                this.minutes--;
+                this.seconds = 59;
+            } else {
+                this.timerComplete();
+                return;
+            }
         }
 
         this.updateDisplay();
@@ -269,24 +273,26 @@ class PomodoroTimer {
 
     resetTimer() {
         this.pauseTimer();
-        this.minutes = this.defaultMinutes;
-        this.seconds = 0;
+        if (this.stopwatchMode) {
+            this.minutes = 0;
+            this.seconds = 0;
+        } else {
+            this.minutes = this.defaultMinutes;
+            this.seconds = 0;
+        }
         this.updateDisplay();
     }
 
     updatePlayButton() {
         const svg = this.playButton.querySelector('svg path');
         if (this.isRunning) {
-            // Change to pause icon
             svg.setAttribute('d', 'M6 4H10V20H6V4ZM14 4H18V20H14V4Z');
         } else {
-            // Change to play icon
             svg.setAttribute('d', 'M8 5V19L19 12L8 5Z');
         }
     }
 
     playNotificationSound() {
-        // Create a simple beep sound using Web Audio API
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioContext.createOscillator();
@@ -308,14 +314,12 @@ class PomodoroTimer {
         }
     }
 
-    // Method to update tick sound settings if needed
     updateTickSoundSettings(newFieldData) {
         this.fieldData = newFieldData;
         this.tickSoundEnabled = this.fieldData.enableTickSound === 'true';
         this.tickSoundFile = this.fieldData.tickSoundFile;
         this.tickSoundVolume = (this.fieldData.tickSoundVolume || 50) / 100;
         
-        // Reinitialize tick sound with new settings
         this.initializeTickSound();
         
         console.log('Tick sound settings updated:', {
