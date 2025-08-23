@@ -124,10 +124,9 @@ class TodoWidget {
       }
     });
     
-    // Apply font family and size to the main card
+    // Apply font family to the main card
     if (taskCard) {
       taskCard.style.fontFamily = this.getFontFamily(this.fieldData.fontFamily);
-      taskCard.style.fontSize = this.fieldData.fontSize + 'px';
     }
 
     // Apply more tasks button color
@@ -147,6 +146,10 @@ class TodoWidget {
     const progressBarContainer = document.querySelector('.progress-bar-container');
     if (progressBarContainer) {
       progressBarContainer.style.background = this.fieldData.progressBarBgColor || "#1a237e";
+      // Apply progress bar border color
+      const borderColor = this.fieldData.progressBarBorderColor || "#bee5fc";
+      progressBarContainer.style.borderRightColor = borderColor;
+      progressBarContainer.style.borderBottomColor = borderColor;
     }
     
     const progressFill = document.querySelector('.progress-fill');
@@ -162,8 +165,15 @@ class TodoWidget {
     if (taskList) {
       const scrollbarColor = this.fieldData.scrollbarColor || "#6aaafe";
       
+      // Remove any existing scrollbar styles
+      const existingStyle = document.getElementById('custom-scrollbar-style');
+      if (existingStyle) {
+        existingStyle.remove();
+      }
+      
       // Create dynamic CSS for scrollbar
       const style = document.createElement('style');
+      style.id = 'custom-scrollbar-style';
       style.textContent = `
         .task-list::-webkit-scrollbar-thumb {
           background: ${scrollbarColor} !important;
@@ -320,40 +330,57 @@ class TodoWidget {
     if (!this.fieldData.soundEnabled) return;
     
     const volume = (this.fieldData.soundVolume || 50) / 100;
-    const soundMap = {
-      'ding': [800, 0.3],
-      'chime': [660, 0.4],
-      'pop': [1000, 0.2],
-      'beep': [440, 0.3],
-      'fanfare': [523, 0.5],
-      'celebration': [659, 0.6],
-      'applause': [880, 0.4],
-      'success': [1318, 0.5]
-    };
     
-    const soundConfig = soundMap[soundType];
-    if (!soundConfig) return;
-    
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      oscillator.frequency.value = soundConfig[0];
-      oscillator.type = 'sine';
-
-      gainNode.gain.setValueAtTime(volume * soundConfig[1], audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.3);
+    // Check if soundType is a URL (uploaded sound) or a predefined sound
+    if (soundType && (soundType.startsWith('http') || soundType.startsWith('https') || soundType.startsWith('data:audio'))) {
+      // Handle uploaded/custom sound files
+      try {
+        const audio = new Audio(soundType);
+        audio.volume = volume;
+        audio.play().catch(error => {
+          console.log('Custom sound playback failed:', error);
+        });
+        console.log(`Played custom sound: ${soundType}`);
+      } catch (error) {
+        console.log('Custom sound playback failed:', error);
+      }
+    } else {
+      // Handle predefined sounds
+      const soundMap = {
+        'ding': [800, 0.3],
+        'chime': [660, 0.4],
+        'pop': [1000, 0.2],
+        'beep': [440, 0.3],
+        'fanfare': [523, 0.5],
+        'celebration': [659, 0.6],
+        'applause': [880, 0.4],
+        'success': [1318, 0.5]
+      };
       
-      console.log(`Played sound: ${soundType}`);
-    } catch (error) {
-      console.log('Audio playback failed:', error);
+      const soundConfig = soundMap[soundType];
+      if (!soundConfig) return;
+      
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.value = soundConfig[0];
+        oscillator.type = 'sine';
+
+        gainNode.gain.setValueAtTime(volume * soundConfig[1], audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+        
+        console.log(`Played predefined sound: ${soundType}`);
+      } catch (error) {
+        console.log('Predefined sound playback failed:', error);
+      }
     }
   }
 

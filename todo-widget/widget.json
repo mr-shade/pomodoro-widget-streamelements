@@ -64,6 +64,11 @@
     "label": "Progress Bar Background",
     "value": "#1a237e"
   },
+  "progressBarBorderColor": {
+    "type": "colorpicker",
+    "label": "Progress Bar Border Color",
+    "value": "#bee5fc"
+  },
   "scrollbarColor": {
     "type": "colorpicker",
     "label": "Scrollbar Color",
@@ -81,14 +86,6 @@
       "georgia": "Georgia",
       "times": "Times New Roman"
     }
-  },
-  "fontSize": {
-    "type": "slider",
-    "label": "Font Size",
-    "value": 18,
-    "min": 12,
-    "max": 28,
-    "step": 1
   },
   "commandsEnabled": {
     "type": "checkbox",
@@ -126,27 +123,13 @@
     "step": 5
   },
   "taskCompleteSound": {
-    "type": "dropdown",
+    "type": "sound",
     "label": "Task Complete Sound",
-    "value": "ding",
-    "options": {
-      "ding": "Ding",
-      "chime": "Chime", 
-      "pop": "Pop",
-      "beep": "Beep",
-      "none": "No Sound"
-    }
+    "value": "ding"
   },
   "allTasksCompleteSound": {
-    "type": "dropdown",
+    "type": "sound",
     "label": "All Tasks Complete Sound",
-    "value": "fanfare",
-    "options": {
-      "fanfare": "Fanfare",
-      "celebration": "Celebration",
-      "applause": "Applause",
-      "success": "Success",
-      "none": "No Sound"
-    }
+    "value": "fanfare"
   }
 }

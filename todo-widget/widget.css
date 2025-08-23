@@ -60,7 +60,7 @@ body {
     flex-direction: column;
     gap: 24px;
     margin-bottom: 32px;
-    max-height: 300px;
+    max-height: 230px;
     overflow-y: auto;
     padding-right: 8px;
     scrollbar-width: thin;
