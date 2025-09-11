@@ -42,9 +42,9 @@
   "cardBorderWidth": {
     "type": "slider",
     "label": "Card Border Width (px)",
-    "value": 4,
+    "value": 6,
     "min": 1,
-    "max": 10,
+    "max": 12,
     "step": 1
   },
   "cardHoverShadow": {
@@ -76,6 +76,14 @@
     "type": "colorpicker",
     "label": "Progress Bar Border Color",
     "value": "#bee5fc"
+  },
+  "progressBarBorderWidth": {
+    "type": "slider",
+    "label": "Progress Bar Border Width (px)",
+    "value": 5,
+    "min": 1,
+    "max": 12,
+    "step": 1
   },
   "scrollbarColor": {
     "type": "colorpicker",

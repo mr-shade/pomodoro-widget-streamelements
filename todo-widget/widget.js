@@ -311,10 +311,15 @@ class TodoWidget {
     const progressBarContainer = document.querySelector('.progress-bar-container');
     if (progressBarContainer) {
       progressBarContainer.style.background = this.fieldData.progressBarBgColor || "#1a237e";
-      // Apply progress bar border color
+      
+      // Apply progress bar border color and width
       const borderColor = this.fieldData.progressBarBorderColor || "#bee5fc";
+      const borderWidth = this.fieldData.progressBarBorderWidth || 5;
+      
       progressBarContainer.style.borderRightColor = borderColor;
       progressBarContainer.style.borderBottomColor = borderColor;
+      progressBarContainer.style.borderRightWidth = `${borderWidth}px`;
+      progressBarContainer.style.borderBottomWidth = `${borderWidth}px`;
     }
 
     const progressFill = document.querySelector('.progress-fill');
