@@ -11,97 +11,50 @@
 <body>
     <div class="tasklist-container">
         <h1 class="page-title">Tasklist</h1>
+        
+        <!-- Confetti canvas for celebration -->
+        <canvas id="confetti-canvas"></canvas>
 
         <div class="task-card">
             <h2 class="card-title">MY TASKS</h2>
 
             <div class="task-list">
-                <div class="task-item completed">
-                    <div class="checkbox checked">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <span class="task-text">Hydrate</span>
-                </div>
-
-                <div class="task-item completed">
-                    <div class="checkbox checked">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <span class="task-text">Clean my desk</span>
-                </div>
-
-                <div class="task-item completed">
-                    <div class="checkbox checked">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <span class="task-text">Organise Notes</span>
-                </div>
-
-                <div class="task-item">
-                    <div class="checkbox"></div>
-                    <span class="task-text">Reply to emails</span>
-                </div>
-
-                <div class="task-item">
-                    <div class="checkbox"></div>
-                    <span class="task-text">Finish homework</span>
-                </div>
-
-                <!-- Dynamic More Tasks Button (will be updated by JS) -->
-                <div class="more-tasks-btn" style="display: none;">
-                    <span class="more-tasks-text">5+</span>
-                </div>
-
-                <!-- Additional tasks (now visible by default) -->
-                <div class="task-item">
-                    <div class="checkbox"></div>
-                    <span class="task-text">Call mom</span>
-                </div>
-
-                <div class="task-item">
-                    <div class="checkbox"></div>
-                    <span class="task-text">Buy groceries</span>
-                </div>
-
-                <div class="task-item">
-                    <div class="checkbox"></div>
-                    <span class="task-text">Schedule dentist appointment</span>
-                </div>
-
-                <div class="task-item">
-                    <div class="checkbox"></div>
-                    <span class="task-text">Update resume</span>
-                </div>
-
-                <div class="task-item">
-                    <div class="checkbox"></div>
-                    <span class="task-text">Plan weekend trip</span>
-                </div>
+                <!-- Start with empty todo list - minimal height -->
+            </div>
+             <!-- Dynamic More Tasks Button (will be updated by JS) -->
+            <div class="more-tasks-btn" style="display: none;">
+                <span class="more-tasks-text">0+</span>
             </div>
         </div>
 
         <div class="progress-section">
             <div class="progress-bar-container">
                 <div class="progress-info">
-                    <span class="progress-count">3/10</span>
+                    <span class="progress-count">0/0</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill"></div>
                 </div>
                 <div class="progress-info">
-                    <span class="progress-percentage">30%</span>
+                    <span class="progress-percentage">0%</span>
                 </div>
             </div>
             <p class="progress-label">Progress Bar</p>
+        </div>
+    </div>
+    
+    <!-- Test buttons for development -->
+    <div class="dev-commands">
+        <h4>Development Commands</h4>
+        <div>
+            <button onclick="testAddTask()">Add Test Task</button>
+            <button onclick="testAddMultipleTasks()">Add Multiple Tasks</button>
+            <button onclick="testCompleteTask()">Complete Task 1</button>
+            <button onclick="testCompleteAll()">Complete All Tasks</button>
+            <button onclick="testHighlight()">Highlight Random Task</button>
+            <button onclick="testLockToggle()">Toggle Lock</button>
+            <button onclick="testClearAll()">Clear All Tasks</button>
+            <button onclick="testAutoScroll()">Test Auto-scroll</button>
         </div>
     </div>
     
@@ -112,6 +65,8 @@
                 console.log("Mock SE_API.onMessage called");
             }
         };
+
+        let todoWidget;
 
         // Mock widget load event for testing
         setTimeout(() => {
@@ -125,12 +80,141 @@
                         taskTextColor: "#ffffff",
                         cardBackgroundColor: "#010161",
                         cardBorderColor: "#bee5fc",
-                        progressLabelColor: "#2c2c2c"
+                        cardBorderWidth: 4,
+                        progressLabelColor: "#2c2c2c",
+                        checkboxBorderColor: "#ffffff",
+                        tickColor: "#6aacfd",
+                        scrollbarColor: "#6aaafe",
+                        commandsEnabled: true,
+                        enableConfetti: true,
+                        enableLockUnlock: true,
+                        enableHighlight: true,
+                        enableAddTask: true,
+                        enableCompleteTask: true,
+                        enableRemoveTask: true,
+                        enableClearTasks: true,
+                        lockCommand: "!lock",
+                        unlockCommand: "!unlock",
+                        highlightCommand: "!highlight",
+                        addTaskPermission: "everyone",
+                        completeTaskPermission: "everyone",
+                        removeTaskPermission: "moderator",
+                        clearTasksPermission: "moderator",
+                        autoScrollTasksCompleted: 5,
+                        scrollAmount: 3
                     }
                 }
             });
             window.dispatchEvent(event);
         }, 100);
+
+        // Test functions for development
+        function testAddTask() {
+            if (window._todoWidget) {
+                const randomTasks = [
+                    'Complete project documentation',
+                    'Review code changes',
+                    'Update dependencies',
+                    'Fix bug in payment system',
+                    'Write unit tests',
+                    'Deploy to staging',
+                    'Create user guides',
+                    'Schedule team meeting'
+                ];
+                const randomTask = randomTasks[Math.floor(Math.random() * randomTasks.length)];
+                window._todoWidget.addTask(randomTask, 'TestUser');
+            }
+        }
+
+        function testAddMultipleTasks() {
+            const tasks = [
+                'Task 1: Review pull request',
+                'Task 2: Write documentation',
+                'Task 3: Fix styling issues',
+                'Task 4: Update API endpoints',
+                'Task 5: Test new features',
+                'Task 6: Deploy changes'
+            ];
+            
+            tasks.forEach((task, index) => {
+                setTimeout(() => {
+                    if (window._todoWidget) {
+                        window._todoWidget.addTask(task, 'TestUser');
+                    }
+                }, index * 300); // Stagger the additions to see animation
+            });
+        }
+
+        function testCompleteTask() {
+            if (window._todoWidget) {
+                const firstTask = document.querySelector('.task-item:not(.completed)');
+                if (firstTask) {
+                    const checkbox = firstTask.querySelector('.checkbox');
+                    if (checkbox) checkbox.click();
+                }
+            }
+        }
+
+        function testCompleteAll() {
+            if (window._todoWidget) {
+                const checkboxes = document.querySelectorAll('.task-item:not(.completed) .checkbox');
+                checkboxes.forEach((checkbox, index) => {
+                    setTimeout(() => {
+                        checkbox.click();
+                    }, index * 200);
+                });
+            }
+        }
+
+        function testHighlight() {
+            if (window._todoWidget) {
+                window._todoWidget.highlightRandomTask('TestUser');
+            }
+        }
+
+        function testLockToggle() {
+            if (window._todoWidget) {
+                if (window._todoWidget.isLocked) {
+                    window._todoWidget.isLocked = false;
+                    console.log('Widget unlocked');
+                } else {
+                    window._todoWidget.isLocked = true;
+                    console.log('Widget locked');
+                }
+            }
+        }
+
+        function testAutoScroll() {
+            if (window._todoWidget) {
+                // Add several tasks and complete them to test auto-scroll
+                const tasks = ['Task A', 'Task B', 'Task C', 'Task D', 'Task E', 'Task F', 'Task G'];
+                
+                // Add tasks first
+                tasks.forEach((task, index) => {
+                    setTimeout(() => {
+                        window._todoWidget.addTask(task, 'TestUser');
+                    }, index * 100);
+                });
+                
+                // Then complete them to trigger auto-scroll
+                setTimeout(() => {
+                    const checkboxes = document.querySelectorAll('.task-item:not(.completed) .checkbox');
+                    checkboxes.forEach((checkbox, index) => {
+                        if (index < 6) { // Complete first 6 tasks
+                            setTimeout(() => {
+                                checkbox.click();
+                            }, index * 300);
+                        }
+                    });
+                }, tasks.length * 100 + 1000);
+            }
+        }
+
+        function testClearAll() {
+            if (window._todoWidget) {
+                window._todoWidget.clearTasks('TestUser');
+            }
+        }
     </script>
     <script src="widget.js"></script>
 </body>

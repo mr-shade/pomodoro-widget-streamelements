@@ -39,6 +39,14 @@
     "label": "Card Border Color",
     "value": "#bee5fc"
   },
+  "cardBorderWidth": {
+    "type": "slider",
+    "label": "Card Border Width (px)",
+    "value": 4,
+    "min": 1,
+    "max": 10,
+    "step": 1
+  },
   "cardHoverShadow": {
     "type": "colorpicker",
     "label": "Card Hover Shadow Color",
@@ -104,10 +112,124 @@
       "broadcaster": "Broadcaster Only"
     }
   },
+  "addTaskPermission": {
+    "type": "dropdown",
+    "label": "Who Can Add Tasks",
+    "value": "everyone",
+    "options": {
+      "everyone": "Everyone",
+      "subscriber": "Subscribers+",
+      "vip": "VIP+",
+      "moderator": "Moderators+",
+      "broadcaster": "Broadcaster Only"
+    }
+  },
+  "completeTaskPermission": {
+    "type": "dropdown",
+    "label": "Who Can Complete Tasks",
+    "value": "everyone",
+    "options": {
+      "everyone": "Everyone",
+      "subscriber": "Subscribers+",
+      "vip": "VIP+",
+      "moderator": "Moderators+",
+      "broadcaster": "Broadcaster Only"
+    }
+  },
+  "removeTaskPermission": {
+    "type": "dropdown",
+    "label": "Who Can Remove Tasks",
+    "value": "moderator",
+    "options": {
+      "everyone": "Everyone",
+      "subscriber": "Subscribers+",
+      "vip": "VIP+",
+      "moderator": "Moderators+",
+      "broadcaster": "Broadcaster Only"
+    }
+  },
+  "clearTasksPermission": {
+    "type": "dropdown",
+    "label": "Who Can Clear All Tasks",
+    "value": "moderator",
+    "options": {
+      "everyone": "Everyone",
+      "subscriber": "Subscribers+",
+      "vip": "VIP+",
+      "moderator": "Moderators+",
+      "broadcaster": "Broadcaster Only"
+    }
+  },
   "blacklistedUsers": {
     "type": "text",
     "label": "Blacklisted Users (comma separated)",
     "value": ""
+  },
+  "lockCommand": {
+    "type": "text",
+    "label": "Lock Command",
+    "value": "!lock"
+  },
+  "unlockCommand": {
+    "type": "text",
+    "label": "Unlock Command",
+    "value": "!unlock"
+  },
+  "highlightCommand": {
+    "type": "text",
+    "label": "Highlight Random Task Command",
+    "value": "!highlight"
+  },
+  "enableConfetti": {
+    "type": "checkbox",
+    "label": "Enable Confetti Animation",
+    "value": true
+  },
+  "enableLockUnlock": {
+    "type": "checkbox",
+    "label": "Enable Lock/Unlock Commands",
+    "value": true
+  },
+  "enableHighlight": {
+    "type": "checkbox",
+    "label": "Enable Highlight Random Task",
+    "value": true
+  },
+  "enableAddTask": {
+    "type": "checkbox",
+    "label": "Enable Add Task Command",
+    "value": true
+  },
+  "enableCompleteTask": {
+    "type": "checkbox",
+    "label": "Enable Complete Task Command",
+    "value": true
+  },
+  "enableRemoveTask": {
+    "type": "checkbox",
+    "label": "Enable Remove Task Command",
+    "value": true
+  },
+  "enableClearTasks": {
+    "type": "checkbox",
+    "label": "Enable Clear Tasks Command",
+    "value": true
+  },
+  "autoScrollTasksCompleted": {
+    "type": "slider",
+    "label": "Auto-scroll when X tasks completed",
+    "value": 5,
+    "min": 1,
+    "max": 20,
+    "step": 1
+  },
+  "scrollAmount": {
+    "type": "slider",
+    "label": "Scroll amount (tasks to scroll)",
+    "value": 3,
+    "min": 1,
+    "max": 10,
+    "step": 1
   },
   "soundEnabled": {
     "type": "checkbox",

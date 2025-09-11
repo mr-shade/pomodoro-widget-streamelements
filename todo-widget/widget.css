@@ -37,8 +37,8 @@ body {
     width: 100%;
     position: relative;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border-right: 4px solid #bee5fc;
-    border-bottom: 4px solid #bee5fc;
+    border-right: var(--card-border-width, 4px) solid #bee5fc;
+    border-bottom: var(--card-border-width, 4px) solid #bee5fc;
     transition: all 0.3s ease;
 }
 
@@ -61,10 +61,12 @@ body {
     gap: 24px;
     margin-bottom: 32px;
     max-height: 230px;
+    min-height: 40px; /* Minimal height when empty */
     overflow-y: auto;
     padding-right: 8px;
     scrollbar-width: thin;
     scrollbar-color: #6aaafe transparent;
+    transition: height 0.3s ease;
 }
 
 .task-list::-webkit-scrollbar {
@@ -76,12 +78,12 @@ body {
 }
 
 .task-list::-webkit-scrollbar-thumb {
-    background: #6aaafe;
+    background: var(--scrollbar-color, #6aaafe);
     border-radius: 3px;
 }
 
 .task-list::-webkit-scrollbar-thumb:hover {
-    background: #5c7afc;
+    background: var(--scrollbar-hover-color, #5c7afc);
 }
 
 .task-item {
@@ -91,9 +93,48 @@ body {
     transition: all 0.2s ease;
 }
 
+/* Animation for new tasks sliding in from right to left */
+.task-item.slide-in {
+    animation: slideInFromRight 0.5s ease-out;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .task-item:hover {
     transform: translateY(-1px);
     filter: brightness(1.1);
+}
+
+/* Highlight effect for random task selection */
+.task-item.highlighted {
+    animation: highlightPulse 2s ease-in-out;
+    transform: scale(1.05);
+}
+
+@keyframes highlightPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+        background-color: transparent;
+    }
+    25%, 75% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        background-color: rgba(255, 215, 0, 0.1);
+        border-radius: 8px;
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+        background-color: rgba(255, 215, 0, 0.2);
+        border-radius: 8px;
+    }
 }
 
 .checkbox {
@@ -249,6 +290,32 @@ body {
 
 .dev-commands div {
     margin-bottom: 5px;
+}
+
+.dev-commands button {
+    background: #4299E1;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin: 2px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.dev-commands button:hover {
+    background: #3182ce;
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1000;
 }
 
 /* Responsive adjustments */

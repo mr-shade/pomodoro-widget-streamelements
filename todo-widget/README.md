@@ -1,31 +1,229 @@
 # StreamElements TODO Widget
 
-A comprehensive StreamElements widget for managing TODO lists with advanced chat integration, user permissions, and extensive customization options.
+A comprehensive StreamElements widget for managing TODO lists with advanced chat integration, user permissions, animations, and extensive customization options.
+
+## 🎉 NEW FEATURES & IMPROVEMENTS
+
+### ✨ Enhanced User Experience
+- **Empty State**: Widget now starts with a clean, empty todo list for a minimal interface
+- **Right-to-Left Animations**: New todos slide in smoothly from right to left when added
+- **Confetti Celebration**: Beautiful confetti animation triggers when all tasks are completed (can be disabled)
+- **Dynamic Height**: Todo list container adjusts its height based on content
+- **Fixed Progress Bar**: No more "NaN%" - progress calculation now handles empty lists properly
+- **Customizable Border Width**: Adjust card border thickness (1-10px)
+- **Custom Scrollbar Colors**: Match scrollbar to your StreamElements dashboard theme
+
+### 🎯 Smart UI Updates  
+- **Dynamic Task Counter**: The "More Tasks" button shows the actual number of additional tasks (e.g., "3+" instead of hardcoded "5+")
+- **Accurate Progress Tracking**: Progress bar and percentage now work correctly from 0/0 state
+- **Smooth Transitions**: Added animations and transitions throughout the interface
+- **Highlight Random Task**: `!highlight` command adds golden glow effect to random incomplete task
+- **Auto-scroll Feature**: Automatically removes completed tasks when threshold is reached
+
+### 🔒 Advanced Permission System
+- **Granular Permissions**: Set different permission levels for each command type
+- **Blacklist System**: Block specific users with comma-separated list
+- **Lock/Unlock System**: Moderators can lock widget to prevent interactions
+- **Custom Commands**: Customize lock, unlock, and highlight command names
+- **Enable/Disable Commands**: Turn individual command types on/off
+
+### 🎮 Command System
+#### New Commands
+- `!addtask <text>` - Add a new task (animated slide-in)
+- `!complete <number>` - Complete task by number
+- `!remove <number>` - Remove task by number  
+- `!clear` - Clear all tasks
+- `!lock` - Lock widget (moderators only)
+- `!unlock` - Unlock widget (moderators only)
+- `!highlight` - Highlight random incomplete task
+
+#### Legacy Commands (still supported)
+- `!todo add <text>` - Add a new task
+- `!todo complete <number>` - Complete task by number
+- `!todo remove <number>` - Remove task by number
+- `!todo clear` - Clear all tasks
 
 ## Features
 
 ### Core Functionality
 - ✅ **Dynamic Task Management**: Add, complete, remove, and clear tasks
-- ✅ **Smart "5+" Button**: Automatically shows/hides based on actual task count (appears when >5 tasks)
-- ✅ **Progress Tracking**: Visual progress bar with percentage and task count
+- ✅ **Smart Task Counter**: Automatically shows correct count when >5 tasks (e.g., "7+" instead of "5+")
+- ✅ **Progress Tracking**: Visual progress bar with percentage and task count (fixed NaN issue)
 - ✅ **Sound Effects**: Customizable audio feedback for task completion and list completion
 - ✅ **Responsive Design**: Optimized for all screen sizes
+- 🎨 **NEW: Slide-in Animation**: Tasks animate from right to left when added
+- 🎊 **NEW: Confetti Celebration**: Confetti animation when all tasks completed (toggleable)
+- 📏 **NEW: Minimal Height**: Empty todo list takes minimal space
+- ⚡ **NEW: Auto-scroll**: Removes completed tasks automatically
+- 🌈 **NEW: Highlight Effect**: Golden glow animation for random task selection
 
 ### Chat Commands & Permissions
-- 🔐 **User Permission System**: Support for viewers, subscribers, VIPs, moderators, and broadcasters
+- 🔐 **Granular Permission System**: Set different permissions for add, complete, remove, and clear commands
 - 🚫 **Blacklist Support**: Block specific users from interacting with the widget
 - 🔒 **Lock/Unlock Commands**: Moderators can lock widget to prevent task additions
 - 💬 **Chat Integration**: Full StreamElements chat command support
+- ⚙️ **Command Toggle**: Enable/disable individual command types
+- 🎯 **Highlight System**: Random task highlighting with visual effects
+
+#### Permission Levels
+- **Broadcaster Only**: Only the channel owner
+- **Moderators+**: Broadcaster and moderators
+- **VIP+**: Broadcaster, moderators, and VIPs  
+- **Subscribers+**: Broadcaster, moderators, VIPs, and subscribers
+- **Everyone**: All viewers (default for most commands)
 
 #### Available Commands
-- `!addtask <text>` - Add a new task to the list
+- `!addtask <text>` - Add a new task to the list (with slide-in animation)
 - `!complete <number>` - Complete task by number (1, 2, 3, etc.)
 - `!remove <number>` - Remove task by number
 - `!clear` - Clear all tasks (if permitted)
-- `!lock` - Lock the widget (moderators only)
-- `!unlock` - Unlock the widget (moderators only)
+- `!highlight` - Highlight a random incomplete task with golden glow
+- `!lock` - Lock the widget (moderators only, customizable command)
+- `!unlock` - Unlock the widget (moderators only, customizable command)
 
-### Extensive Customization (25+ Options)
+### Auto-scroll Feature
+When a configured number of tasks are completed (default: 5), the widget automatically removes completed tasks from the top of the list with a smooth animation. This keeps the list clean and focused on remaining tasks.
+
+**Configuration Options:**
+- **Auto-scroll Threshold**: Number of completed tasks before auto-scroll triggers (1-20)
+- **Scroll Amount**: Number of completed tasks to remove per auto-scroll (1-10)
+
+### Highlight Random Task
+The `!highlight` command selects a random incomplete task and applies a golden glow animation for 2 seconds, helping streamers and viewers focus on a specific task.
+
+## 🛠️ Technical Implementation Details
+
+### New Animation Systems
+- **CSS Keyframes**: `@keyframes slideInFromRight` for smooth right-to-left task entry
+- **Highlight Animation**: `@keyframes highlightPulse` with golden glow effect
+- **Auto-scroll Animation**: Smooth translateX and opacity transitions
+- **Class Management**: Temporary animation classes applied and removed automatically
+
+### Enhanced Permission System
+```javascript
+// Permission hierarchy: broadcaster > moderator > vip > subscriber > everyone
+hasPermission(data, permissionType) {
+  const permissionLevel = this.fieldData[permissionType] || 'everyone';
+  // Checks user badges and returns boolean based on permission level
+}
+```
+
+### Auto-scroll Implementation
+- Tracks completed task count with `this.completedTasksCount`
+- Triggers removal animation when threshold reached
+- Smoothly removes tasks with CSS transitions
+- Automatically updates task counts and progress
+
+### Blacklist System
+- Comma-separated usernames in configuration
+- Case-insensitive matching
+- Checked before any command processing
+
+### Custom Command Names
+- Configurable lock, unlock, and highlight commands
+- Supports custom prefixes and naming schemes
+- Backward compatible with legacy `!todo` commands
+
+### Progress Calculation Fix
+```javascript
+// Before: caused NaN when totalTasks = 0
+const percentage = Math.round((this.completedTasks / this.totalTasks) * 100);
+
+// After: handles empty state gracefully  
+const percentage = this.totalTasks === 0 ? 0 : Math.round((this.completedTasks / this.totalTasks) * 100);
+```
+
+### Dynamic Task Counter
+- Calculates actual task count beyond 5 instead of showing hardcoded "5+"
+- Updates automatically when tasks are added/removed
+- Shows/hides based on actual task count
+
+### Empty State Initialization
+- Starts with `completedTasks: 0` and `totalTasks: 0`
+- HTML contains no hardcoded tasks
+- Minimal height CSS for clean initial appearance
+
+### Testing
+- **Development Mode**: Built-in test buttons for easy development
+- **Mock API**: Simulated StreamElements environment for local testing
+- **Progressive Enhancement**: Works with or without StreamElements API
+
+## 📁 File Structure
+
+```
+todo-widget/
+├── widget.html     # Main widget HTML (empty state)
+├── widget.css      # Styles with animations and responsive design
+├── widget.js       # Core logic with confetti and animations
+├── widget.json     # StreamElements field configuration
+├── test.html       # Development testing interface
+└── README.md       # This documentation
+```
+
+## 🚀 Quick Setup Guide
+
+### StreamElements Integration
+1. **Upload Files**: Upload `widget.html`, `widget.css`, `widget.js`, and `widget.json` to StreamElements
+2. **Configure Settings**: Adjust colors, permissions, and commands in the widget settings
+3. **Test Commands**: Use the development test buttons or chat commands to verify functionality
+4. **Go Live**: Add the widget to your overlay and start using chat commands!
+
+### Recommended Settings
+- **Add Task**: Everyone (default)
+- **Complete Task**: Everyone (default)  
+- **Remove Task**: Moderators+ (recommended)
+- **Clear Tasks**: Moderators+ (recommended)
+- **Lock/Unlock**: Always moderators only
+- **Auto-scroll**: 5 tasks completed, remove 3 tasks (default)
+
+### Chat Command Examples
+```
+!addtask Review latest pull request
+!complete 1
+!highlight
+!lock (moderator only)
+```
+
+## 🎮 Development & Testing
+
+The `test.html` file includes comprehensive testing tools:
+- **Add Tasks**: Individual and batch task addition
+- **Complete Tasks**: Test completion and auto-scroll
+- **Highlight**: Test random task highlighting
+- **Lock Toggle**: Test lock/unlock functionality
+- **Confetti**: Trigger celebration animation
+
+## Extensive Customization (35+ Options)
+
+### 🎨 Visual Customization
+- **Widget Title**: Custom title text and color
+- **Card Title**: Custom card header text and color  
+- **Card Background**: Background color with transparency support
+- **Card Borders**: Border color and width (1-10px)
+- **Task Text Color**: Customize text color for all tasks
+- **Checkbox Colors**: Border and checkmark colors
+- **Progress Bar**: Gradient start/end colors and background
+- **Scrollbar Colors**: Custom scrollbar to match dashboard theme
+- **Font Family**: Choose from system fonts (Arial, Helvetica, Roboto, etc.)
+
+### 🔧 Functional Settings
+- **Command Toggles**: Enable/disable individual command types
+- **Permission Levels**: Set who can use each command type
+- **Blacklist**: Comma-separated list of blocked usernames
+- **Custom Commands**: Customize lock, unlock, and highlight command names
+- **Auto-scroll Settings**: Threshold and amount for automatic task removal
+- **Confetti Toggle**: Enable/disable celebration animation
+
+### 🔊 Audio Settings  
+- **Sound Toggle**: Master sound on/off
+- **Volume Controls**: Separate volumes for task complete and all-tasks complete
+- **Custom Sounds**: Upload or select from preset sound effects
+
+### ⚙️ Advanced Options
+- **Lock/Unlock System**: Moderator-controlled widget locking
+- **Highlight Duration**: Control how long random task highlight lasts
+- **Animation Speed**: Customize slide-in and scroll-out timings
+- **Progress Label**: Custom text for progress section
 
 #### Text Content
 - **Widget Title**: Custom title text and color

@@ -9,19 +9,29 @@ window.addEventListener('onWidgetLoad', function (obj) {
 
   // Initialize the TODO widget
   const _todoWidget = new TodoWidget(fieldData);
+  
+  // Make widget accessible globally for testing
+  window._todoWidget = _todoWidget;
 });
 
 class TodoWidget {
   constructor(fieldData) {
-    this.completedTasks = 3;
-    this.totalTasks = 10; // Will be dynamic based on actual tasks
+    this.completedTasks = 0; // Start with 0 completed tasks
+    this.totalTasks = 0; // Start with 0 total tasks
     this.fieldData = fieldData;
     this.blacklistedUsers = this.parseBlacklistedUsers(fieldData.blacklistedUsers);
     this.tasks = []; // Will store task data
+    this.isLocked = false; // Widget lock state
+    this.completedTasksCount = 0; // Track completed tasks for auto-scroll
 
     // Sound properties
     this.taskCompleteAudio = null;
     this.allTasksCompleteAudio = null;
+
+    // Confetti properties
+    this.confettiParticles = [];
+    this.confettiCanvas = null;
+    this.confettiCtx = null;
 
     console.log("TodoWidget fieldData:", this.fieldData);
 
@@ -32,6 +42,7 @@ class TodoWidget {
     console.log("TodoWidget init() called");
     this.countActualTasks();
     this.initializeSounds();
+    this.initializeConfetti();
     this.applyCustomStyling();
     this.setupEventListeners();
     this.updateProgress();
@@ -79,6 +90,82 @@ class TodoWidget {
     }
   }
 
+  initializeConfetti() {
+    this.confettiCanvas = document.getElementById('confetti-canvas');
+    if (this.confettiCanvas) {
+      this.confettiCtx = this.confettiCanvas.getContext('2d');
+      this.resizeConfettiCanvas();
+      
+      // Resize canvas when window size changes
+      window.addEventListener('resize', () => this.resizeConfettiCanvas());
+    }
+  }
+
+  resizeConfettiCanvas() {
+    if (this.confettiCanvas) {
+      this.confettiCanvas.width = window.innerWidth;
+      this.confettiCanvas.height = window.innerHeight;
+    }
+  }
+
+  createConfettiParticles() {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
+    
+    for (let i = 0; i < 100; i++) {
+      this.confettiParticles.push({
+        x: Math.random() * this.confettiCanvas.width,
+        y: -10,
+        vx: Math.random() * 6 - 3,
+        vy: Math.random() * 3 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        rotationSpeed: Math.random() * 10 - 5,
+        size: Math.random() * 8 + 3,
+        gravity: 0.1
+      });
+    }
+  }
+
+  animateConfetti() {
+    if (!this.confettiCtx) return;
+    
+    this.confettiCtx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
+    
+    for (let i = this.confettiParticles.length - 1; i >= 0; i--) {
+      const particle = this.confettiParticles[i];
+      
+      // Update position
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      particle.vy += particle.gravity;
+      particle.rotation += particle.rotationSpeed;
+      
+      // Remove particles that are off screen
+      if (particle.y > this.confettiCanvas.height) {
+        this.confettiParticles.splice(i, 1);
+        continue;
+      }
+      
+      // Draw particle
+      this.confettiCtx.save();
+      this.confettiCtx.translate(particle.x, particle.y);
+      this.confettiCtx.rotate(particle.rotation * Math.PI / 180);
+      this.confettiCtx.fillStyle = particle.color;
+      this.confettiCtx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+      this.confettiCtx.restore();
+    }
+    
+    // Continue animation if particles exist
+    if (this.confettiParticles.length > 0) {
+      requestAnimationFrame(() => this.animateConfetti());
+    }
+  }
+
+  startConfetti() {
+    this.createConfettiParticles();
+    this.animateConfetti();
+  }
+
   countActualTasks() {
     const taskItems = document.querySelectorAll('.task-item');
     this.totalTasks = taskItems.length;
@@ -101,10 +188,10 @@ class TodoWidget {
       }
 
       moreTasksBtn.style.display = 'flex';
-      console.log(`5+ button shown with text: ${hiddenTasksCount}+`);
+      console.log(`More tasks button shown with text: ${hiddenTasksCount}+`);
     } else if (moreTasksBtn) {
       moreTasksBtn.style.display = 'none';
-      console.log('5+ button hidden');
+      console.log('More tasks button hidden');
     }
   }
 
@@ -138,8 +225,17 @@ class TodoWidget {
     if (taskCard) {
       console.log("Found task-card element");
       taskCard.style.background = fieldData.cardBackgroundColor || "#010161";
-      taskCard.style.borderRightColor = fieldData.cardBorderColor || "#bee5fc";
-      taskCard.style.borderBottomColor = fieldData.cardBorderColor || "#bee5fc";
+      
+      const borderColor = fieldData.cardBorderColor || "#bee5fc";
+      const borderWidth = fieldData.cardBorderWidth || 4;
+      
+      taskCard.style.borderRightColor = borderColor;
+      taskCard.style.borderBottomColor = borderColor;
+      taskCard.style.borderRightWidth = `${borderWidth}px`;
+      taskCard.style.borderBottomWidth = `${borderWidth}px`;
+      
+      // Set CSS custom property for border width
+      taskCard.style.setProperty('--card-border-width', `${borderWidth}px`);
 
       // Apply hover shadow color
       const shadowColor = fieldData.cardHoverShadow || fieldData.cardBorderColor || "#bee5fc";
@@ -180,6 +276,35 @@ class TodoWidget {
 
     // Apply scrollbar colors
     this.applyScrollbarStyling();
+
+    console.log("applyCustomStyling() completed");
+  }
+
+  applyScrollbarStyling() {
+    const scrollbarColor = this.fieldData.scrollbarColor || "#6aaafe";
+    const scrollbarHoverColor = this.darkenColor(scrollbarColor, 20);
+    
+    // Set CSS custom properties for scrollbar colors
+    document.documentElement.style.setProperty('--scrollbar-color', scrollbarColor);
+    document.documentElement.style.setProperty('--scrollbar-hover-color', scrollbarHoverColor);
+    
+    // Also update the scrollbar-color property for Firefox
+    const taskList = document.querySelector('.task-list');
+    if (taskList) {
+      taskList.style.scrollbarColor = `${scrollbarColor} transparent`;
+    }
+  }
+
+  darkenColor(color, percent) {
+    // Simple function to darken a hex color
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) - amt;
+    const G = (num >> 8 & 0x00FF) - amt;
+    const B = (num & 0x0000FF) - amt;
+    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+      (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+      (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
   }
 
   applyProgressBarStyling() {
@@ -198,41 +323,6 @@ class TodoWidget {
       const endColor = this.fieldData.progressBarEndColor || "#5c7afc";
       progressFill.style.background = `linear-gradient(90deg, ${startColor} 0%, ${endColor} 100%)`;
     }
-  }
-
-  applyScrollbarStyling() {
-    const taskList = document.querySelector('.task-list');
-    if (taskList) {
-      const scrollbarColor = this.fieldData.scrollbarColor || "#6aaafe";
-
-      // Remove any existing scrollbar styles
-      const existingStyle = document.getElementById('custom-scrollbar-style');
-      if (existingStyle) {
-        existingStyle.remove();
-      }
-
-      // Create dynamic CSS for scrollbar
-      const style = document.createElement('style');
-      style.id = 'custom-scrollbar-style';
-      style.textContent = `
-        .task-list::-webkit-scrollbar-thumb {
-          background: ${scrollbarColor} !important;
-        }
-        .task-list::-webkit-scrollbar-thumb:hover {
-          background: ${this.darkenColor(scrollbarColor, 20)} !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }
-
-  darkenColor(color, percent) {
-    const num = parseInt(color.replace("#", ""), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = (num >> 16) - amt;
-    const B = (num >> 8 & 0x00FF) - amt;
-    const G = (num & 0x0000FF) - amt;
-    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (B < 255 ? B < 1 ? 0 : B : 255) * 0x100 + (G < 255 ? G < 1 ? 0 : G : 255)).toString(16).slice(1);
   }
 
   getFontFamily(fontOption) {
@@ -316,7 +406,8 @@ class TodoWidget {
     const progressPercentage = document.querySelector('.progress-percentage');
     const progressFill = document.querySelector('.progress-fill');
 
-    const percentage = Math.round((this.completedTasks / this.totalTasks) * 100);
+    // Fix NaN percentage when totalTasks is 0
+    const percentage = this.totalTasks === 0 ? 0 : Math.round((this.completedTasks / this.totalTasks) * 100);
 
     if (progressCount) progressCount.textContent = `${this.completedTasks}/${this.totalTasks}`;
     if (progressPercentage) progressPercentage.textContent = `${percentage}%`;
@@ -330,39 +421,6 @@ class TodoWidget {
       window.SE_API.onMessage = (data) => {
         this.handleChatCommand(data);
       };
-    }
-  }
-
-  isUserAllowed(data) {
-    if (!this.fieldData.commandsEnabled) {
-      console.log("Commands are disabled");
-      return false;
-    }
-
-    const username = (data.username || data.displayName || '').toLowerCase();
-
-    // Check blacklist
-    if (this.blacklistedUsers.includes(username)) {
-      console.log(`User ${username} is blacklisted`);
-      return false;
-    }
-
-    // Check user permissions
-    const allowedUsers = this.fieldData.allowedUsers || 'everyone';
-    const badges = data.badges || [];
-
-    switch (allowedUsers) {
-      case 'broadcaster':
-        return badges.includes('broadcaster');
-      case 'moderator':
-        return badges.includes('broadcaster') || badges.includes('moderator');
-      case 'vip':
-        return badges.includes('broadcaster') || badges.includes('moderator') || badges.includes('vip');
-      case 'subscriber':
-        return badges.includes('broadcaster') || badges.includes('moderator') || badges.includes('vip') || badges.includes('subscriber');
-      case 'everyone':
-      default:
-        return true;
     }
   }
 
@@ -487,31 +545,163 @@ class TodoWidget {
   handleChatCommand(data) {
     if (!data || !data.message) return;
 
-    // Check if user is allowed to use commands
-    if (!this.isUserAllowed(data)) return;
+    // Check if widget is locked
+    if (this.isLocked && !this.isModerator(data)) {
+      console.log(`Widget is locked, ${data.username} cannot use commands`);
+      return;
+    }
+
+    // Check if user is blacklisted
+    if (this.isUserBlacklisted(data)) {
+      console.log(`User ${data.username} is blacklisted`);
+      return;
+    }
 
     const message = data.message.toLowerCase();
+    const originalMessage = data.message;
     const username = data.username || 'User';
 
-    // Parse commands
-    if (message.startsWith('!todo add ')) {
-      const task = data.message.substring(10).trim();
-      this.addTask(task, username, data);
-    } else if (message.startsWith('!todo complete ')) {
-      const taskId = parseInt(data.message.substring(15).trim());
-      this.completeTask(taskId, username, data);
-    } else if (message.startsWith('!todo remove ')) {
-      const taskId = parseInt(data.message.substring(13).trim());
-      this.removeTask(taskId, username, data);
-    } else if (message === '!todo clear') {
-      this.clearTasks(username, data);
-    } else if (message === '!todo lock' && this.isModerator(data)) {
-      this.fieldData.commandsEnabled = false;
-      console.log(`Commands locked by ${username}`);
-    } else if (message === '!todo unlock' && this.isModerator(data)) {
-      this.fieldData.commandsEnabled = true;
-      console.log(`Commands unlocked by ${username}`);
+    // Custom commands with permission checks
+    const lockCmd = (this.fieldData.lockCommand || '!lock').toLowerCase();
+    const unlockCmd = (this.fieldData.unlockCommand || '!unlock').toLowerCase();
+    const highlightCmd = (this.fieldData.highlightCommand || '!highlight').toLowerCase();
+
+    // Lock/Unlock commands (moderator only)
+    if (message === lockCmd && this.fieldData.enableLockUnlock) {
+      if (this.isModerator(data)) {
+        this.isLocked = true;
+        console.log(`Widget locked by ${username}`);
+      }
+      return;
     }
+    
+    if (message === unlockCmd && this.fieldData.enableLockUnlock) {
+      if (this.isModerator(data)) {
+        this.isLocked = false;
+        console.log(`Widget unlocked by ${username}`);
+      }
+      return;
+    }
+
+    // Highlight random task command
+    if (message === highlightCmd && this.fieldData.enableHighlight) {
+      if (this.hasPermission(data, 'completeTaskPermission')) {
+        this.highlightRandomTask(username);
+      }
+      return;
+    }
+
+    // Standard task commands
+    if (message.startsWith('!addtask ') && this.fieldData.enableAddTask) {
+      if (this.hasPermission(data, 'addTaskPermission')) {
+        const task = originalMessage.substring(9).trim();
+        this.addTask(task, username, data);
+      }
+      return;
+    }
+    
+    if (message.startsWith('!complete ') && this.fieldData.enableCompleteTask) {
+      if (this.hasPermission(data, 'completeTaskPermission')) {
+        const taskId = parseInt(originalMessage.substring(10).trim());
+        this.completeTask(taskId, username, data);
+      }
+      return;
+    }
+    
+    if (message.startsWith('!remove ') && this.fieldData.enableRemoveTask) {
+      if (this.hasPermission(data, 'removeTaskPermission')) {
+        const taskId = parseInt(originalMessage.substring(8).trim());
+        this.removeTask(taskId, username, data);
+      }
+      return;
+    }
+    
+    if (message === '!clear' && this.fieldData.enableClearTasks) {
+      if (this.hasPermission(data, 'clearTasksPermission')) {
+        this.clearTasks(username, data);
+      }
+      return;
+    }
+
+    // Legacy commands for backward compatibility
+    if (message.startsWith('!todo add ')) {
+      if (this.hasPermission(data, 'addTaskPermission')) {
+        const task = originalMessage.substring(10).trim();
+        this.addTask(task, username, data);
+      }
+    } else if (message.startsWith('!todo complete ')) {
+      if (this.hasPermission(data, 'completeTaskPermission')) {
+        const taskId = parseInt(originalMessage.substring(15).trim());
+        this.completeTask(taskId, username, data);
+      }
+    } else if (message.startsWith('!todo remove ')) {
+      if (this.hasPermission(data, 'removeTaskPermission')) {
+        const taskId = parseInt(originalMessage.substring(13).trim());
+        this.removeTask(taskId, username, data);
+      }
+    } else if (message === '!todo clear') {
+      if (this.hasPermission(data, 'clearTasksPermission')) {
+        this.clearTasks(username, data);
+      }
+    }
+  }
+
+  hasPermission(data, permissionType) {
+    if (!this.fieldData.commandsEnabled) return false;
+    
+    const permissionLevel = this.fieldData[permissionType] || 'everyone';
+    const badges = data.badges || [];
+    const isSubscriber = badges.includes('subscriber');
+    const isVip = badges.includes('vip');
+    const isModerator = badges.includes('moderator');
+    const isBroadcaster = badges.includes('broadcaster');
+
+    switch (permissionLevel) {
+      case 'broadcaster':
+        return isBroadcaster;
+      case 'moderator':
+        return isBroadcaster || isModerator;
+      case 'vip':
+        return isBroadcaster || isModerator || isVip;
+      case 'subscriber':
+        return isBroadcaster || isModerator || isVip || isSubscriber;
+      case 'everyone':
+      default:
+        return true;
+    }
+  }
+
+  isUserBlacklisted(data) {
+    if (!data.username) return false;
+    const username = data.username.toLowerCase();
+    return this.blacklistedUsers.includes(username);
+  }
+
+  highlightRandomTask(username) {
+    const incompleteTasks = document.querySelectorAll('.task-item:not(.completed)');
+    if (incompleteTasks.length === 0) {
+      console.log(`No incomplete tasks to highlight for ${username}`);
+      return;
+    }
+
+    // Remove any existing highlights
+    document.querySelectorAll('.task-item.highlighted').forEach(task => {
+      task.classList.remove('highlighted');
+    });
+
+    // Select random incomplete task
+    const randomIndex = Math.floor(Math.random() * incompleteTasks.length);
+    const selectedTask = incompleteTasks[randomIndex];
+    
+    // Add highlight effect
+    selectedTask.classList.add('highlighted');
+    
+    // Remove highlight after animation
+    setTimeout(() => {
+      selectedTask.classList.remove('highlighted');
+    }, 2000);
+
+    console.log(`Random task highlighted by ${username}`);
   }
 
   isModerator(data) {
@@ -524,7 +714,7 @@ class TodoWidget {
 
     const taskList = document.querySelector('.task-list');
     const newTaskElement = document.createElement('div');
-    newTaskElement.className = 'task-item';
+    newTaskElement.className = 'task-item slide-in'; // Add slide-in animation class
     newTaskElement.innerHTML = `
       <div class="checkbox"></div>
       <span class="task-text">${this.escapeHtml(taskText)}</span>
@@ -538,6 +728,11 @@ class TodoWidget {
 
     // Apply styling to new task
     this.applyTaskStyling(newTaskElement);
+
+    // Remove animation class after animation completes
+    setTimeout(() => {
+      newTaskElement.classList.remove('slide-in');
+    }, 500);
 
     console.log(`Task added by ${username}: ${taskText}`);
   }
@@ -563,15 +758,55 @@ class TodoWidget {
       if (checkbox && !task.classList.contains('completed')) {
         checkbox.click(); // Trigger the click event
 
+        // Increment completed tasks counter
+        this.completedTasksCount++;
+
         // Play task complete sound
         this.playSound('taskCompleteSound');
 
         console.log(`Task ${taskId} completed by ${username}`);
 
+        // Check auto-scroll
+        this.checkAutoScroll();
+
         // Check if all tasks are completed
         this.checkAllTasksComplete();
       }
     }
+  }
+
+  checkAutoScroll() {
+    const autoScrollThreshold = this.fieldData.autoScrollTasksCompleted || 5;
+    const scrollAmount = this.fieldData.scrollAmount || 3;
+
+    if (this.completedTasksCount >= autoScrollThreshold) {
+      this.autoScrollTasks(scrollAmount);
+      this.completedTasksCount = 0; // Reset counter
+    }
+  }
+
+  autoScrollTasks(scrollAmount) {
+    const taskList = document.querySelector('.task-list');
+    const completedTasks = document.querySelectorAll('.task-item.completed');
+    
+    if (!taskList || completedTasks.length < scrollAmount) return;
+
+    // Remove the specified number of completed tasks from the top
+    for (let i = 0; i < Math.min(scrollAmount, completedTasks.length); i++) {
+      const taskToRemove = completedTasks[i];
+      taskToRemove.style.transition = 'all 0.5s ease-out';
+      taskToRemove.style.transform = 'translateX(-100%)';
+      taskToRemove.style.opacity = '0';
+      
+      setTimeout(() => {
+        taskToRemove.remove();
+        this.countActualTasks();
+        this.updateProgress();
+        this.updateMoreTasksButton();
+      }, 500);
+    }
+
+    console.log(`Auto-scrolled ${scrollAmount} completed tasks`);
   }
 
   checkAllTasksComplete() {
@@ -581,6 +816,12 @@ class TodoWidget {
     if (tasks.length > 0 && tasks.length === completedTasks.length) {
       // All tasks completed!
       this.playSound('allTasksCompleteSound');
+      
+      // Trigger confetti if enabled
+      if (this.fieldData.enableConfetti !== false) {
+        this.startConfetti();
+      }
+      
       console.log('All tasks completed! 🎉');
     }
   }
