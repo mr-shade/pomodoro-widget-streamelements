@@ -1,0 +1,71 @@
+{
+  "pomodoroMinutes": {
+    "type": "number",
+    "label": "Pomodoro Duration (minutes)",
+    "value": 25,
+    "min": 1,
+    "max": 120
+  },
+  "enableStopwatchMode": {
+    "type": "checkbox",
+    "label": "Enable Stopwatch Mode (count up from 0)",
+    "value": false
+  },
+  "cardColor": {
+    "type": "colorpicker",
+    "label": "Timer Widget Background",
+    "value": "#010161"
+  },
+  "cardBorderColor": {
+    "type": "colorpicker",
+    "label": "Timer Widget Border",
+    "value": "#fcfabc"
+  },
+  "timerCardStart": {
+    "type": "colorpicker",
+    "label": "Timer Card Gradient Start",
+    "value": "#6caaff"
+  },
+  "timerCardEnd": {
+    "type": "colorpicker",
+    "label": "Timer Card Gradient End",
+    "value": "#4299E1"
+  },
+  "playBtnColor": {
+    "type": "colorpicker",
+    "label": "Play Button Color",
+    "value": "#63B3ED"
+  },
+  "playBtnIconColor": {
+    "type": "colorpicker",
+    "label": "Play Button Icon Color",
+    "value": "#FFFFFF"
+  },
+  "timerTextColor": {
+    "type": "colorpicker",
+    "label": "Timer Number Color",
+    "value": "#FFFFFF"
+  },
+  "enableTickSound": {
+    "type": "dropdown",
+    "label": "Enable Tick Sound Every Second",
+    "value": "false",
+    "options": {
+      "true": "Enabled",
+      "false": "Disabled"
+    }
+  },
+  "tickSoundFile": {
+    "type": "sound-input",
+    "label": "Tick Sound File (MP3)",
+    "value": ""
+  },
+  "tickSoundVolume": {
+    "type": "slider",
+    "label": "Tick Sound Volume",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 5
+  }
+}
