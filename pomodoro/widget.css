@@ -54,7 +54,7 @@ body {
     top: 50%;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 4px;
     background: #010160;
     transform: translateY(-0.5px);
 }
@@ -70,8 +70,6 @@ body {
 .play-button {
     background: linear-gradient(135deg, #63B3ED 0%, #4299E1 100%);
     border-radius: 8px;
-    width: 48px;
-    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,6 +79,31 @@ body {
     margin-left: 8px;
 }
 
+.side {
+    width: 44px;
+    height: 34px;
+    background: #6caaff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); */
+    transition: transform 0.2s ease;
+    margin-left: 8px;
+
+}
+
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-left: -10px;
+}
+
+.secondcard {
+}
 .play-button:hover {
     transform: scale(1.05);
 }
