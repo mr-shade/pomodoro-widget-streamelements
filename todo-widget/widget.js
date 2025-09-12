@@ -109,8 +109,12 @@ class TodoWidget {
   }
 
   createConfettiParticles() {
-    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
-    
+    // Use custom confetti colors if provided, else fallback to default
+    let colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
+    if (this.fieldData.confettiColors && typeof this.fieldData.confettiColors === 'string') {
+      const customColors = this.fieldData.confettiColors.split(',').map(c => c.trim()).filter(Boolean);
+      if (customColors.length > 0) colors = customColors;
+    }
     for (let i = 0; i < 100; i++) {
       this.confettiParticles.push({
         x: Math.random() * this.confettiCanvas.width,

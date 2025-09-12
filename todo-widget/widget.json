@@ -193,6 +193,11 @@
     "label": "Enable Confetti Animation",
     "value": true
   },
+  "confettiColors": {
+    "type": "text",
+    "label": "Confetti Colors (comma separated)",
+    "value": "#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#ffeaa7,#dda0dd,#98d8c8,#f7dc6f"
+  },
   "enableLockUnlock": {
     "type": "checkbox",
     "label": "Enable Lock/Unlock Commands",
