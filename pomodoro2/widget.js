@@ -74,7 +74,10 @@ class PomodoroTimer {
 
         const timeNumbers = document.querySelectorAll('.time-number');
         timeNumbers.forEach(number => {
-            number.style.color = this.fieldData.timerTextColor;
+            number.style.color = this.fieldData.timerTextColor || "#FFFFFF";
+            number.style.fontFamily = this.fieldData.fontFamily || "Arial";
+            number.style.fontSize = `${this.fieldData.fontSize || 48}px`;
+            number.style.fontWeight = this.fieldData.fontWeight || "700";
         });
 
         const playButtonIcon = document.querySelector('.play-button svg path');
@@ -351,11 +354,15 @@ class PomodoroTimer {
         this.tickSoundVolume = (this.fieldData.tickSoundVolume || 50) / 100;
         
         this.initializeTickSound();
+        this.applyCustomColors(); // Re-apply all styling including fonts
         
-        console.log('Tick sound settings updated:', {
-            enabled: this.tickSoundEnabled,
-            file: this.tickSoundFile,
-            volume: this.tickSoundVolume
+        console.log('Widget settings updated:', {
+            tickEnabled: this.tickSoundEnabled,
+            tickFile: this.tickSoundFile,
+            tickVolume: this.tickSoundVolume,
+            fontFamily: this.fieldData.fontFamily,
+            fontSize: this.fieldData.fontSize,
+            fontWeight: this.fieldData.fontWeight
         });
     }
 }
