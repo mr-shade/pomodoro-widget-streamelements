@@ -23,9 +23,11 @@ class PomodoroTimer {
 
         // Initialize timer values depending on mode
         if (this.stopwatchMode) {
+            this.hours = 0;
             this.minutes = 0;
             this.seconds = 0;
         } else {
+            this.hours = 0;
             this.minutes = this.defaultMinutes;
             this.seconds = 0;
         }
@@ -192,13 +194,15 @@ class PomodoroTimer {
     }
 
     updateDisplay() {
+        const hoursStr = this.hours.toString().padStart(2, '0');
         const minutesStr = this.minutes.toString().padStart(2, '0');
-        const secondsStr = this.seconds.toString().padStart(2, '0');
 
-        this.timeNumbers[0].textContent = minutesStr[0];
-        this.timeNumbers[1].textContent = minutesStr[1];
-        this.timeNumbers[2].textContent = secondsStr[0];
-        this.timeNumbers[3].textContent = secondsStr[1];
+        // First card shows hours
+        this.timeNumbers[0].textContent = hoursStr[0];
+        this.timeNumbers[1].textContent = hoursStr[1];
+        // Second card shows minutes
+        this.timeNumbers[2].textContent = minutesStr[0];
+        this.timeNumbers[3].textContent = minutesStr[1];
         
         // Display seconds in secondcard
         if (this.secondCard) {
@@ -253,6 +257,10 @@ class PomodoroTimer {
             if (this.seconds >= 60) {
                 this.seconds = 0;
                 this.minutes++;
+                if (this.minutes >= 60) {
+                    this.minutes = 0;
+                    this.hours++;
+                }
             }
         } else {
             // Countdown mode: count down
@@ -260,6 +268,10 @@ class PomodoroTimer {
                 this.seconds--;
             } else if (this.minutes > 0) {
                 this.minutes--;
+                this.seconds = 59;
+            } else if (this.hours > 0) {
+                this.hours--;
+                this.minutes = 59;
                 this.seconds = 59;
             } else {
                 this.timerComplete();
@@ -280,9 +292,11 @@ class PomodoroTimer {
     resetTimer() {
         this.pauseTimer();
         if (this.stopwatchMode) {
+            this.hours = 0;
             this.minutes = 0;
             this.seconds = 0;
         } else {
+            this.hours = 0;
             this.minutes = this.defaultMinutes;
             this.seconds = 0;
         }
