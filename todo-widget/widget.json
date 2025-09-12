@@ -193,10 +193,61 @@
     "label": "Enable Confetti Animation",
     "value": true
   },
-  "confettiColors": {
-    "type": "text",
-    "label": "Confetti Colors (comma separated)",
-    "value": "#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#ffeaa7,#dda0dd,#98d8c8,#f7dc6f"
+  "confettiColor1": {
+    "type": "colorpicker",
+    "label": "Confetti Color 1",
+    "value": "#ff6b6b"
+  },
+  "confettiColor2": {
+    "type": "colorpicker",
+    "label": "Confetti Color 2",
+    "value": "#4ecdc4"
+  },
+  "confettiColor3": {
+    "type": "colorpicker",
+    "label": "Confetti Color 3",
+    "value": "#45b7d1"
+  },
+  "confettiColor4": {
+    "type": "colorpicker",
+    "label": "Confetti Color 4",
+    "value": "#96ceb4"
+  },
+  "confettiColor5": {
+    "type": "colorpicker",
+    "label": "Confetti Color 5",
+    "value": "#ffeaa7"
+  },
+  "confettiColor6": {
+    "type": "colorpicker",
+    "label": "Confetti Color 6",
+    "value": "#dda0dd"
+  },
+  "confettiColor7": {
+    "type": "colorpicker",
+    "label": "Confetti Color 7",
+    "value": "#98d8c8"
+  },
+  "confettiColor8": {
+    "type": "colorpicker",
+    "label": "Confetti Color 8",
+    "value": "#f7dc6f"
+  },
+  "confettiParticleCount": {
+    "type": "slider",
+    "label": "Confetti Particle Count",
+    "value": 100,
+    "min": 50,
+    "max": 300,
+    "step": 10
+  },
+  "confettiDuration": {
+    "type": "slider",
+    "label": "Confetti Duration (seconds)",
+    "value": 3,
+    "min": 1,
+    "max": 10,
+    "step": 0.5
   },
   "enableLockUnlock": {
     "type": "checkbox",

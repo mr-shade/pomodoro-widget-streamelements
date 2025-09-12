@@ -16,7 +16,7 @@
         <canvas id="confetti-canvas"></canvas>
 
         <div class="task-card">
-            <h2 class="card-title">MY TASKS</h2>
+            <!-- <h2 class="card-title">MY TASKS</h2> -->
 
             <div class="task-list">
                 <!-- Start with empty todo list - minimal height -->
@@ -39,7 +39,7 @@
                     <span class="progress-percentage">0%</span>
                 </div>
             </div>
-            <p class="progress-label">Progress Bar</p>
+            <!-- <p class="progress-label">Progress Bar</p> -->
         </div>
     </div>
     
@@ -52,6 +52,7 @@
             <button onclick="testCompleteTask()">Complete Task 1</button>
             <button onclick="testCompleteAll()">Complete All Tasks</button>
             <button onclick="testHighlight()">Highlight Random Task</button>
+            <button onclick="testConfetti()">Test Confetti</button>
             <button onclick="testLockToggle()">Toggle Lock</button>
             <button onclick="testClearAll()">Clear All Tasks</button>
             <button onclick="testAutoScroll()">Test Auto-scroll</button>
@@ -89,6 +90,16 @@
                         scrollbarColor: "#6aaafe",
                         commandsEnabled: true,
                         enableConfetti: true,
+                        confettiColor1: "#ff6b6b",
+                        confettiColor2: "#4ecdc4",
+                        confettiColor3: "#45b7d1",
+                        confettiColor4: "#96ceb4",
+                        confettiColor5: "#ffeaa7",
+                        confettiColor6: "#dda0dd",
+                        confettiColor7: "#98d8c8",
+                        confettiColor8: "#f7dc6f",
+                        confettiParticleCount: 150,
+                        confettiDuration: 4,
                         enableLockUnlock: true,
                         enableHighlight: true,
                         enableAddTask: true,
@@ -171,6 +182,12 @@
         function testHighlight() {
             if (window._todoWidget) {
                 window._todoWidget.highlightRandomTask('TestUser');
+            }
+        }
+
+        function testConfetti() {
+            if (window._todoWidget) {
+                window._todoWidget.startConfetti();
             }
         }
 

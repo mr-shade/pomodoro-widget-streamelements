@@ -109,13 +109,22 @@ class TodoWidget {
   }
 
   createConfettiParticles() {
-    // Use custom confetti colors if provided, else fallback to default
-    let colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
-    if (this.fieldData.confettiColors && typeof this.fieldData.confettiColors === 'string') {
-      const customColors = this.fieldData.confettiColors.split(',').map(c => c.trim()).filter(Boolean);
-      if (customColors.length > 0) colors = customColors;
-    }
-    for (let i = 0; i < 100; i++) {
+    // Get custom confetti colors from field data, fallback to defaults
+    const colors = [
+      this.fieldData.confettiColor1 || '#ff6b6b',
+      this.fieldData.confettiColor2 || '#4ecdc4',
+      this.fieldData.confettiColor3 || '#45b7d1',
+      this.fieldData.confettiColor4 || '#96ceb4',
+      this.fieldData.confettiColor5 || '#ffeaa7',
+      this.fieldData.confettiColor6 || '#dda0dd',
+      this.fieldData.confettiColor7 || '#98d8c8',
+      this.fieldData.confettiColor8 || '#f7dc6f'
+    ];
+    
+    // Get particle count from field data, fallback to default
+    const particleCount = this.fieldData.confettiParticleCount || 100;
+    
+    for (let i = 0; i < particleCount; i++) {
       this.confettiParticles.push({
         x: Math.random() * this.confettiCanvas.width,
         y: -10,
@@ -166,8 +175,29 @@ class TodoWidget {
   }
 
   startConfetti() {
+    // Clear any existing confetti
+    this.confettiParticles = [];
+    
+    // Get duration from field data, fallback to default (3 seconds)
+    const duration = (this.fieldData.confettiDuration || 3) * 1000;
+    
     this.createConfettiParticles();
     this.animateConfetti();
+    
+    // Auto-stop confetti after specified duration
+    setTimeout(() => {
+      this.stopConfetti();
+    }, duration);
+  }
+
+  stopConfetti() {
+    // Clear all particles
+    this.confettiParticles = [];
+    
+    // Clear the canvas
+    if (this.confettiCtx) {
+      this.confettiCtx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
+    }
   }
 
   countActualTasks() {

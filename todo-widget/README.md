@@ -7,7 +7,7 @@ A comprehensive StreamElements widget for managing TODO lists with advanced chat
 ### ✨ Enhanced User Experience
 - **Empty State**: Widget now starts with a clean, empty todo list for a minimal interface
 - **Right-to-Left Animations**: New todos slide in smoothly from right to left when added
-- **Confetti Celebration**: Beautiful confetti animation triggers when all tasks are completed (can be disabled)
+- **Confetti Celebration**: Beautiful customizable confetti animation triggers when all tasks are completed (8 custom colors, particle count, and duration)
 - **Dynamic Height**: Todo list container adjusts its height based on content
 - **Fixed Progress Bar**: No more "NaN%" - progress calculation now handles empty lists properly
 - **Customizable Border Width**: Adjust card border thickness (1-10px)
@@ -52,7 +52,7 @@ A comprehensive StreamElements widget for managing TODO lists with advanced chat
 - ✅ **Sound Effects**: Customizable audio feedback for task completion and list completion
 - ✅ **Responsive Design**: Optimized for all screen sizes
 - 🎨 **NEW: Slide-in Animation**: Tasks animate from right to left when added
-- 🎊 **NEW: Confetti Celebration**: Confetti animation when all tasks completed (toggleable)
+- 🎊 **NEW: Confetti Celebration**: Fully customizable confetti animation with 8 color options, particle count (50-300), and duration (1-10s)
 - 📏 **NEW: Minimal Height**: Empty todo list takes minimal space
 - ⚡ **NEW: Auto-scroll**: Removes completed tasks automatically
 - 🌈 **NEW: Highlight Effect**: Golden glow animation for random task selection
@@ -90,6 +90,23 @@ When a configured number of tasks are completed (default: 5), the widget automat
 
 ### Highlight Random Task
 The `!highlight` command selects a random incomplete task and applies a golden glow animation for 2 seconds, helping streamers and viewers focus on a specific task.
+
+### Confetti Customization
+The celebration confetti system is fully customizable with:
+- **8 Custom Colors**: Set individual colors for each confetti particle type
+- **Particle Count**: Adjust from 50-300 particles for performance vs. visual impact
+- **Duration Control**: Set confetti duration from 1-10 seconds
+- **Auto-cleanup**: Particles automatically clear after duration expires
+- **Performance Optimized**: Uses requestAnimationFrame for smooth 60fps animation
+
+**Color Options:**
+- Confetti Color 1-8: Individual color pickers for complete customization
+- Default colors: Red, Teal, Blue, Green, Yellow, Purple, Mint, Gold
+
+**Performance Settings:**
+- Lower particle counts (50-100) for better performance
+- Higher particle counts (200-300) for more spectacular celebrations
+- Duration affects both visual impact and performance
 
 ## 🛠️ Technical Implementation Details
 
@@ -193,7 +210,7 @@ The `test.html` file includes comprehensive testing tools:
 - **Lock Toggle**: Test lock/unlock functionality
 - **Confetti**: Trigger celebration animation
 
-## Extensive Customization (35+ Options)
+## Extensive Customization (45+ Options)
 
 ### 🎨 Visual Customization
 - **Widget Title**: Custom title text and color
@@ -212,7 +229,7 @@ The `test.html` file includes comprehensive testing tools:
 - **Blacklist**: Comma-separated list of blocked usernames
 - **Custom Commands**: Customize lock, unlock, and highlight command names
 - **Auto-scroll Settings**: Threshold and amount for automatic task removal
-- **Confetti Toggle**: Enable/disable celebration animation
+- **Confetti Customization**: 8 custom colors, particle count (50-300), duration (1-10s), and enable/disable toggle
 
 ### 🔊 Audio Settings  
 - **Sound Toggle**: Master sound on/off
