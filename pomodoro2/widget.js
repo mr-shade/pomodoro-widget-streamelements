@@ -129,7 +129,6 @@ class PomodoroTimer {
         this.playButton = document.querySelector('.play-button');
         this.timeCards = document.querySelectorAll('.time-card');
         this.timeNumbers = document.querySelectorAll('.time-number');
-        this.secondCard = document.querySelector('.secondcard');
     }
 
     initializeTickSound() {
@@ -201,18 +200,19 @@ class PomodoroTimer {
     updateDisplay() {
         const hoursStr = this.hours.toString().padStart(2, '0');
         const minutesStr = this.minutes.toString().padStart(2, '0');
+        const secondsStr = this.seconds.toString().padStart(2, '0');
 
-        // First card shows hours
+        // First section (hours): timeNumbers[0] and timeNumbers[1]
         this.timeNumbers[0].textContent = hoursStr[0];
         this.timeNumbers[1].textContent = hoursStr[1];
-        // Second card shows minutes
+        
+        // Second section (minutes): timeNumbers[2] and timeNumbers[3]
         this.timeNumbers[2].textContent = minutesStr[0];
         this.timeNumbers[3].textContent = minutesStr[1];
         
-        // Display seconds in secondcard
-        if (this.secondCard) {
-            this.secondCard.textContent = this.seconds.toString();
-        }
+        // Third section (seconds): timeNumbers[4] and timeNumbers[5]
+        this.timeNumbers[4].textContent = secondsStr[0];
+        this.timeNumbers[5].textContent = secondsStr[1];
     }
 
     bindEvents() {
