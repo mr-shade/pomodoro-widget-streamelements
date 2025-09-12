@@ -21,14 +21,19 @@ class PomodoroTimer {
         this.isRunning = false;
         this.interval = null;
 
+        // Convert total minutes to hours and minutes
+        const totalMinutes = this.defaultMinutes;
+        const convertedHours = Math.floor(totalMinutes / 60);
+        const remainingMinutes = totalMinutes % 60;
+
         // Initialize timer values depending on mode
         if (this.stopwatchMode) {
             this.hours = 0;
             this.minutes = 0;
             this.seconds = 0;
         } else {
-            this.hours = 0;
-            this.minutes = this.defaultMinutes;
+            this.hours = convertedHours;
+            this.minutes = remainingMinutes;
             this.seconds = 0;
         }
 
@@ -296,8 +301,13 @@ class PomodoroTimer {
             this.minutes = 0;
             this.seconds = 0;
         } else {
-            this.hours = 0;
-            this.minutes = this.defaultMinutes;
+            // Convert total minutes to hours and minutes
+            const totalMinutes = this.defaultMinutes;
+            const convertedHours = Math.floor(totalMinutes / 60);
+            const remainingMinutes = totalMinutes % 60;
+            
+            this.hours = convertedHours;
+            this.minutes = remainingMinutes;
             this.seconds = 0;
         }
         this.updateDisplay();
