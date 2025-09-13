@@ -112,5 +112,166 @@
     "min": 0,
     "max": 100,
     "step": 5
+  },
+  "manualHours": {
+    "type": "number",
+    "label": "Manual Hours Setting",
+    "value": 0,
+    "min": 0,
+    "max": 23
+  },
+  "manualMinutes": {
+    "type": "number",
+    "label": "Manual Minutes Setting",
+    "value": 25,
+    "min": 0,
+    "max": 59
+  },
+  "manualSeconds": {
+    "type": "number",
+    "label": "Manual Seconds Setting",
+    "value": 0,
+    "min": 0,
+    "max": 59
+  },
+  "useManualTime": {
+    "type": "checkbox",
+    "label": "Use Manual Time Setting (overrides duration minutes)",
+    "value": false
+  },
+  "startCommand": {
+    "type": "text",
+    "label": "Custom Start Command",
+    "value": "!start"
+  },
+  "pauseCommand": {
+    "type": "text",
+    "label": "Custom Pause Command",
+    "value": "!pause"
+  },
+  "resetCommand": {
+    "type": "text",
+    "label": "Custom Reset Command",
+    "value": "!reset"
+  },
+  "enableStartSound": {
+    "type": "checkbox",
+    "label": "Enable Start Sound",
+    "value": false
+  },
+  "startSoundFile": {
+    "type": "sound-input",
+    "label": "Start Sound File (MP3)",
+    "value": ""
+  },
+  "enablePauseSound": {
+    "type": "checkbox",
+    "label": "Enable Pause Sound",
+    "value": false
+  },
+  "pauseSoundFile": {
+    "type": "sound-input",
+    "label": "Pause Sound File (MP3)",
+    "value": ""
+  },
+  "enableCompleteSound": {
+    "type": "checkbox",
+    "label": "Enable Complete Sound",
+    "value": true
+  },
+  "completeSoundFile": {
+    "type": "sound-input",
+    "label": "Complete Sound File (MP3)",
+    "value": ""
+  },
+  "soundEffectsVolume": {
+    "type": "slider",
+    "label": "Sound Effects Volume",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5
+  },
+  "enableBlacklist": {
+    "type": "checkbox",
+    "label": "Enable Username Blacklist",
+    "value": false
+  },
+  "blacklistUsers": {
+    "type": "textfield",
+    "label": "Blacklisted Usernames (comma separated)",
+    "value": ""
+  },
+  "timePerSub": {
+    "type": "number",
+    "label": "Seconds Added Per Subscription",
+    "value": 60,
+    "min": 0,
+    "max": 3600
+  },
+  "timePerFollow": {
+    "type": "number",
+    "label": "Seconds Added Per Follow",
+    "value": 30,
+    "min": 0,
+    "max": 3600
+  },
+  "timePerCheer": {
+    "type": "number",
+    "label": "Seconds Added Per 100 Bits",
+    "value": 10,
+    "min": 0,
+    "max": 3600
+  },
+  "timePerDonation": {
+    "type": "number",
+    "label": "Seconds Added Per $1 Donation",
+    "value": 20,
+    "min": 0,
+    "max": 3600
+  },
+  "timePerRaid": {
+    "type": "number",
+    "label": "Seconds Added Per Raid",
+    "value": 120,
+    "min": 0,
+    "max": 3600
+  },
+  "timePerHost": {
+    "type": "number",
+    "label": "Seconds Added Per Host",
+    "value": 90,
+    "min": 0,
+    "max": 3600
+  },
+  "enableSubReward": {
+    "type": "checkbox",
+    "label": "Enable Time Reward for Subscriptions",
+    "value": true
+  },
+  "enableFollowReward": {
+    "type": "checkbox",
+    "label": "Enable Time Reward for Follows",
+    "value": true
+  },
+  "enableCheerReward": {
+    "type": "checkbox",
+    "label": "Enable Time Reward for Cheers",
+    "value": true
+  },
+  "enableDonationReward": {
+    "type": "checkbox",
+    "label": "Enable Time Reward for Donations",
+    "value": true
+  },
+  "enableRaidReward": {
+    "type": "checkbox",
+    "label": "Enable Time Reward for Raids",
+    "value": true
+  },
+  "enableHostReward": {
+    "type": "checkbox",
+    "label": "Enable Time Reward for Hosts",
+    "value": true
   }
 }

@@ -1,5 +1,4 @@
 Pomodoro Timer Features
-* Design update
 * Time can go backwards (timer) & Forward (as a stopwatch)
 * ⁠User can set time (hrs, mins, sec)
 * ⁠Commands for play, pause or restart (customisable)

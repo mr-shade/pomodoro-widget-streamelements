@@ -21,20 +21,37 @@ class PomodoroTimer {
         this.isRunning = false;
         this.interval = null;
 
-        // Convert total minutes to hours and minutes
-        const totalMinutes = this.defaultMinutes;
-        const convertedHours = Math.floor(totalMinutes / 60);
-        const remainingMinutes = totalMinutes % 60;
-
-        // Initialize timer values depending on mode
-        if (this.stopwatchMode) {
-            this.hours = 0;
-            this.minutes = 0;
-            this.seconds = 0;
+        // Check if using manual time setting
+        if (this.fieldData.useManualTime) {
+            // Use manual hours, minutes, seconds
+            const manualHours = parseInt(this.fieldData.manualHours) || 0;
+            const manualMinutes = parseInt(this.fieldData.manualMinutes) || 25;
+            const manualSeconds = parseInt(this.fieldData.manualSeconds) || 0;
+            
+            if (this.stopwatchMode) {
+                this.hours = 0;
+                this.minutes = 0;
+                this.seconds = 0;
+            } else {
+                this.hours = manualHours;
+                this.minutes = manualMinutes;
+                this.seconds = manualSeconds;
+            }
         } else {
-            this.hours = convertedHours;
-            this.minutes = remainingMinutes;
-            this.seconds = 0;
+            // Convert total minutes to hours and minutes (existing logic)
+            const totalMinutes = this.defaultMinutes;
+            const convertedHours = Math.floor(totalMinutes / 60);
+            const remainingMinutes = totalMinutes % 60;
+
+            if (this.stopwatchMode) {
+                this.hours = 0;
+                this.minutes = 0;
+                this.seconds = 0;
+            } else {
+                this.hours = convertedHours;
+                this.minutes = remainingMinutes;
+                this.seconds = 0;
+            }
         }
 
         // Sound properties
@@ -43,8 +60,29 @@ class PomodoroTimer {
         this.tickSoundVolume = (this.fieldData.tickSoundVolume || 50) / 100;
         this.tickAudio = null;
 
+        // Sound effects properties
+        this.soundEffectsVolume = (this.fieldData.soundEffectsVolume || 70) / 100;
+        this.enableStartSound = this.fieldData.enableStartSound === true;
+        this.enablePauseSound = this.fieldData.enablePauseSound === true;
+        this.enableCompleteSound = this.fieldData.enableCompleteSound !== false; // Default true
+        this.startSoundFile = this.fieldData.startSoundFile;
+        this.pauseSoundFile = this.fieldData.pauseSoundFile;
+        this.completeSoundFile = this.fieldData.completeSoundFile;
+
+        // Blacklist properties
+        this.enableBlacklist = this.fieldData.enableBlacklist === true;
+        this.blacklistUsers = this.fieldData.blacklistUsers ? 
+            this.fieldData.blacklistUsers.toLowerCase().split(',').map(u => u.trim()) : [];
+
+        // Custom commands
+        this.startCommand = this.fieldData.startCommand || '!start';
+        this.pauseCommand = this.fieldData.pauseCommand || '!pause';
+        this.resetCommand = this.fieldData.resetCommand || '!reset';
+
         console.log("PomodoroTimer initialized with field data:", this.fieldData);
         console.log("Stopwatch mode:", this.stopwatchMode);
+        console.log("Manual time mode:", this.fieldData.useManualTime);
+        console.log("Blacklist enabled:", this.enableBlacklist);
         
         this.initializeElements();
         this.initializeTickSound();
@@ -52,6 +90,7 @@ class PomodoroTimer {
         this.updateDisplay();
         this.bindEvents();
         this.initializeCommands();
+        this.initializeStreamElementsEvents();
     }
 
     applyCustomColors() {
@@ -97,26 +136,30 @@ class PomodoroTimer {
     handleCommand(data) {
         const message = data.message || data.text || '';
         const command = message.toLowerCase().trim();
+        const username = (data.username || data.displayName || '').toLowerCase();
 
-        console.log("Pomodoro command received:", command);
+        console.log("Pomodoro command received:", command, "from:", username);
 
-        switch (command) {
-            case '!start':
-                if (!this.isRunning) {
-                    this.startTimer();
-                    this.sendNotification('Pomodoro started! 🍅');
-                }
-                break;
-            case '!pause':
-                if (this.isRunning) {
-                    this.pauseTimer();
-                    this.sendNotification('Pomodoro paused ⏸️');
-                }
-                break;
-            case '!reset':
-                this.resetTimer();
-                this.sendNotification('Pomodoro reset 🔄');
-                break;
+        // Check blacklist
+        if (this.enableBlacklist && this.blacklistUsers.includes(username)) {
+            console.log("Command ignored - user is blacklisted:", username);
+            return;
+        }
+
+        // Handle custom commands
+        if (command === this.startCommand.toLowerCase()) {
+            if (!this.isRunning) {
+                this.startTimer();
+                this.sendNotification('Pomodoro started! 🍅');
+            }
+        } else if (command === this.pauseCommand.toLowerCase()) {
+            if (this.isRunning) {
+                this.pauseTimer();
+                this.sendNotification('Pomodoro paused ⏸️');
+            }
+        } else if (command === this.resetCommand.toLowerCase()) {
+            this.resetTimer();
+            this.sendNotification('Pomodoro reset 🔄');
         }
     }
 
@@ -201,6 +244,174 @@ class PomodoroTimer {
         }
     }
 
+    initializeStreamElementsEvents() {
+        if (window.SE_API) {
+            // Listen for StreamElements events
+            window.SE_API.onEvent = (event) => {
+                this.handleStreamElementsEvent(event);
+            };
+        }
+    }
+
+    handleStreamElementsEvent(event) {
+        const { type, username, amount } = event;
+        const user = (username || '').toLowerCase();
+
+        // Check blacklist for events
+        if (this.enableBlacklist && this.blacklistUsers.includes(user)) {
+            console.log("Event ignored - user is blacklisted:", user);
+            return;
+        }
+
+        let timeToAdd = 0;
+
+        switch (type) {
+            case 'subscriber':
+                if (this.fieldData.enableSubReward) {
+                    timeToAdd = parseInt(this.fieldData.timePerSub) || 60;
+                    this.sendNotification(`+${timeToAdd}s for ${username}'s subscription! 🎉`);
+                }
+                break;
+            case 'follow':
+                if (this.fieldData.enableFollowReward) {
+                    timeToAdd = parseInt(this.fieldData.timePerFollow) || 30;
+                    this.sendNotification(`+${timeToAdd}s for ${username}'s follow! 💜`);
+                }
+                break;
+            case 'cheer':
+                if (this.fieldData.enableCheerReward) {
+                    const bits = parseInt(amount) || 0;
+                    const perHundredBits = Math.floor(bits / 100);
+                    timeToAdd = perHundredBits * (parseInt(this.fieldData.timePerCheer) || 10);
+                    if (timeToAdd > 0) {
+                        this.sendNotification(`+${timeToAdd}s for ${username}'s ${bits} bits! ⭐`);
+                    }
+                }
+                break;
+            case 'tip':
+            case 'donation':
+                if (this.fieldData.enableDonationReward) {
+                    const dollars = parseFloat(amount) || 0;
+                    timeToAdd = Math.floor(dollars * (parseInt(this.fieldData.timePerDonation) || 20));
+                    if (timeToAdd > 0) {
+                        this.sendNotification(`+${timeToAdd}s for ${username}'s $${dollars} donation! 💰`);
+                    }
+                }
+                break;
+            case 'raid':
+                if (this.fieldData.enableRaidReward) {
+                    timeToAdd = parseInt(this.fieldData.timePerRaid) || 120;
+                    this.sendNotification(`+${timeToAdd}s for ${username}'s raid! 🚀`);
+                }
+                break;
+            case 'host':
+                if (this.fieldData.enableHostReward) {
+                    timeToAdd = parseInt(this.fieldData.timePerHost) || 90;
+                    this.sendNotification(`+${timeToAdd}s for ${username}'s host! 📺`);
+                }
+                break;
+        }
+
+        if (timeToAdd > 0) {
+            this.addTime(timeToAdd);
+        }
+    }
+
+    addTime(seconds) {
+        this.seconds += seconds;
+        
+        // Handle overflow
+        while (this.seconds >= 60) {
+            this.seconds -= 60;
+            this.minutes++;
+            if (this.minutes >= 60) {
+                this.minutes -= 60;
+                this.hours++;
+            }
+        }
+        
+        this.updateDisplay();
+        console.log(`Added ${seconds} seconds to timer`);
+    }
+
+    playSound(soundType) {
+        let soundFile, enabled;
+        
+        switch (soundType) {
+            case 'start':
+                soundFile = this.startSoundFile;
+                enabled = this.enableStartSound;
+                break;
+            case 'pause':
+                soundFile = this.pauseSoundFile;
+                enabled = this.enablePauseSound;
+                break;
+            case 'complete':
+                soundFile = this.completeSoundFile;
+                enabled = this.enableCompleteSound;
+                break;
+            default:
+                return;
+        }
+
+        if (!enabled) return;
+
+        if (soundFile) {
+            try {
+                const audio = new Audio(soundFile);
+                audio.volume = this.soundEffectsVolume;
+                audio.play().catch(error => {
+                    console.log(`${soundType} sound play failed:`, error);
+                });
+            } catch (error) {
+                console.error(`Error playing ${soundType} sound:`, error);
+            }
+        } else {
+            // Fallback to generated sounds
+            this.playFallbackSound(soundType);
+        }
+    }
+
+    playFallbackSound(soundType) {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            let frequency, duration;
+            switch (soundType) {
+                case 'start':
+                    frequency = 600;
+                    duration = 0.2;
+                    break;
+                case 'pause':
+                    frequency = 400;
+                    duration = 0.15;
+                    break;
+                case 'complete':
+                    frequency = 800;
+                    duration = 0.5;
+                    break;
+                default:
+                    return;
+            }
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(this.soundEffectsVolume * 0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        } catch (error) {
+            console.log(`Fallback ${soundType} sound not available:`, error);
+        }
+    }
+
     updateDisplay() {
         const hoursStr = this.hours.toString().padStart(2, '0');
         const minutesStr = this.minutes.toString().padStart(2, '0');
@@ -235,6 +446,7 @@ class PomodoroTimer {
     startTimer() {
         this.isRunning = true;
         this.updatePlayButton();
+        this.playSound('start');
 
         this.interval = setInterval(() => {
             this.tick();
@@ -244,6 +456,7 @@ class PomodoroTimer {
     pauseTimer() {
         this.isRunning = false;
         this.updatePlayButton();
+        this.playSound('pause');
 
         if (this.interval) {
             clearInterval(this.interval);
@@ -292,7 +505,7 @@ class PomodoroTimer {
 
     timerComplete() {
         this.pauseTimer();
-        this.playNotificationSound();
+        this.playSound('complete');
         alert('Pomodoro completed!');
         this.resetTimer();
     }
@@ -304,14 +517,21 @@ class PomodoroTimer {
             this.minutes = 0;
             this.seconds = 0;
         } else {
-            // Convert total minutes to hours and minutes
-            const totalMinutes = this.defaultMinutes;
-            const convertedHours = Math.floor(totalMinutes / 60);
-            const remainingMinutes = totalMinutes % 60;
-            
-            this.hours = convertedHours;
-            this.minutes = remainingMinutes;
-            this.seconds = 0;
+            // Check if using manual time setting
+            if (this.fieldData.useManualTime) {
+                this.hours = parseInt(this.fieldData.manualHours) || 0;
+                this.minutes = parseInt(this.fieldData.manualMinutes) || 25;
+                this.seconds = parseInt(this.fieldData.manualSeconds) || 0;
+            } else {
+                // Convert total minutes to hours and minutes
+                const totalMinutes = this.defaultMinutes;
+                const convertedHours = Math.floor(totalMinutes / 60);
+                const remainingMinutes = totalMinutes % 60;
+                
+                this.hours = convertedHours;
+                this.minutes = remainingMinutes;
+                this.seconds = 0;
+            }
         }
         this.updateDisplay();
     }
