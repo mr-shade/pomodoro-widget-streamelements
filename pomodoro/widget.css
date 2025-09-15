@@ -62,13 +62,13 @@ body {
     border-radius: 6px;
     text-transform: lowercase;
     transform: rotate(-15deg);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
 .time-card {
     background: #6caaff;
     border-radius: 12px;
-    width: 84px;
+    width: 74px;
     height: 80px;
     display: flex;
     align-items: center;
@@ -105,7 +105,9 @@ body {
     cursor: pointer;
     /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); */
     transition: transform 0.2s ease;
-    margin-left: 8px;
+    margin-left: 5px;
+    height: 55px;
+    width: 55px;
 }
 
 .side {
@@ -138,7 +140,7 @@ body {
     font-size: 24px;
     font-weight: 700;
     color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
 }
 .play-button:hover {
     transform: scale(1.05);

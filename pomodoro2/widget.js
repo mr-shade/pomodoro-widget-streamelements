@@ -123,6 +123,21 @@ class PomodoroTimer {
         if (playButtonIcon) {
             playButtonIcon.setAttribute('fill', this.fieldData.playBtnIconColor);
         }
+
+        // Apply tag styling
+        const timeLabels = document.querySelectorAll('.time-label');
+        timeLabels.forEach(label => {
+            label.style.backgroundColor = this.fieldData.tagColor || "#FFB6C1";
+            label.style.color = this.fieldData.tagFontColor || "#333";
+            label.style.fontSize = `${this.fieldData.tagFontSize || 8}px`;
+            label.style.fontWeight = this.fieldData.tagFontWeight || "600";
+        });
+
+        // Apply card sizing to existing timeCards
+        timeCards.forEach(card => {
+            card.style.width = `${this.fieldData.cardWidth || 84}px`;
+            card.style.height = `${this.fieldData.cardHeight || 80}px`;
+        });
     }
 
     initializeCommands() {

@@ -46,11 +46,57 @@
     "label": "Timer Number Color",
     "value": "#FFFFFF"
   },
+  "tagColor": {
+    "type": "colorpicker",
+    "label": "Time Label Tag Color",
+    "value": "#FFB6C1"
+  },
+  "tagFontColor": {
+    "type": "colorpicker",
+    "label": "Tag Font Color",
+    "value": "#333333"
+  },
+  "tagFontSize": {
+    "type": "slider",
+    "label": "Tag Font Size",
+    "value": 10,
+    "min": 6,
+    "max": 16,
+    "step": 1
+  },
+  "tagFontWeight": {
+    "type": "dropdown",
+    "label": "Tag Font Weight",
+    "value": "700",
+    "options": {
+      "400": "Normal",
+      "600": "Semi-Bold",
+      "700": "Bold",
+      "800": "Extra Bold"
+    }
+  },
+  "cardWidth": {
+    "type": "slider",
+    "label": "Time Card Width",
+    "value": 84,
+    "min": 60,
+    "max": 120,
+    "step": 2
+  },
+  "cardHeight": {
+    "type": "slider",
+    "label": "Time Card Height",
+    "value": 80,
+    "min": 60,
+    "max": 120,
+    "step": 2
+  },
   "fontFamily": {
     "type": "dropdown",
     "label": "Font Family",
-    "value": "Arial",
+    "value": "League Spartan",
     "options": {
+      "League Spartan": "League Spartan",
       "Arial": "Arial",
       "Helvetica": "Helvetica",
       "Times New Roman": "Times New Roman",
