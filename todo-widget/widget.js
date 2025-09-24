@@ -455,12 +455,21 @@ class TodoWidget {
 
   // StreamElements Chat Commands Integration
   initializeChatCommands() {
-    // StreamElements chat command integration
-    if (window.SE_API) {
-      window.SE_API.onMessage = (data) => {
-        this.handleChatCommand(data);
-      };
-    }
+    console.log("Initializing chat commands...");
+    
+    // Modern StreamElements event listener for chat messages
+    window.addEventListener('onEventReceived', (obj) => {
+      try {
+        if (obj.detail && obj.detail.listener === 'message' && obj.detail.event && obj.detail.event.data) {
+          console.log("Received chat message:", obj.detail.event.data);
+          this.handleChatCommand(obj.detail.event.data);
+        }
+      } catch (error) {
+        console.error("Error handling chat command:", error);
+      }
+    });
+    
+    console.log("Chat commands initialized");
   }
 
   playSound(soundType) {
@@ -582,23 +591,39 @@ class TodoWidget {
   }
 
   handleChatCommand(data) {
-    if (!data || !data.message) return;
+    console.log("Raw chat data:", data);
+    
+    if (!data || !data.text) {
+      console.log("No text in message, skipping");
+      return;
+    }
+
+    // Normalize data structure for StreamElements event format
+    const normalizedData = {
+      message: data.text,
+      username: data.displayName || data.nick || 'User',
+      userId: data.userId,
+      tags: data.tags || {},
+      badges: data.badges || []
+    };
+    
+    console.log("Normalized data:", normalizedData);
 
     // Check if widget is locked
-    if (this.isLocked && !this.isModerator(data)) {
-      console.log(`Widget is locked, ${data.username} cannot use commands`);
+    if (this.isLocked && !this.isModerator(normalizedData)) {
+      console.log(`Widget is locked, ${normalizedData.username} cannot use commands`);
       return;
     }
 
     // Check if user is blacklisted
-    if (this.isUserBlacklisted(data)) {
-      console.log(`User ${data.username} is blacklisted`);
+    if (this.isUserBlacklisted(normalizedData)) {
+      console.log(`User ${normalizedData.username} is blacklisted`);
       return;
     }
 
-    const message = data.message.toLowerCase();
-    const originalMessage = data.message;
-    const username = data.username || 'User';
+    const message = normalizedData.message.toLowerCase();
+    const originalMessage = normalizedData.message;
+    const username = normalizedData.username;
 
     // Custom commands with permission checks
     const lockCmd = (this.fieldData.lockCommand || '!lock').toLowerCase();
@@ -607,7 +632,7 @@ class TodoWidget {
 
     // Lock/Unlock commands (moderator only)
     if (message === lockCmd && this.fieldData.enableLockUnlock) {
-      if (this.isModerator(data)) {
+      if (this.isModerator(normalizedData)) {
         this.isLocked = true;
         console.log(`Widget locked by ${username}`);
       }
@@ -615,7 +640,7 @@ class TodoWidget {
     }
     
     if (message === unlockCmd && this.fieldData.enableLockUnlock) {
-      if (this.isModerator(data)) {
+      if (this.isModerator(normalizedData)) {
         this.isLocked = false;
         console.log(`Widget unlocked by ${username}`);
       }
@@ -624,7 +649,7 @@ class TodoWidget {
 
     // Highlight random task command
     if (message === highlightCmd && this.fieldData.enableHighlight) {
-      if (this.hasPermission(data, 'completeTaskPermission')) {
+      if (this.hasPermission(normalizedData, 'completeTaskPermission')) {
         this.highlightRandomTask(username);
       }
       return;
@@ -632,55 +657,55 @@ class TodoWidget {
 
     // Standard task commands
     if (message.startsWith('!addtask ') && this.fieldData.enableAddTask) {
-      if (this.hasPermission(data, 'addTaskPermission')) {
+      if (this.hasPermission(normalizedData, 'addTaskPermission')) {
         const task = originalMessage.substring(9).trim();
-        this.addTask(task, username, data);
+        this.addTask(task, username, normalizedData);
       }
       return;
     }
     
     if (message.startsWith('!complete ') && this.fieldData.enableCompleteTask) {
-      if (this.hasPermission(data, 'completeTaskPermission')) {
+      if (this.hasPermission(normalizedData, 'completeTaskPermission')) {
         const taskId = parseInt(originalMessage.substring(10).trim());
-        this.completeTask(taskId, username, data);
+        this.completeTask(taskId, username, normalizedData);
       }
       return;
     }
     
     if (message.startsWith('!remove ') && this.fieldData.enableRemoveTask) {
-      if (this.hasPermission(data, 'removeTaskPermission')) {
+      if (this.hasPermission(normalizedData, 'removeTaskPermission')) {
         const taskId = parseInt(originalMessage.substring(8).trim());
-        this.removeTask(taskId, username, data);
+        this.removeTask(taskId, username, normalizedData);
       }
       return;
     }
     
     if (message === '!clear' && this.fieldData.enableClearTasks) {
-      if (this.hasPermission(data, 'clearTasksPermission')) {
-        this.clearTasks(username, data);
+      if (this.hasPermission(normalizedData, 'clearTasksPermission')) {
+        this.clearTasks(username, normalizedData);
       }
       return;
     }
 
     // Legacy commands for backward compatibility
     if (message.startsWith('!todo add ')) {
-      if (this.hasPermission(data, 'addTaskPermission')) {
+      if (this.hasPermission(normalizedData, 'addTaskPermission')) {
         const task = originalMessage.substring(10).trim();
-        this.addTask(task, username, data);
+        this.addTask(task, username, normalizedData);
       }
     } else if (message.startsWith('!todo complete ')) {
-      if (this.hasPermission(data, 'completeTaskPermission')) {
+      if (this.hasPermission(normalizedData, 'completeTaskPermission')) {
         const taskId = parseInt(originalMessage.substring(15).trim());
-        this.completeTask(taskId, username, data);
+        this.completeTask(taskId, username, normalizedData);
       }
     } else if (message.startsWith('!todo remove ')) {
-      if (this.hasPermission(data, 'removeTaskPermission')) {
+      if (this.hasPermission(normalizedData, 'removeTaskPermission')) {
         const taskId = parseInt(originalMessage.substring(13).trim());
-        this.removeTask(taskId, username, data);
+        this.removeTask(taskId, username, normalizedData);
       }
     } else if (message === '!todo clear') {
-      if (this.hasPermission(data, 'clearTasksPermission')) {
-        this.clearTasks(username, data);
+      if (this.hasPermission(normalizedData, 'clearTasksPermission')) {
+        this.clearTasks(username, normalizedData);
       }
     }
   }
@@ -689,11 +714,22 @@ class TodoWidget {
     if (!this.fieldData.commandsEnabled) return false;
     
     const permissionLevel = this.fieldData[permissionType] || 'everyone';
+    
+    // Handle StreamElements badge format - badges is an array of objects
     const badges = data.badges || [];
-    const isSubscriber = badges.includes('subscriber');
-    const isVip = badges.includes('vip');
-    const isModerator = badges.includes('moderator');
-    const isBroadcaster = badges.includes('broadcaster');
+    const badgeTypes = badges.map(badge => badge.type || badge.name || badge).filter(Boolean);
+    
+    // Also check tags for Twitch-style badges
+    const tags = data.tags || {};
+    const twitchBadges = tags.badges ? tags.badges.split(',').map(b => b.split('/')[0]) : [];
+    
+    // Combine all badge information
+    const allBadges = [...badgeTypes, ...twitchBadges];
+    
+    const isSubscriber = allBadges.includes('subscriber') || tags.subscriber === '1';
+    const isVip = allBadges.includes('vip') || tags.vip === '1';
+    const isModerator = allBadges.includes('moderator') || allBadges.includes('mod') || tags.mod === '1';
+    const isBroadcaster = allBadges.includes('broadcaster') || allBadges.includes('streamer');
 
     switch (permissionLevel) {
       case 'broadcaster':
@@ -744,11 +780,24 @@ class TodoWidget {
   }
 
   isModerator(data) {
+    // Handle StreamElements badge format - badges is an array of objects
     const badges = data.badges || [];
-    return badges.includes('broadcaster') || badges.includes('moderator');
+    const badgeTypes = badges.map(badge => badge.type || badge.name || badge).filter(Boolean);
+    
+    // Also check tags for Twitch-style badges
+    const tags = data.tags || {};
+    const twitchBadges = tags.badges ? tags.badges.split(',').map(b => b.split('/')[0]) : [];
+    
+    // Combine all badge information
+    const allBadges = [...badgeTypes, ...twitchBadges];
+    
+    const isModerator = allBadges.includes('moderator') || allBadges.includes('mod') || tags.mod === '1';
+    const isBroadcaster = allBadges.includes('broadcaster') || allBadges.includes('streamer');
+    
+    return isBroadcaster || isModerator;
   }
 
-  addTask(taskText, username, data) {
+  addTask(taskText, username, _data) {
     if (!taskText) return;
 
     const taskList = document.querySelector('.task-list');
@@ -789,7 +838,7 @@ class TodoWidget {
     }
   }
 
-  completeTask(taskId, username, data) {
+  completeTask(taskId, username, _data) {
     const tasks = document.querySelectorAll('.task-item');
     if (taskId > 0 && taskId <= tasks.length) {
       const task = tasks[taskId - 1];
@@ -865,7 +914,7 @@ class TodoWidget {
     }
   }
 
-  removeTask(taskId, username, data) {
+  removeTask(taskId, username, _data) {
     const tasks = document.querySelectorAll('.task-item');
     if (taskId > 0 && taskId <= tasks.length) {
       const task = tasks[taskId - 1];
@@ -877,7 +926,7 @@ class TodoWidget {
     }
   }
 
-  clearTasks(username, data) {
+  clearTasks(username, _data) {
     const taskList = document.querySelector('.task-list');
     taskList.innerHTML = '';
     this.totalTasks = 0;

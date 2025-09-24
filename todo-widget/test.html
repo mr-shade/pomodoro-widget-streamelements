@@ -234,6 +234,68 @@
                 window._todoWidget.clearTasks('TestUser');
             }
         }
+
+        // Test chat command functionality
+        function testChatCommand(command) {
+            console.log(`Testing chat command: ${command}`);
+            
+            // Create mock chat message data in StreamElements format
+            const mockChatData = {
+                text: command,
+                displayName: 'TestUser',
+                nick: 'testuser',
+                userId: '12345',
+                tags: {
+                    badges: 'broadcaster/1',
+                    'display-name': 'TestUser',
+                    mod: '0',
+                    subscriber: '0',
+                    vip: '0'
+                },
+                badges: [
+                    {
+                        type: 'broadcaster',
+                        version: '1',
+                        url: 'https://example.com/badge.png',
+                        description: 'Broadcaster'
+                    }
+                ]
+            };
+
+            // Simulate StreamElements onEventReceived
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: 'message',
+                    event: {
+                        data: mockChatData
+                    }
+                }
+            });
+            
+            window.dispatchEvent(event);
+        }
+
+        // Add buttons for testing chat commands
+        function addChatTestButtons() {
+            const testControls = document.querySelector('.test-controls');
+            if (testControls) {
+                const chatTestsDiv = document.createElement('div');
+                chatTestsDiv.innerHTML = `
+                    <h3>Chat Command Tests</h3>
+                    <button onclick="testChatCommand('!addtask Test task from chat')">Test !addtask</button>
+                    <button onclick="testChatCommand('!complete 1')">Test !complete</button>
+                    <button onclick="testChatCommand('!remove 1')">Test !remove</button>
+                    <button onclick="testChatCommand('!clear')">Test !clear</button>
+                    <button onclick="testChatCommand('!highlight')">Test !highlight</button>
+                    <button onclick="testChatCommand('!lock')">Test !lock</button>
+                    <button onclick="testChatCommand('!unlock')">Test !unlock</button>
+                `;
+                testControls.appendChild(chatTestsDiv);
+            }
+        }
+
+        // Add chat test buttons after widget loads
+        setTimeout(addChatTestButtons, 500);
     </script>
     <script src="widget.js"></script>
 </body>
