@@ -1,0 +1,598 @@
+{
+  "designedbyhehe": {
+    "label": "Designed by @cozysprite | Etsy",
+    "type": "hidden",
+    "group": "🔤 FONT SETTINGS"
+  },
+  "titleStreamer": {
+    "type": "text",
+    "label": "List Title",
+    "value": "Today's Tasks",
+    "group": "🔤 FONT SETTINGS"
+  },
+  "googleFont": {
+    "type": "googleFont",
+    "label": "Select font",
+    "value": "Montserrat",
+    "group": "🔤 FONT SETTINGS"
+  },
+  "fontWeight": {
+    "label": "Font boldness",
+    "type": "dropdown",
+    "value": "700",
+    "options": {
+      "100": "Thin",
+      "300": "Light",
+      "400": "Regular",
+      "500": "Medium",
+      "700": "Bold",
+      "900": "Black"
+    },
+    "group": "🔤 FONT SETTINGS"
+  },
+  "fontSize": {
+    "label": "Title Font Size",
+    "type": "slider",
+    "value": 14,
+    "min": 10,
+    "max": 35,
+    "step": 1,
+    "group": "🔤 FONT SETTINGS"
+  },
+  "taskFontSize": {
+    "label": "Task Font Size",
+    "type": "slider",
+    "value": 14,
+    "min": 10,
+    "max": 35,
+    "step": 1,
+    "group": "🔤 FONT SETTINGS"
+  },
+  "letterSpacing": {
+    "label": "Letter Spacing",
+    "type": "slider",
+    "value": 1,
+    "min": 0,
+    "max": 10,
+    "step": 1,
+    "group": "🔤 FONT SETTINGS"
+  },
+  "tagAlignment": {
+    "type": "dropdown",
+    "label": "!Tag Font Alignment",
+    "value": "center",
+    "options": {
+      "center": "Center",
+      "left": "Left"
+    },
+    "group": "🔤 FONT SETTINGS"
+  },
+  "taskThreshold": {
+    "type": "slider",
+    "label": "Amount of tasks until scroll",
+    "value": 12,
+    "min": 1,
+    "max": 50,
+    "step": 1,
+    "group": "💟 CUSTOMIZATION"
+  },
+  "taskListHeight": {
+    "type": "slider",
+    "label": "Task List Height (px)",
+    "value": 200,
+    "min": 200,
+    "max": 500,
+    "step": 1,
+    "group": "💟 CUSTOMIZATION"
+  },
+  "backgroundImage": {
+    "group": "💟 CUSTOMIZATION",
+    "type": "dropdown",
+    "label": "💟 Select Background Animation",
+    "value": "customBackgroundImage1",
+    "options": {
+      "customBackgroundImage1": "🌸 Petals",
+      "customBackgroundImage2": "💦 Rain",
+      "customBackgroundImage3": "❄️ Snow",
+      "customBackgroundImage4": "✨ Sparkles",
+      "none": "none"
+    }
+  },
+  "animationImage": {
+    "group": "💟 CUSTOMIZATION",
+    "type": "dropdown",
+    "label": "🎬 Select Completed Task Animation",
+    "value": "customBackgroundImage1",
+    "options": {
+      "customBackgroundImage4": "✨ Sparkles",
+      "customBackgroundImage6": "🎉 Confetti",
+      "none": "none"
+    }
+  },
+  "cornerSize": {
+    "label": "Corner Radius",
+    "type": "slider",
+    "min": 0,
+    "max": 50,
+    "step": 1,
+    "value": 10,
+    "group": "💟 CUSTOMIZATION"
+  },
+  "help1": {
+    "label": "Icon & Checkbox Icon Settings",
+    "type": "hidden",
+    "group": "💟 CUSTOMIZATION"
+  },
+  "titleIconImage": {
+    "label": "❇️ Title Icon",
+    "type": "dropdown",
+    "value": "none",
+    "options": {
+      "https://i.imgur.com/qrm2asp.png": "Heart Bubble",
+      "https://i.imgur.com/lsPA7ch.png": "Heart",
+      "https://i.imgur.com/Jo4KSMN.png": "4 Point Star",
+      "https://i.imgur.com/UIMHTgX.png": "4 Point Star with dots",
+      "none": "No Icon"
+    },
+    "group": "💟 CUSTOMIZATION"
+  },
+  "iconAnimation": {
+    "label": "❇️ Title Icon Float Animation",
+    "type": "dropdown",
+    "value": "none",
+    "options": {
+      "floatUpDown 5s ease-in-out infinite": "On",
+      "floatUpDown 0s ease-in-out infinite": "Off"
+    },
+    "group": "💟 CUSTOMIZATION"
+  },
+  "titleIconSize": {
+    "label": "❇️ Title Icon Size",
+    "type": "slider",
+    "value": 20,
+    "min": 10,
+    "max": 50,
+    "step": 1,
+    "group": "💟 CUSTOMIZATION"
+  },
+  "checkboxImage": {
+    "label": "☑️ Checkbox Icon",
+    "type": "dropdown",
+    "value": "arrow",
+    "options": {
+      "https://i.imgur.com/NZecCO7.png": "Checkbox",
+      "https://i.imgur.com/lsPA7ch.png": "Heart",
+      "https://i.imgur.com/1Rqj8rB.png": "Star",
+      "none": "No Icon"
+    },
+    "group": "💟 CUSTOMIZATION"
+  },
+  "completedIcon": {
+    "label": "☑️ Completed Checkbox Icon",
+    "type": "dropdown",
+    "value": "https://i.imgur.com/JXZ3Npz.png",
+    "options": {
+      "https://i.imgur.com/zBUx9EK.png": "Filled Checkbox",
+      "https://i.imgur.com/sggzD9x.png": "Filled Heart",
+      "https://i.imgur.com/QtnlG7t.png": "Filled Star",
+      "https://i.imgur.com/JXZ3Npz.png": "Checkmark",
+      "none": "No Icon"
+    },
+    "group": "💟 CUSTOMIZATION"
+  },
+  "sparkleVisibility": {
+    "type": "checkbox",
+    "label": "🌸 Show Cherry Blossom Icons",
+    "value": true,
+    "group": "💟 CUSTOMIZATION"
+  },
+  "checkboxIconSize": {
+    "label": "☑️ Checkbox Icon Size",
+    "type": "slider",
+    "value": 20,
+    "min": 10,
+    "max": 50,
+    "step": 1,
+    "group": "💟 CUSTOMIZATION"
+  },
+  "Fontcolorhelp": {
+    "label": "🔤 Font Colors",
+    "type": "hidden",
+    "group": "🎨 COLORS"
+  },
+  "fontColor": {
+    "type": "colorpicker",
+    "label": "Title Color",
+    "value": "#000000",
+    "group": "🎨 COLORS"
+  },
+  "taskFontColor": {
+    "type": "colorpicker",
+    "label": "Task Color",
+    "value": "#000000",
+    "group": "🎨 COLORS"
+  },
+  "completedTaskColor": {
+    "type": "colorpicker",
+    "label": "Completed Task Color",
+    "value": "#ffffff",
+    "group": "🎨 COLORS"
+  },
+  "usernameColor": {
+    "type": "colorpicker",
+    "label": "Username Color",
+    "value": "#000000",
+    "group": "🎨 COLORS"
+  },
+  "boxcolorhelp": {
+    "label": "🟪 Box Colors",
+    "type": "hidden",
+    "group": "🎨 COLORS"
+  },
+  "bubbleColorLeft": {
+    "type": "colorpicker",
+    "label": "Tasklist Background Color Left",
+    "value": "#ffffff",
+    "group": "🎨 COLORS"
+  },
+  "bubbleColorRight": {
+    "type": "colorpicker",
+    "label": "Tasklist Background Color Right",
+    "value": "#ffffff",
+    "group": "🎨 COLORS"
+  },
+  "iconcolorhelp": {
+    "label": "✔️ Icon Colors",
+    "type": "hidden",
+    "group": "🎨 COLORS"
+  },
+  "titleIconColor": {
+    "label": "❇️ Title Icon Color",
+    "type": "colorpicker",
+    "value": "#000000",
+    "group": "🎨 COLORS"
+  },
+  "checkboxColor": {
+    "type": "colorpicker",
+    "label": "☑️ Checkbox Icon Color",
+    "value": "#000000",
+    "group": "🎨 COLORS"
+  },
+  "commandcolorhelp": {
+    "label": "❕ Command Option Colors",
+    "type": "hidden",
+    "group": "🎨 COLORS"
+  },
+  "highPriorityColor": {
+    "type": "colorpicker",
+    "label": "🔴 ❕High Priority Color",
+    "value": "#FF0000",
+    "group": "🎨 COLORS"
+  },
+  "mediumPriorityColor": {
+    "type": "colorpicker",
+    "label": "🟡 ❕Med Priority Color",
+    "value": "#FFFF00",
+    "group": "🎨 COLORS"
+  },
+  "lowPriorityColor": {
+    "type": "colorpicker",
+    "label": "🟢 ❕Low Priority Color",
+    "value": "#00FF00",
+    "group": "🎨 COLORS"
+  },
+  "highlightColor": {
+    "type": "colorpicker",
+    "label": "✨ ❕Highlight Color",
+    "value": "#FF0000",
+    "group": "🎨 COLORS"
+  },
+  "customApiKey": {
+    "type": "text",
+    "label": "Custom API History Key",
+    "value": "TaskListState",
+    "group": "☑️ TASKLIST"
+  },
+  "showUsername": {
+    "type": "checkbox",
+    "label": "Show Usernames",
+    "value": true,
+    "group": "☑️ TASKLIST"
+  },
+  "enableTags": {
+    "type": "checkbox",
+    "label": "Enable Tag Command",
+    "value": true,
+    "group": "☑️ TASKLIST"
+  },
+  "enablePriorityCommands": {
+    "type": "checkbox",
+    "label": "Enable Priority Commands",
+    "value": true,
+    "group": "☑️ TASKLIST"
+  },
+  "highlightEnabled": {
+    "label": "Enable Highlight Command",
+    "type": "checkbox",
+    "value": true,
+    "group": "☑️ TASKLIST"
+  },
+  "allowedUsers": {
+    "type": "dropdown",
+    "label": "👤 Allowed Users",
+    "value": "viewers",
+    "options": {
+      "viewers": "Viewers",
+      "vip": "VIP",
+      "subs": "Subscribers",
+      "mods": "Moderators",
+      "broadcaster": "Broadcaster",
+      "subsAndBroadcaster": "Subscribers and Broadcaster",
+      "modsAndBroadcaster": "Moderators and Broadcaster",
+      "vipsAndBroadcaster": "VIPs and Broadcaster",
+      "subsModsVips": "Subscribers, Moderators, and VIPs",
+      "allButBroadcaster": "Everyone (Except Broadcaster)",
+      "everyoneIncludingBroadcaster": "Everyone (Including Broadcaster)"
+    },
+    "group": "☑️ TASKLIST"
+  },
+  "taskVisibility": {
+    "type": "dropdown",
+    "label": "✔️ Completed Tasks Visibility",
+    "value": "moveToBottom",
+    "options": {
+      "moveToBottom": "Move to Bottom",
+      "hide": "Hide",
+      "": "Stay In Place"
+    },
+    "group": "☑️ TASKLIST"
+  },
+  "progressFontSize": {
+    "label": "Progress Font Size",
+    "type": "slider",
+    "value": 14,
+    "min": 10,
+    "max": 35,
+    "step": 1,
+    "group": "📊 PROGRESS BAR"
+  },
+  "progressFontColor": {
+    "label": "Progress Font Color",
+    "type": "colorpicker",
+    "value": "#000000",
+    "group": "📊 PROGRESS BAR"
+  },
+  "barColorLeft": {
+    "type": "colorpicker",
+    "label": "Progress Bar Color Left",
+    "value": "#ffffff",
+    "group": "📊 PROGRESS BAR"
+  },
+  "barColorRight": {
+    "type": "colorpicker",
+    "label": "Progress Bar Color Right",
+    "value": "#ffffff",
+    "group": "📊 PROGRESS BAR"
+  },
+  "progressBackgroundColor": {
+    "type": "colorpicker",
+    "label": "Progress Bar Background Color",
+    "value": "#CCCCCC",
+    "group": "📊 PROGRESS BAR"
+  },
+  "hideProgressBar": {
+    "type": "checkbox",
+    "label": "Hide Progress Bar",
+    "value": false,
+    "group": "📊 PROGRESS BAR"
+  },
+  "blacklistedUsers": {
+    "type": "text",
+    "label": "Blacklisted Users",
+    "value": "",
+    "group": "❕COMMANDS"
+  },
+  "help23": {
+    "label": "task priority commands:",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "help24": {
+    "label": "!low !medium !high",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "help25": {
+    "label": "example: !newtask !high task here",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "highlightDuration": {
+    "type": "slider",
+    "label": "Highlight Duration (seconds)",
+    "value": 15,
+    "min": 5,
+    "max": 60,
+    "step": 1,
+    "group": "❕COMMANDS"
+  },
+  "help2222": {
+    "label": "example: !highlight",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "highlightTaskCommand": {
+    "type": "text",
+    "label": "Highlight Task Command",
+    "value": "!highlighttask",
+    "group": "❕COMMANDS"
+  },
+  "help222": {
+    "label": "example: !newtask task here",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "newTaskCommand": {
+    "type": "text",
+    "label": "New Task Command",
+    "value": "!newtask",
+    "group": "❕COMMANDS"
+  },
+  "altNewTaskCommand": {
+    "type": "text",
+    "label": "Alternative New Task Command",
+    "value": "+newtask",
+    "group": "❕COMMANDS"
+  },
+  "help38": {
+    "label": "example: !donetask task here",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "completeTaskCommand": {
+    "type": "text",
+    "label": "Completed Task Command",
+    "value": "!donetask",
+    "group": "❕COMMANDS"
+  },
+  "altCompleteTaskCommand": {
+    "type": "text",
+    "label": "Alternative Completed Task Command",
+    "value": "+donetask",
+    "group": "❕COMMANDS"
+  },
+  "help44": {
+    "label": "example: !cleartask task here",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "removeTaskCommand": {
+    "type": "text",
+    "label": "Remove Task Command",
+    "value": "!cleartask",
+    "group": "❕COMMANDS"
+  },
+  "altRemoveTaskCommand": {
+    "type": "text",
+    "label": "Alternative Remove Task Command",
+    "value": "+cleartask",
+    "group": "❕COMMANDS"
+  },
+  "help41": {
+    "label": "Resets tasklist",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "resetCommand": {
+    "type": "text",
+    "label": "Reset Command",
+    "value": "!reset",
+    "group": "❕COMMANDS"
+  },
+  "help55": {
+    "label": "Locks the tasklist",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "lockCommand": {
+    "type": "text",
+    "label": "Lock Command",
+    "value": "!lock",
+    "group": "❕COMMANDS"
+  },
+  "help66": {
+    "label": "Unlocks the tasklist",
+    "type": "hidden",
+    "group": "❕COMMANDS"
+  },
+  "unlockCommand": {
+    "type": "text",
+    "label": "Unlock Command",
+    "value": "!unlock",
+    "group": "❕COMMANDS"
+  },
+  "emptyspace7": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "emptyspace6": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "emptyspace5": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "emptyspace4": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "emptyspace3": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "designedbyhehe_duplicate1": {
+    "label": "⛔️ Please dont change these boxes!",
+    "type": "hidden",
+    "group": "⚙️"
+  },
+  "designedbyhehe_duplicate2": {
+    "label": "you cannot get them back ⛔️",
+    "type": "hidden",
+    "group": "⚙️"
+  },
+  "emptyspace2": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "emptyspace1": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "space2_duplicate5": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "space3_duplicate4": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "space4_duplicate4": {
+    "group": "⚙️",
+    "type": "hidden",
+    "value": " "
+  },
+  "customBackgroundImage1": {
+    "group": "⚙️",
+    "type": "image-input",
+    "label": "🌸 Petals",
+    "value": ""
+  },
+  "customBackgroundImage2": {
+    "group": "⚙️",
+    "type": "image-input",
+    "label": "💦 Rain",
+    "value": ""
+  },
+  "customBackgroundImage3": {
+    "group": "⚙️",
+    "type": "image-input",
+    "label": "❄️ Snow",
+    "value": ""
+  },
+  "customBackgroundImage4": {
+    "group": "⚙️",
+    "type": "image-input",
+    "label": "✨ Sparkles",
+    "value": ""
+  }
+}
