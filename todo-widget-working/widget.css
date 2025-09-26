@@ -1,0 +1,349 @@
+/* ------------------------------------------------------------ 
+Cozysprite sakura tasklist widget 
+designed by @cozysprite
+
+✦  Instagram     • https://www.instagram.com/cozysprite/
+✦  Twitter     • https://twitter.com/cozysprite/
+✦  Etsy     • https://www.etsy.com/ca/shop/cozysprite/
+
+/*      - comment or note
+
+❤ czs
+------------------------------------------------------------  */
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css?family={{googleFont}}');
+
+* {
+    font-family: {{googleFont}}, sans-serif;
+    font-weight: {{fontWeight}};
+    color: {{fontColor}};
+    letter-spacing: {{letterSpacing}}px;
+}
+
+#scrolling-box {
+    width: 100%;
+    height: {{taskListHeight}}px; /* Adjustable height */
+    overflow: hidden;
+    margin-top: 10px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+#scrolling-tasks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Scroll animation */
+@keyframes scroll-bounce {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(calc(-100% + {{taskListHeight}}px));
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.scrolling {
+    animation: scroll-bounce 15s linear infinite;
+}
+
+
+
+#streamer-title-icon {
+    margin-right: 10px;
+    margin-right: -10px;
+    padding-left: 60px;
+    width: {{titleIconSize}}px;
+    height: {{titleIconSize}}px;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    background-color: {{titleIconColor}};
+    animation: {{iconAnimation}};
+    z-index: 1;
+}
+
+.main-image {
+    position: absolute;
+    padding-top: 4px;
+    padding-left: 22px;
+    top: 0px;
+    left: 0px;
+    width: 50px;
+    height: auto;
+    z-index: 0;
+    opacity: 1;
+    transform: rotate(-10deg); /* Adjust the angle as needed */
+}
+
+.main-image2 {
+    position: absolute;
+    padding-top: 29px;
+    padding-left: 10px;
+    top: 20px;
+    left: 0px;
+    width: 35px;
+    height: auto;
+    z-index: 0;
+    opacity: 1;
+    transform: rotate(-13deg); /* Adjust the angle as needed */
+}
+
+.main-image3 {
+    position: absolute;
+    padding-top: 99px;
+    padding-left: 25px;
+    top: 20px;
+    left: 0px;
+    width: 25px;
+    height: auto;
+    z-index: 0;
+    opacity: 1;
+    transform: rotate(13deg); /* Adjust the angle as needed */
+}
+
+.main-image4 {
+    position: absolute;
+    padding-top: 134px;
+    padding-left: 9px;
+    top: 20px;
+    left: 0px;
+    width: 20px;
+    height: auto;
+    z-index: 0;
+    opacity: 1;
+    transform: rotate(-13deg); /* Adjust the angle as needed */
+}
+
+.task-listback {
+    width: 90%;
+    overflow-y: auto;
+    border-radius: {{cornerSize}}px;
+    background: linear-gradient(to right, {{bubbleColorLeft}}, {{bubbleColorRight}});
+    border: {{borderSize}}px solid {{borderColor}};
+    margin: 0;
+    padding: 0px;
+    padding-top: -10px;
+    padding-bottom: 0px;
+}
+
+.task-list {
+    width: 100%;
+    overflow-y: auto;
+    border-radius: {{cornerSize}}px;
+    position: relative; /* Make sure the pseudo-element is positioned relative to this element */
+    border: {{borderSize}}px solid {{borderColor}};
+    margin: 0;
+    padding: 0px;
+    padding-top: -10px;
+    padding-bottom: 25px;
+}
+
+.task-list::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Ensure the background image covers the element */
+    border-radius: inherit; /* Match the border radius of the parent */
+    z-index: -1; /* Place it behind the content */
+}
+
+.fade-in-out::before {
+    animation: backgroundFadeInOut 3s;
+}
+
+.task-list ul {
+    border: 0px solid {{borderColor}};
+    list-style: none;
+    padding: 0;
+    background-color: rgba(254, 254, 254, 0);
+}
+
+.task-list li {
+    border: 0px solid {{borderColor}};
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding-left: 10px;
+    font-size: {{taskFontSize}}px;
+    color: {{taskFontColor}};
+    background-color: rgba(254, 254, 254, 0);
+    padding-top: -10px;
+}
+
+.task-list li .icon {
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    border: 0px solid {{borderColor}};
+    position: relative;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    width: {{checkboxIconSize}}px;
+    height: {{checkboxIconSize}}px;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    background-color: {{checkboxColor}};
+}
+
+.tag-container {
+    margin-top: -10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.tag-header {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: {{fontColor}};
+    text-align: {{tagAlignment}};
+    padding-left: {{tagAlignment}} === 'left' ? '15px' : '0';
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(calc(-100% + 100px));
+    }
+}
+
+@keyframes floatUpDown {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.task-list.scrolling {
+    animation: scroll 10s linear infinite;
+}
+
+#widget-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-family: {{googleFont}};
+    background-color: rgba(254, 254, 254, 0);
+    border-radius: {{cornerSize}}px;
+    font-weight: {{fontWeight}};
+    font-size: {{fontSize}}px;
+    color: {{fontColor}};
+    letter-spacing: {{letterSpacing}}px;
+    text-align: {{textAlign}};
+}
+
+#streamer-title-container {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+    margin-bottom: -10px;
+}
+
+@keyframes translate-in {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.new-task.animate {
+    animation: translate-in 1.5s ease-in-out;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+    background: {{completedColor}};
+    z-index: 1;
+}
+
+#progress-container {
+    width: 87%;
+    background: linear-gradient(to right, {{bubbleColorLeft}}, {{bubbleColorRight}});
+    border: {{borderSize}}px solid {{borderColor}};
+    border-radius: {{cornerSize}}px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+}
+
+#progress-bar {
+    width: 100%;
+    height: 15px;
+    background-color: {{progressBackgroundColor}};
+    border-radius: {{cornerSize}}px;
+    position: relative;
+    overflow: hidden;
+}
+
+#progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(to right, {{barColorLeft}}, {{barColorRight}});
+    border-radius: {{cornerSize}}px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+}
+
+#progress-text {
+    margin-left: 10px;
+    font-size: {{progressFontSize}}px;
+    color: {{progressFontColor}};
+    line-height: 15px;
+    white-space: nowrap;
+}
+
+/* Highlight style */
+.highlight {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    text-shadow: 0 0 1px {{highlightColor}}, 0 0 2px {{highlightColor}}, 0 0 3px {{highlightColor}}, 0 0 4px {{highlightColor}}, 0 0 5px {{highlightColor}}, 0 0 6px {{highlightColor}}, 0 0 7px {{highlightColor}}, 0 0 8px {{highlightColor}}, 0 0 9px {{highlightColor}}, 0 0 10px {{highlightColor}}, 0 0 11px {{highlightColor}}, 0 0 12px {{highlightColor}}, 0 0 13px {{highlightColor}}, 0 0 14px {{highlightColor}}, 0 0 15px {{highlightColor}};
+}
+
+/* Priority styles */
+.high-priority {
+    color: {{highPriorityColor}};
+    text-shadow: 0 0 5px {{highPriorityColor}};
+}
+
+.medium-priority {
+    color: {{mediumPriorityColor}};
+    text-shadow: 0 0 5px {{mediumPriorityColor}};
+}
+
+.low-priority {
+    color: {{lowPriorityColor}};
+    text-shadow: 0 0 5px {{lowPriorityColor}};
+}
+
+.hide-sparkles .main-image,
+.hide-sparkles .main-image2,
+.hide-sparkles .main-image3,
+.hide-sparkles .main-image4 {
+    display: none;
+}
