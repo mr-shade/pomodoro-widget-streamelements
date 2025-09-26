@@ -457,12 +457,34 @@ class TodoWidget {
   initializeChatCommands() {
     console.log("Initializing chat commands...");
     
-    // Modern StreamElements event listener for chat messages
+    // StreamElements event listener for chat messages (following working implementation)
     window.addEventListener('onEventReceived', (obj) => {
       try {
-        if (obj.detail && obj.detail.listener === 'message' && obj.detail.event && obj.detail.event.data) {
-          console.log("Received chat message:", obj.detail.event.data);
-          this.handleChatCommand(obj.detail.event.data);
+        const data = obj.detail.event;
+        const user = data.data?.nick || data.data?.user_name || 'unknown user';
+        const role = data.data?.tags?.badges || 'viewer';
+
+        console.log(`Message received - User: ${user} Role: ${role}`, data);
+
+        let userRole = 'viewer';
+        if (role) {
+          if (role.includes('broadcaster')) {
+            userRole = 'broadcaster';
+          } else if (role.includes('moderator')) {
+            userRole = 'moderator';
+          } else if (role.includes('vip')) {
+            userRole = 'vip';
+          } else if (role.includes('subscriber')) {
+            userRole = 'subscriber';
+          } else if (role.includes('founder')) {
+            userRole = 'founder';
+          }
+        }
+
+        console.log(`Determined Role: ${userRole}`);
+
+        if (data.renderedText) {
+          this.handleChatCommand(data.renderedText, user, userRole);
         }
       } catch (error) {
         console.error("Error handling chat command:", error);
@@ -590,159 +612,138 @@ class TodoWidget {
     }
   }
 
-  handleChatCommand(data) {
-    console.log("Raw chat data:", data);
+  handleChatCommand(command, user, role) {
+    console.log(`Processing command: "${command}" from user: ${user} with role: ${role}`);
     
-    if (!data || !data.text) {
-      console.log("No text in message, skipping");
+    if (!this.fieldData) {
+      console.log("No field data available");
       return;
     }
 
-    // Normalize data structure for StreamElements event format
-    const normalizedData = {
-      message: data.text,
-      username: data.displayName || data.nick || 'User',
-      userId: data.userId,
-      tags: data.tags || {},
-      badges: data.badges || []
-    };
-    
-    console.log("Normalized data:", normalizedData);
-
-    // Check if widget is locked
-    if (this.isLocked && !this.isModerator(normalizedData)) {
-      console.log(`Widget is locked, ${normalizedData.username} cannot use commands`);
+    // Check if widget is locked (only allow mods/broadcasters when locked)
+    if (this.isLocked && role !== 'moderator' && role !== 'broadcaster') {
+      console.log(`Widget is locked, ${user} (${role}) cannot use commands`);
       return;
     }
 
     // Check if user is blacklisted
-    if (this.isUserBlacklisted(normalizedData)) {
-      console.log(`User ${normalizedData.username} is blacklisted`);
+    if (this.isUserBlacklisted({ username: user })) {
+      console.log(`User ${user} is blacklisted`);
       return;
     }
 
-    const message = normalizedData.message.toLowerCase();
-    const originalMessage = normalizedData.message;
-    const username = normalizedData.username;
+    const parts = command.split(' ');
+    const cmd = parts[0].toLowerCase();
+    let task = '';
 
-    // Custom commands with permission checks
-    const lockCmd = (this.fieldData.lockCommand || '!lock').toLowerCase();
-    const unlockCmd = (this.fieldData.unlockCommand || '!unlock').toLowerCase();
-    const highlightCmd = (this.fieldData.highlightCommand || '!highlight').toLowerCase();
-
-    // Lock/Unlock commands (moderator only)
-    if (message === lockCmd && this.fieldData.enableLockUnlock) {
-      if (this.isModerator(normalizedData)) {
-        this.isLocked = true;
-        console.log(`Widget locked by ${username}`);
-      }
-      return;
-    }
+    // Define admin commands that require mod/broadcaster permissions
+    const adminCommands = ['!lock', '!unlock', '!clear', '!reset'];
     
-    if (message === unlockCmd && this.fieldData.enableLockUnlock) {
-      if (this.isModerator(normalizedData)) {
-        this.isLocked = false;
-        console.log(`Widget unlocked by ${username}`);
+    // Check admin command permissions
+    if (adminCommands.includes(cmd)) {
+      if (role !== 'moderator' && role !== 'broadcaster') {
+        console.log(`User ${user} (${role}) not authorized for admin command ${cmd}`);
+        return;
       }
-      return;
+    } else {
+      // Check general task command permissions
+      if (!this.hasTaskPermission(role)) {
+        console.log(`User ${user} (${role}) not authorized for task commands`);
+        return;
+      }
     }
 
-    // Highlight random task command
-    if (message === highlightCmd && this.fieldData.enableHighlight) {
-      if (this.hasPermission(normalizedData, 'completeTaskPermission')) {
-        this.highlightRandomTask(username);
-      }
-      return;
+    // Extract task text for task commands
+    if (parts.length > 1) {
+      task = parts.slice(1).join(' ');
     }
 
-    // Standard task commands
-    if (message.startsWith('!addtask ') && this.fieldData.enableAddTask) {
-      if (this.hasPermission(normalizedData, 'addTaskPermission')) {
-        const task = originalMessage.substring(9).trim();
-        this.addTask(task, username, normalizedData);
-      }
-      return;
-    }
-    
-    if (message.startsWith('!complete ') && this.fieldData.enableCompleteTask) {
-      if (this.hasPermission(normalizedData, 'completeTaskPermission')) {
-        const taskId = parseInt(originalMessage.substring(10).trim());
-        this.completeTask(taskId, username, normalizedData);
-      }
-      return;
-    }
-    
-    if (message.startsWith('!remove ') && this.fieldData.enableRemoveTask) {
-      if (this.hasPermission(normalizedData, 'removeTaskPermission')) {
-        const taskId = parseInt(originalMessage.substring(8).trim());
-        this.removeTask(taskId, username, normalizedData);
-      }
-      return;
-    }
-    
-    if (message === '!clear' && this.fieldData.enableClearTasks) {
-      if (this.hasPermission(normalizedData, 'clearTasksPermission')) {
-        this.clearTasks(username, normalizedData);
-      }
-      return;
-    }
-
-    // Legacy commands for backward compatibility
-    if (message.startsWith('!todo add ')) {
-      if (this.hasPermission(normalizedData, 'addTaskPermission')) {
-        const task = originalMessage.substring(10).trim();
-        this.addTask(task, username, normalizedData);
-      }
-    } else if (message.startsWith('!todo complete ')) {
-      if (this.hasPermission(normalizedData, 'completeTaskPermission')) {
-        const taskId = parseInt(originalMessage.substring(15).trim());
-        this.completeTask(taskId, username, normalizedData);
-      }
-    } else if (message.startsWith('!todo remove ')) {
-      if (this.hasPermission(normalizedData, 'removeTaskPermission')) {
-        const taskId = parseInt(originalMessage.substring(13).trim());
-        this.removeTask(taskId, username, normalizedData);
-      }
-    } else if (message === '!todo clear') {
-      if (this.hasPermission(normalizedData, 'clearTasksPermission')) {
-        this.clearTasks(username, normalizedData);
-      }
+    // Process commands
+    switch (cmd) {
+      case '!addtask':
+      case '!newtask':
+        if (task && this.fieldData.enableAddTask !== false) {
+          this.addTask(task, user);
+        }
+        break;
+        
+      case '!complete':
+      case '!donetask':
+        if (task && this.fieldData.enableCompleteTask !== false) {
+          this.completeTaskByName(task, user, role);
+        }
+        break;
+        
+      case '!remove':
+      case '!cleartask':
+        if (task && this.fieldData.enableRemoveTask !== false) {
+          this.removeTaskByName(task, user, role);
+        }
+        break;
+        
+      case '!clear':
+      case '!reset':
+        if (this.fieldData.enableClearTasks !== false) {
+          this.clearTasks(user);
+        }
+        break;
+        
+      case '!lock':
+        if (this.fieldData.enableLockUnlock !== false) {
+          this.isLocked = true;
+          console.log(`Widget locked by ${user}`);
+        }
+        break;
+        
+      case '!unlock':
+        if (this.fieldData.enableLockUnlock !== false) {
+          this.isLocked = false;
+          console.log(`Widget unlocked by ${user}`);
+        }
+        break;
+        
+      case '!highlight':
+        if (this.fieldData.enableHighlight !== false) {
+          this.highlightRandomTask(user);
+        }
+        break;
+        
+      default:
+        console.log(`Unknown command: ${cmd}`);
     }
   }
 
-  hasPermission(data, permissionType) {
-    if (!this.fieldData.commandsEnabled) return false;
+  hasTaskPermission(role) {
+    // Simple permission check based on fieldData settings (if they exist)
+    const allowedUsers = this.fieldData.allowedUsers || 'everyoneincludingbroadcaster';
     
-    const permissionLevel = this.fieldData[permissionType] || 'everyone';
-    
-    // Handle StreamElements badge format - badges is an array of objects
-    const badges = data.badges || [];
-    const badgeTypes = badges.map(badge => badge.type || badge.name || badge).filter(Boolean);
-    
-    // Also check tags for Twitch-style badges
-    const tags = data.tags || {};
-    const twitchBadges = tags.badges ? tags.badges.split(',').map(b => b.split('/')[0]) : [];
-    
-    // Combine all badge information
-    const allBadges = [...badgeTypes, ...twitchBadges];
-    
-    const isSubscriber = allBadges.includes('subscriber') || tags.subscriber === '1';
-    const isVip = allBadges.includes('vip') || tags.vip === '1';
-    const isModerator = allBadges.includes('moderator') || allBadges.includes('mod') || tags.mod === '1';
-    const isBroadcaster = allBadges.includes('broadcaster') || allBadges.includes('streamer');
-
-    switch (permissionLevel) {
+    switch (allowedUsers.toLowerCase()) {
+      case 'viewers':
+        return role === 'viewer';
       case 'broadcaster':
-        return isBroadcaster;
+        return role === 'broadcaster';
+      case 'mods':
       case 'moderator':
-        return isBroadcaster || isModerator;
-      case 'vip':
-        return isBroadcaster || isModerator || isVip;
+        return role === 'moderator';
+      case 'subs':
       case 'subscriber':
-        return isBroadcaster || isModerator || isVip || isSubscriber;
-      case 'everyone':
-      default:
+        return role === 'subscriber' || role === 'founder';
+      case 'vip':
+        return role === 'vip';
+      case 'allbutbroadcaster':
+        return role !== 'broadcaster';
+      case 'everyoneincludingbroadcaster':
         return true;
+      case 'subsandbroadcaster':
+        return role === 'subscriber' || role === 'founder' || role === 'broadcaster';
+      case 'modsandbroadcaster':
+        return role === 'moderator' || role === 'broadcaster';
+      case 'vipsandbroadcaster':
+        return role === 'vip' || role === 'broadcaster';
+      case 'subsmodsvips':
+        return role === 'subscriber' || role === 'founder' || role === 'moderator' || role === 'vip';
+      default:
+        return true; // Default to allowing everyone
     }
   }
 
@@ -797,12 +798,91 @@ class TodoWidget {
     return isBroadcaster || isModerator;
   }
 
+  completeTaskByName(taskName, username, role) {
+    const taskItems = document.querySelectorAll('.task-item:not(.completed)');
+    let taskFound = false;
+    
+    for (let taskItem of taskItems) {
+      const taskTextElement = taskItem.querySelector('.task-text');
+      if (taskTextElement && taskTextElement.textContent.toLowerCase().trim() === taskName.toLowerCase().trim()) {
+        // Check if user can complete this task (their own task or mod/broadcaster)
+        const taskUsername = taskItem.dataset.username;
+        if (taskUsername === username || role === 'moderator' || role === 'broadcaster') {
+          taskItem.classList.add('completed');
+          const checkbox = taskItem.querySelector('.checkbox');
+          if (checkbox) {
+            checkbox.classList.add('checked');
+          }
+          this.completedTasks++;
+          this.updateProgress();
+          this.playSound('taskCompleteSound');
+          
+          // Check if all tasks are completed
+          const remainingTasks = document.querySelectorAll('.task-item:not(.completed)').length;
+          if (remainingTasks === 0 && this.tasks.length > 0) {
+            this.playSound('allTasksCompleteSound');
+            this.startConfetti();
+          }
+          
+          taskFound = true;
+          console.log(`Task "${taskName}" completed by ${username}`);
+          break;
+        } else {
+          console.log(`${username} cannot complete task created by ${taskUsername}`);
+        }
+      }
+    }
+    
+    if (!taskFound) {
+      console.log(`Task "${taskName}" not found or already completed`);
+    }
+  }
+
+  removeTaskByName(taskName, username, role) {
+    const taskItems = document.querySelectorAll('.task-item');
+    let taskFound = false;
+    
+    for (let taskItem of taskItems) {
+      const taskTextElement = taskItem.querySelector('.task-text');
+      if (taskTextElement && taskTextElement.textContent.toLowerCase().trim() === taskName.toLowerCase().trim()) {
+        // Check if user can remove this task (their own task or mod/broadcaster)
+        const taskUsername = taskItem.dataset.username;
+        if (taskUsername === username || role === 'moderator' || role === 'broadcaster') {
+          // Update counters if task was completed
+          if (taskItem.classList.contains('completed')) {
+            this.completedTasks--;
+          }
+          this.totalTasks--;
+          
+          // Remove with animation
+          taskItem.classList.add('slide-out');
+          setTimeout(() => {
+            taskItem.remove();
+            this.updateProgress();
+            this.updateMoreTasksButton();
+          }, 300);
+          
+          taskFound = true;
+          console.log(`Task "${taskName}" removed by ${username}`);
+          break;
+        } else {
+          console.log(`${username} cannot remove task created by ${taskUsername}`);
+        }
+      }
+    }
+    
+    if (!taskFound) {
+      console.log(`Task "${taskName}" not found`);
+    }
+  }
+
   addTask(taskText, username, _data) {
     if (!taskText) return;
 
     const taskList = document.querySelector('.task-list');
     const newTaskElement = document.createElement('div');
     newTaskElement.className = 'task-item slide-in'; // Add slide-in animation class
+    newTaskElement.dataset.username = username; // Store username for permission checks
     newTaskElement.innerHTML = `
       <div class="checkbox"></div>
       <span class="task-text">${this.escapeHtml(taskText)}</span>
@@ -926,7 +1006,7 @@ class TodoWidget {
     }
   }
 
-  clearTasks(username, _data) {
+  clearTasks(username) {
     const taskList = document.querySelector('.task-list');
     taskList.innerHTML = '';
     this.totalTasks = 0;
