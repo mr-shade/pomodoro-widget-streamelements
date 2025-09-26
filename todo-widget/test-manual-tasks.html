@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Widget Test - Manual Tasks</title>
+    <link rel="stylesheet" href="widget.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .test-controls {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #007cba;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover { background: #005a8b; }
+        button.high-priority { background: #ff4757; }
+        button.medium-priority { background: #ffa726; }
+        button.low-priority { background: #66bb6a; }
+        input[type="text"] {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 300px;
+        }
+        .widget-container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+        .manual-tasks-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #007cba;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-controls">
+        <h2>Todo Widget Test - Manual Tasks & Priorities</h2>
+        <p>Test the new manual task functionality and priority system:</p>
+        
+        <div class="manual-tasks-section">
+            <h3>Manual Tasks (Dashboard Simulation)</h3>
+            <p>These tasks would be set in the StreamElements dashboard:</p>
+            <button onclick="loadManualTasks()">Load Manual Tasks</button>
+            <button onclick="clearTasks()">Clear All Tasks</button>
+        </div>
+        
+        <div>
+            <h3>Chat Commands with Priority</h3>
+            <input type="text" id="commandInput" placeholder="Type a command like !task buy groceries !high" />
+            <button onclick="testChatCommand()">Send Chat Command</button>
+        </div>
+        
+        <div>
+            <h3>Quick Priority Tests</h3>
+            <button class="high-priority" onclick="testAddHighPriority()">Add High Priority Task</button>
+            <button class="medium-priority" onclick="testAddMediumPriority()">Add Medium Priority Task</button>
+            <button class="low-priority" onclick="testAddLowPriority()">Add Low Priority Task</button>
+            <button onclick="testAddNormalTask()">Add Normal Task</button>
+        </div>
+        
+        <p><strong>Priority Commands:</strong></p>
+        <ul>
+            <li><code>!task buy groceries !high</code> - Add high priority task</li>
+            <li><code>!task clean room !med</code> - Add medium priority task</li>
+            <li><code>!task water plants !low</code> - Add low priority task</li>
+            <li><code>!task regular task</code> - Add normal priority task</li>
+        </ul>
+    </div>
+
+    <div class="widget-container">
+        <!-- Widget HTML content will be loaded here -->
+        <div id="widget-content"></div>
+    </div>
+
+    <script>
+        // Mock SE_API for testing
+        window.SE_API = {
+            store: {
+                data: {},
+                set: function(key, value) {
+                    this.data[key] = value;
+                    console.log('SE_API.store.set:', key, value);
+                },
+                get: function(key) {
+                    console.log('SE_API.store.get:', key, this.data[key]);
+                    return Promise.resolve(this.data[key]);
+                }
+            }
+        };
+
+        // Load widget HTML
+        fetch('widget.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('widget-content').innerHTML = html;
+                
+                // Simulate onWidgetLoad event with manual tasks
+                const fieldData = {
+                    title: "Test Todo List",
+                    enableChatCommands: true,
+                    newTaskCommand: "!task",
+                    completeTaskCommand: "!complete", 
+                    removeTaskCommand: "!remove",
+                    clearTasksCommand: "!clear",
+                    enableClearTasks: true,
+                    broadcasterPermissions: true,
+                    moderatorPermissions: true,
+                    subscriberPermissions: true,
+                    vipPermissions: true,
+                    viewerPermissions: false,
+                    // Manual tasks configuration
+                    enableManualTasks: true,
+                    clearManualTasksOnLoad: false,
+                    manualTask1: "Review yesterday's stream highlights",
+                    manualTask1Priority: "high",
+                    manualTask2: "Prepare today's game setup",
+                    manualTask2Priority: "med",
+                    manualTask3: "Check social media mentions",
+                    manualTask3Priority: "low",
+                    manualTask4: "Update stream schedule",
+                    manualTask4Priority: "none",
+                    manualTask5: "", // Empty task to test
+                    manualTask5Priority: "high"
+                };
+
+                // Trigger onWidgetLoad
+                window.dispatchEvent(new CustomEvent('onWidgetLoad', {
+                    detail: { fieldData }
+                }));
+            });
+
+        // Test functions
+        function testChatCommand() {
+            const command = document.getElementById('commandInput').value;
+            if (!command) {
+                alert('Please enter a command');
+                return;
+            }
+            
+            simulateStreamElementsMessage(command, 'testuser', 'broadcaster');
+        }
+
+        function testAddHighPriority() {
+            simulateStreamElementsMessage('!task Urgent: Fix stream overlay !high', 'broadcaster_user', 'broadcaster');
+        }
+
+        function testAddMediumPriority() {
+            simulateStreamElementsMessage('!task Prepare for raid !med', 'mod_user', 'moderator');
+        }
+
+        function testAddLowPriority() {
+            simulateStreamElementsMessage('!task Update bio later !low', 'subscriber_user', 'subscriber');
+        }
+
+        function testAddNormalTask() {
+            simulateStreamElementsMessage('!task Normal priority task', 'vip_user', 'vip');
+        }
+
+        function loadManualTasks() {
+            // Reload the widget to trigger manual task loading
+            location.reload();
+        }
+
+        function clearTasks() {
+            simulateStreamElementsMessage('!clear', 'broadcaster_user', 'broadcaster');
+        }
+
+        function simulateStreamElementsMessage(message, username, role) {
+            console.log(`Simulating StreamElements message: "${message}" from ${username} (${role})`);
+            
+            // Create mock StreamElements event data structure
+            const eventData = {
+                detail: {
+                    event: {
+                        renderedText: message,
+                        data: {
+                            nick: username,
+                            user_name: username,
+                            tags: {
+                                badges: role === 'broadcaster' ? 'broadcaster/1' : 
+                                       role === 'moderator' ? 'moderator/1' :
+                                       role === 'subscriber' ? 'subscriber/1' :
+                                       role === 'vip' ? 'vip/1' : ''
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Dispatch the event
+            window.dispatchEvent(new CustomEvent('onEventReceived', eventData));
+        }
+    </script>
+
+    <!-- Load the widget JavaScript -->
+    <script src="widget.js"></script>
+</body>
+</html>

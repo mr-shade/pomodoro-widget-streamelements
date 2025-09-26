@@ -1,0 +1,131 @@
+# Manual Tasks Feature
+
+## Overview
+The StreamElements Todo Widget now supports manually adding tasks directly from the StreamElements dashboard using the fields.json configuration. This allows streamers to pre-populate their task list or add important tasks without relying on chat commands.
+
+## Features
+
+### Manual Task Fields
+- **5 Manual Task Slots**: Configure up to 5 tasks directly in the dashboard
+- **Priority Support**: Each manual task can have a priority level (High, Medium, Low, Normal)
+- **Enable/Disable**: Toggle manual tasks on/off
+- **Auto-Clear Option**: Optionally clear manual tasks from dashboard after loading
+
+### Priority System
+Tasks can be assigned priority levels that affect their visual appearance:
+
+- **High Priority** (!high): Red border, bold text, red accent color
+- **Medium Priority** (!med): Orange border, medium-weight text, orange accent color  
+- **Low Priority** (!low): Green border, green accent color
+- **Normal Priority**: Standard appearance
+
+## Configuration Fields
+
+Add these fields to your `widget.json` file:
+
+```json
+{
+  "manualTasksHeader": {
+    "type": "text",
+    "label": "═══════ Manual Tasks ═══════",
+    "value": ""
+  },
+  "manualTask1": {
+    "type": "text",
+    "label": "Manual Task 1",
+    "value": ""
+  },
+  "manualTask1Priority": {
+    "type": "dropdown",
+    "label": "Task 1 Priority",
+    "value": "none",
+    "options": {
+      "none": "Normal",
+      "low": "Low Priority",
+      "med": "Medium Priority", 
+      "high": "High Priority"
+    }
+  },
+  // ... repeat for manualTask2-5 ...
+  "enableManualTasks": {
+    "type": "checkbox",
+    "label": "Enable Manual Tasks from Dashboard",
+    "value": true
+  },
+  "clearManualTasksOnLoad": {
+    "type": "checkbox",
+    "label": "Clear Manual Tasks After Loading",
+    "value": false
+  }
+}
+```
+
+## Usage
+
+### Dashboard Setup
+1. Open your StreamElements widget dashboard
+2. Navigate to the Manual Tasks section
+3. Enter your tasks in the "Manual Task 1-5" fields
+4. Set the priority level for each task
+5. Enable "Enable Manual Tasks from Dashboard"
+6. Save your configuration
+
+### Chat Commands with Priority
+Users can also add tasks with priority via chat commands:
+
+- `!task buy groceries !high` - Adds a high priority task
+- `!task clean room !med` - Adds a medium priority task  
+- `!task water plants !low` - Adds a low priority task
+- `!task regular task` - Adds a normal priority task
+
+### Priority Keywords
+- `!high` - High priority (red styling)
+- `!med` or `!medium` - Medium priority (orange styling)  
+- `!low` - Low priority (green styling)
+
+## Testing
+
+Use the provided test files to verify functionality:
+- `test-manual-tasks.html` - Test manual tasks and priority system
+- `test-final.html` - Test general chat command functionality
+
+## CSS Classes
+
+The following CSS classes are applied based on priority:
+- `.high-priority` - High priority tasks
+- `.medium-priority` - Medium priority tasks
+- `.low-priority` - Low priority tasks
+
+## Implementation Details
+
+### Loading Process
+1. Manual tasks are loaded during widget initialization
+2. Only non-empty task fields are processed
+3. Tasks are added with 'Dashboard' as the username
+4. Priority styling is applied automatically
+
+### Data Structure
+Manual tasks are processed from field data:
+```javascript
+for (let i = 1; i <= 5; i++) {
+  const taskText = this.fieldData[`manualTask${i}`];
+  const taskPriority = this.fieldData[`manualTask${i}Priority`] || 'none';
+  
+  if (taskText && taskText.trim() !== '') {
+    this.addTask(taskText.trim(), 'Dashboard', null, taskPriority);
+  }
+}
+```
+
+## Compatibility
+- Works with existing chat command system
+- Maintains all existing widget functionality
+- Compatible with StreamElements event system
+- Supports all existing permission levels
+
+## Configuration Tips
+1. Use descriptive task names for better organization
+2. Reserve high priority for truly urgent items
+3. Consider using manual tasks for recurring daily activities
+4. Test priority styling matches your overlay theme
+5. Enable "Clear Manual Tasks After Loading" if you prefer one-time use

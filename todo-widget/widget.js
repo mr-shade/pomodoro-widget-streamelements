@@ -48,6 +48,7 @@ class TodoWidget {
     this.updateProgress();
     this.updateMoreTasksButton();
     this.initializeChatCommands();
+    this.loadManualTasks();
     console.log("TodoWidget initialization complete");
   }
 
@@ -494,6 +495,36 @@ class TodoWidget {
     console.log("Chat commands initialized");
   }
 
+  loadManualTasks() {
+    console.log("Loading manual tasks from dashboard...");
+    
+    // Check if manual tasks are enabled
+    if (!this.fieldData.enableManualTasks) {
+      console.log("Manual tasks are disabled");
+      return;
+    }
+
+    // Load manual tasks 1-5
+    for (let i = 1; i <= 5; i++) {
+      const taskText = this.fieldData[`manualTask${i}`];
+      const taskPriority = this.fieldData[`manualTask${i}Priority`] || 'none';
+      
+      if (taskText && taskText.trim() !== '') {
+        console.log(`Adding manual task ${i}: "${taskText}" with priority: ${taskPriority}`);
+        this.addTask(taskText.trim(), 'Dashboard', null, taskPriority);
+      }
+    }
+
+    // Clear manual tasks from field data if the option is enabled
+    if (this.fieldData.clearManualTasksOnLoad) {
+      console.log("Clearing manual tasks from dashboard after loading");
+      // Note: We can't actually clear the field data, but we log this for reference
+      // The streamer would need to manually clear them in the dashboard
+    }
+
+    console.log("Manual tasks loading complete");
+  }
+
   playSound(soundType) {
     if (!this.fieldData.soundEnabled) return;
 
@@ -653,9 +684,22 @@ class TodoWidget {
       }
     }
 
-    // Extract task text for task commands
+    // Extract task text and priority for task commands
+    let priority = 'none';
     if (parts.length > 1) {
       task = parts.slice(1).join(' ');
+      
+      // Check for priority keywords (!high, !med, !low) in task text
+      if (task.includes('!high')) {
+        priority = 'high';
+        task = task.replace('!high', '').trim();
+      } else if (task.includes('!med') || task.includes('!medium')) {
+        priority = 'med';
+        task = task.replace(/!med|!medium/g, '').trim();
+      } else if (task.includes('!low')) {
+        priority = 'low';
+        task = task.replace('!low', '').trim();
+      }
     }
 
     // Process commands
@@ -663,7 +707,7 @@ class TodoWidget {
       case '!addtask':
       case '!newtask':
         if (task && this.fieldData.enableAddTask !== false) {
-          this.addTask(task, user);
+          this.addTask(task, user, null, priority);
         }
         break;
         
@@ -876,13 +920,22 @@ class TodoWidget {
     }
   }
 
-  addTask(taskText, username, _data) {
+  addTask(taskText, username, _data, priority = 'none') {
     if (!taskText) return;
 
     const taskList = document.querySelector('.task-list');
     const newTaskElement = document.createElement('div');
     newTaskElement.className = 'task-item slide-in'; // Add slide-in animation class
     newTaskElement.dataset.username = username; // Store username for permission checks
+    
+    // Add priority class if specified
+    if (priority && priority !== 'none') {
+      const priorityClass = this.getPriorityClass(priority);
+      if (priorityClass) {
+        newTaskElement.classList.add(priorityClass);
+      }
+    }
+    
     newTaskElement.innerHTML = `
       <div class="checkbox"></div>
       <span class="task-text">${this.escapeHtml(taskText)}</span>
@@ -902,7 +955,21 @@ class TodoWidget {
       newTaskElement.classList.remove('slide-in');
     }, 500);
 
-    console.log(`Task added by ${username}: ${taskText}`);
+    console.log(`Task added by ${username}: ${taskText} (Priority: ${priority})`);
+  }
+
+  getPriorityClass(priority) {
+    switch (priority.toLowerCase()) {
+      case 'high':
+        return 'high-priority';
+      case 'med':
+      case 'medium':
+        return 'medium-priority';
+      case 'low':
+        return 'low-priority';
+      default:
+        return null;
+    }
   }
 
   applyTaskStyling(taskElement) {

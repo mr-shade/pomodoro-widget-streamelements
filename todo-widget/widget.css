@@ -185,6 +185,39 @@ body {
     opacity: 0.8;
 }
 
+/* Priority Classes */
+.task-item.high-priority {
+    border-left: 4px solid #ff4757;
+    background: linear-gradient(90deg, rgba(255, 71, 87, 0.1) 0%, transparent 10%);
+    padding-left: 12px;
+}
+
+.task-item.high-priority .task-text {
+    font-weight: 600;
+    color: #ff6b7a !important;
+}
+
+.task-item.medium-priority {
+    border-left: 4px solid #ffa726;
+    background: linear-gradient(90deg, rgba(255, 167, 38, 0.1) 0%, transparent 10%);
+    padding-left: 12px;
+}
+
+.task-item.medium-priority .task-text {
+    font-weight: 500;
+    color: #ffb74d !important;
+}
+
+.task-item.low-priority {
+    border-left: 4px solid #66bb6a;
+    background: linear-gradient(90deg, rgba(102, 187, 106, 0.1) 0%, transparent 10%);
+    padding-left: 12px;
+}
+
+.task-item.low-priority .task-text {
+    color: #81c784 !important;
+}
+
 /* 5+ More Tasks Button */
 .more-tasks-btn {
     width: 64px;
