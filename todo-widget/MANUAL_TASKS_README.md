@@ -6,13 +6,13 @@ The StreamElements Todo Widget now supports manually adding tasks directly from 
 ## Features
 
 ### Manual Task Fields
-- **5 Manual Task Slots**: Configure up to 5 tasks directly in the dashboard
-- **Priority Support**: Each manual task can have a priority level (High, Medium, Low, Normal)
+- **Single Comma-Separated Field**: Enter multiple tasks separated by commas in one field
+- **Simplified Configuration**: No individual priority settings for manual tasks
 - **Enable/Disable**: Toggle manual tasks on/off
 - **Auto-Clear Option**: Optionally clear manual tasks from dashboard after loading
 
 ### Priority System
-Tasks can be assigned priority levels that affect their visual appearance:
+Tasks can still be assigned priority levels via chat commands that affect their visual appearance:
 
 - **High Priority** (!high): Red border, bold text, red accent color
 - **Medium Priority** (!med): Orange border, medium-weight text, orange accent color  
@@ -30,23 +30,11 @@ Add these fields to your `widget.json` file:
     "label": "═══════ Manual Tasks ═══════",
     "value": ""
   },
-  "manualTask1": {
+  "manualTasks": {
     "type": "text",
-    "label": "Manual Task 1",
+    "label": "Manual Tasks (comma-separated)",
     "value": ""
   },
-  "manualTask1Priority": {
-    "type": "dropdown",
-    "label": "Task 1 Priority",
-    "value": "none",
-    "options": {
-      "none": "Normal",
-      "low": "Low Priority",
-      "med": "Medium Priority", 
-      "high": "High Priority"
-    }
-  },
-  // ... repeat for manualTask2-5 ...
   "enableManualTasks": {
     "type": "checkbox",
     "label": "Enable Manual Tasks from Dashboard",
@@ -65,8 +53,8 @@ Add these fields to your `widget.json` file:
 ### Dashboard Setup
 1. Open your StreamElements widget dashboard
 2. Navigate to the Manual Tasks section
-3. Enter your tasks in the "Manual Task 1-5" fields
-4. Set the priority level for each task
+3. Enter multiple tasks separated by commas in the "Manual Tasks" field
+4. Example: "Review highlights, Setup stream, Check Discord, Update social media"
 5. Enable "Enable Manual Tasks from Dashboard"
 6. Save your configuration
 
@@ -105,16 +93,16 @@ The following CSS classes are applied based on priority:
 4. Priority styling is applied automatically
 
 ### Data Structure
-Manual tasks are processed from field data:
+Manual tasks are processed from a comma-separated field:
 ```javascript
-for (let i = 1; i <= 5; i++) {
-  const taskText = this.fieldData[`manualTask${i}`];
-  const taskPriority = this.fieldData[`manualTask${i}Priority`] || 'none';
-  
-  if (taskText && taskText.trim() !== '') {
-    this.addTask(taskText.trim(), 'Dashboard', null, taskPriority);
+const manualTasksString = this.fieldData.manualTasks;
+const tasks = manualTasksString.split(',').map(task => task.trim()).filter(task => task.length > 0);
+
+tasks.forEach((taskText, index) => {
+  if (taskText) {
+    this.addTask(taskText, 'Dashboard', null, 'none');
   }
-}
+});
 ```
 
 ## Compatibility
@@ -125,7 +113,8 @@ for (let i = 1; i <= 5; i++) {
 
 ## Configuration Tips
 1. Use descriptive task names for better organization
-2. Reserve high priority for truly urgent items
+2. Separate tasks with commas: "task1, task2, task3"
 3. Consider using manual tasks for recurring daily activities
-4. Test priority styling matches your overlay theme
+4. Use chat commands for priority tasks: "!task urgent task !high"
 5. Enable "Clear Manual Tasks After Loading" if you prefer one-time use
+6. Example format: "Review highlights, Setup stream, Check Discord, Update social media"

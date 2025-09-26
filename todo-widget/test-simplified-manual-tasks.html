@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo Widget Test - Manual Tasks</title>
+    <title>Todo Widget Test - Simplified Manual Tasks</title>
     <link rel="stylesheet" href="widget.css">
     <style>
         body {
@@ -39,6 +39,15 @@
             border-radius: 3px;
             width: 300px;
         }
+        textarea {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 400px;
+            height: 80px;
+            resize: vertical;
+        }
         .widget-container {
             background: white;
             padding: 20px;
@@ -53,18 +62,28 @@
             margin-bottom: 15px;
             border-left: 4px solid #007cba;
         }
+        .example-text {
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 5px;
+            border-radius: 3px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
     <div class="test-controls">
-        <h2>Todo Widget Test - Manual Tasks & Priorities</h2>
-        <p>Test the new manual task functionality and priority system:</p>
+        <h2>Todo Widget Test - Simplified Manual Tasks</h2>
+        <p>Test the simplified manual task functionality:</p>
         
         <div class="manual-tasks-section">
-            <h3>Manual Tasks (Dashboard Simulation)</h3>
-            <p>These tasks would be set in the StreamElements dashboard:</p>
-            <button onclick="loadManualTasks()">Load Manual Tasks</button>
+            <h3>Manual Tasks (Comma-Separated)</h3>
+            <p>Enter multiple tasks separated by commas:</p>
+            <textarea id="manualTasksInput" placeholder="Review stream highlights, Prepare game setup, Check social media, Update schedule, Plan next stream">Review stream highlights, Prepare game setup, Check social media, Update schedule, Plan next stream</textarea>
+            <br>
+            <button onclick="loadManualTasksFromInput()">Load Manual Tasks</button>
             <button onclick="clearTasks()">Clear All Tasks</button>
+            <p class="example-text">Example: task1, task2, task3, task4, task5</p>
         </div>
         
         <div>
@@ -81,12 +100,12 @@
             <button onclick="testAddNormalTask()">Add Normal Task</button>
         </div>
         
-        <p><strong>Priority Commands:</strong></p>
+        <p><strong>Manual Tasks Features:</strong></p>
         <ul>
-            <li><code>!task buy groceries !high</code> - Add high priority task</li>
-            <li><code>!task clean room !med</code> - Add medium priority task</li>
-            <li><code>!task water plants !low</code> - Add low priority task</li>
-            <li><code>!task regular task</code> - Add normal priority task</li>
+            <li>Enter multiple tasks separated by commas in one field</li>
+            <li>No individual priority settings - simplified workflow</li>
+            <li>Still supports priority in chat commands (!high, !med, !low)</li>
+            <li>Example: "Review highlights, Setup stream, Check Discord, Update social media"</li>
         </ul>
     </div>
 
@@ -117,7 +136,7 @@
             .then(html => {
                 document.getElementById('widget-content').innerHTML = html;
                 
-                // Simulate onWidgetLoad event with manual tasks
+                // Simulate onWidgetLoad event with simplified manual tasks
                 const fieldData = {
                     title: "Test Todo List",
                     enableChatCommands: true,
@@ -131,19 +150,10 @@
                     subscriberPermissions: true,
                     vipPermissions: true,
                     viewerPermissions: false,
-                    // Manual tasks configuration
+                    // Simplified manual tasks configuration
                     enableManualTasks: true,
                     clearManualTasksOnLoad: false,
-                    manualTask1: "Review yesterday's stream highlights",
-                    manualTask1Priority: "high",
-                    manualTask2: "Prepare today's game setup",
-                    manualTask2Priority: "med",
-                    manualTask3: "Check social media mentions",
-                    manualTask3Priority: "low",
-                    manualTask4: "Update stream schedule",
-                    manualTask4Priority: "none",
-                    manualTask5: "", // Empty task to test
-                    manualTask5Priority: "high"
+                    manualTasks: "Review yesterday's stream highlights, Prepare today's game setup, Check social media mentions, Update stream schedule"
                 };
 
                 // Trigger onWidgetLoad
@@ -163,6 +173,47 @@
             simulateStreamElementsMessage(command, 'testuser', 'broadcaster');
         }
 
+        function loadManualTasksFromInput() {
+            const tasksInput = document.getElementById('manualTasksInput').value;
+            if (!tasksInput.trim()) {
+                alert('Please enter some tasks');
+                return;
+            }
+
+            // Reload widget with new manual tasks
+            const fieldData = {
+                title: "Test Todo List",
+                enableChatCommands: true,
+                newTaskCommand: "!task",
+                completeTaskCommand: "!complete", 
+                removeTaskCommand: "!remove",
+                clearTasksCommand: "!clear",
+                enableClearTasks: true,
+                broadcasterPermissions: true,
+                moderatorPermissions: true,
+                subscriberPermissions: true,
+                vipPermissions: true,
+                viewerPermissions: false,
+                enableManualTasks: true,
+                clearManualTasksOnLoad: false,
+                manualTasks: tasksInput
+            };
+
+            // Clear existing widget and reload
+            document.getElementById('widget-content').innerHTML = '';
+            
+            fetch('widget.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('widget-content').innerHTML = html;
+                    
+                    // Trigger onWidgetLoad with new tasks
+                    window.dispatchEvent(new CustomEvent('onWidgetLoad', {
+                        detail: { fieldData }
+                    }));
+                });
+        }
+
         function testAddHighPriority() {
             simulateStreamElementsMessage('!task Urgent: Fix stream overlay !high', 'broadcaster_user', 'broadcaster');
         }
@@ -177,11 +228,6 @@
 
         function testAddNormalTask() {
             simulateStreamElementsMessage('!task Normal priority task', 'vip_user', 'vip');
-        }
-
-        function loadManualTasks() {
-            // Reload the widget to trigger manual task loading
-            location.reload();
         }
 
         function clearTasks() {

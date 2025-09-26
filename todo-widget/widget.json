@@ -339,85 +339,10 @@
     "label": "═══════ Manual Tasks ═══════",
     "value": ""
   },
-  "manualTask1": {
+  "manualTasks": {
     "type": "text",
-    "label": "Manual Task 1",
+    "label": "Manual Tasks (comma-separated)",
     "value": ""
-  },
-  "manualTask1Priority": {
-    "type": "dropdown",
-    "label": "Task 1 Priority",
-    "value": "none",
-    "options": {
-      "none": "Normal",
-      "low": "Low Priority",
-      "med": "Medium Priority", 
-      "high": "High Priority"
-    }
-  },
-  "manualTask2": {
-    "type": "text",
-    "label": "Manual Task 2",
-    "value": ""
-  },
-  "manualTask2Priority": {
-    "type": "dropdown",
-    "label": "Task 2 Priority",
-    "value": "none",
-    "options": {
-      "none": "Normal",
-      "low": "Low Priority",
-      "med": "Medium Priority",
-      "high": "High Priority"
-    }
-  },
-  "manualTask3": {
-    "type": "text",
-    "label": "Manual Task 3",
-    "value": ""
-  },
-  "manualTask3Priority": {
-    "type": "dropdown",
-    "label": "Task 3 Priority",
-    "value": "none",
-    "options": {
-      "none": "Normal",
-      "low": "Low Priority",
-      "med": "Medium Priority",
-      "high": "High Priority"
-    }
-  },
-  "manualTask4": {
-    "type": "text",
-    "label": "Manual Task 4",
-    "value": ""
-  },
-  "manualTask4Priority": {
-    "type": "dropdown",
-    "label": "Task 4 Priority",
-    "value": "none",
-    "options": {
-      "none": "Normal",
-      "low": "Low Priority",
-      "med": "Medium Priority",
-      "high": "High Priority"
-    }
-  },
-  "manualTask5": {
-    "type": "text",
-    "label": "Manual Task 5",
-    "value": ""
-  },
-  "manualTask5Priority": {
-    "type": "dropdown",
-    "label": "Task 5 Priority",
-    "value": "none",
-    "options": {
-      "none": "Normal",
-      "low": "Low Priority",
-      "med": "Medium Priority",
-      "high": "High Priority"
-    }
   },
   "enableManualTasks": {
     "type": "checkbox",

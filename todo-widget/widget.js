@@ -504,16 +504,24 @@ class TodoWidget {
       return;
     }
 
-    // Load manual tasks 1-5
-    for (let i = 1; i <= 5; i++) {
-      const taskText = this.fieldData[`manualTask${i}`];
-      const taskPriority = this.fieldData[`manualTask${i}Priority`] || 'none';
-      
-      if (taskText && taskText.trim() !== '') {
-        console.log(`Adding manual task ${i}: "${taskText}" with priority: ${taskPriority}`);
-        this.addTask(taskText.trim(), 'Dashboard', null, taskPriority);
-      }
+    // Get the comma-separated manual tasks
+    const manualTasksString = this.fieldData.manualTasks;
+    
+    if (!manualTasksString || manualTasksString.trim() === '') {
+      console.log("No manual tasks configured");
+      return;
     }
+
+    // Parse comma-separated tasks
+    const tasks = manualTasksString.split(',').map(task => task.trim()).filter(task => task.length > 0);
+    
+    // Add each task
+    tasks.forEach((taskText, index) => {
+      if (taskText) {
+        console.log(`Adding manual task ${index + 1}: "${taskText}"`);
+        this.addTask(taskText, 'Dashboard', null, 'none');
+      }
+    });
 
     // Clear manual tasks from field data if the option is enabled
     if (this.fieldData.clearManualTasksOnLoad) {
@@ -522,7 +530,7 @@ class TodoWidget {
       // The streamer would need to manually clear them in the dashboard
     }
 
-    console.log("Manual tasks loading complete");
+    console.log(`Manual tasks loading complete. Added ${tasks.length} tasks.`);
   }
 
   playSound(soundType) {
