@@ -9,30 +9,47 @@
 <body>
     <div class="timer-widget">
         <div class="timer-display">
-            <div class="time-section">
-                <div class="time-card">
-                    <span class="time-number">2</span>
-                    <span class="time-number">5</span>
-                    <div class="time-label">hrs</div>
+            <div class="clock">
+                <!-- Hours card -->
+                <div class="time-section hours">
+                    <div class="time-card">
+                        <span class="time-number">1</span>
+                        <span class="time-number">0</span>
+                        <div class="time-label">hrs</div>
+                    </div>
                 </div>
-            </div>
-            <div class="time-section">
-                <div class="time-card">
-                    <span class="time-number">0</span>
-                    <span class="time-number">0</span>
-                    <div class="time-label">min</div>
+
+                <!-- Minutes card -->
+                <div class="time-section minutes">
+                    <div class="time-card">
+                        <span class="time-number">3</span>
+                        <span class="time-number">0</span>
+                        <div class="time-label">min</div>
+                    </div>
                 </div>
-            </div>
-            <div class="sidebar">
-            <div class="play-button side">
-                <svg width="45" height="35" viewBox="0 0 24 24" fill="none">
-                    <path d="M8 5V19L19 12L8 5Z" fill="white" />
-                </svg>
-            </div>
-             <div class="secondcard side">
-                <!-- seconds will be displayed here  -->
-            </div>
- 
+
+                <!-- Bottom controls row -->
+                <div class="control-bar" aria-label="timer controls">
+                    <div class="secondcard control" aria-label="seconds">05</div>
+
+                    <div class="play-button control" role="button" aria-label="play or pause">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M8 5V19L19 12L8 5Z" fill="white" />
+                        </svg>
+                    </div>
+
+                    <div class="control-btn up control" role="button" aria-label="increase">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 5l-7 7h4v7h6v-7h4l-7-7z" fill="white"/>
+                        </svg>
+                    </div>
+
+                    <div class="control-btn night control" role="button" aria-label="night mode">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

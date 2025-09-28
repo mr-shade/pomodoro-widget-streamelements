@@ -27,8 +27,16 @@ body {
 
 .timer-display {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+}
+
+.clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .time-section {
@@ -41,8 +49,8 @@ body {
 .time-card {
     background: #6caaff;
     border-radius: 12px;
-    width: 74px;
-    height: 80px;
+    width: 180px !important;
+    height: 130px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,24 +60,24 @@ body {
 
 .time-label {
     position: absolute;
-    bottom: -2px;
-    right: -2px;
+    top: 50%;
+    right: -8px;
+    transform: translateY(-50%) rotate(-15deg);
     background: #FFB6C1;
     color: #333;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 600;
-    padding: 1px 6px;
+    padding: 2px 7px;
     border-radius: 6px;
     text-transform: lowercase;
-    transform: rotate(-15deg);
     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
 .time-card {
     background: #6caaff;
     border-radius: 12px;
-    width: 74px;
-    height: 80px;
+    width: 180px !important;
+    height: 130px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +97,7 @@ body {
 }
 
 .time-number {
-    font-size: 48px;
+    font-size: 110px;
     font-weight: 700;
     color: white;
     /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
@@ -127,17 +135,44 @@ body {
 
 
 .sidebar {
+    display: none;
+}
+
+/* New control row matching the mock */
+.control-bar {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-left: -10px;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    width: 100%;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.control {
+    width: 40px;
+    height: 34px;
+    background: #6caaff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control svg { pointer-events: none; }
+
+.control-bar .play-button {
+    width: 40px;
+    height: 34px;
+    margin-left: 0;
+    background: #6caaff;
 }
 
 .secondcard {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 700;
     color: white;
     /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
