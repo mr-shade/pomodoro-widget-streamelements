@@ -23,16 +23,19 @@ A simple StreamElements widget that displays live chat messages in real-time.
 ## Configuration Options
 
 ### Maximum Messages
+
 - **Type**: Number (5-50)
 - **Default**: 10
 - **Description**: Maximum number of messages to display before old ones are removed
 
 ### Show Timestamps
+
 - **Type**: Dropdown (Yes/No)
 - **Default**: No
 - **Description**: Show timestamp for each message (feature ready for implementation)
 
 ### Fade Old Messages
+
 - **Type**: Dropdown (Yes/No)
 - **Default**: Yes
 - **Description**: Whether to fade out old messages when removing them
@@ -56,6 +59,7 @@ A simple StreamElements widget that displays live chat messages in real-time.
 ## Testing
 
 Open `test.html` in your browser to test the widget functionality:
+
 - Use the test buttons to simulate different user types
 - Test message overflow and cleanup
 - Verify animations and styling
@@ -65,35 +69,42 @@ Open `test.html` in your browser to test the widget functionality:
 The widget listens for the `onEventReceived` event and filters for chat messages:
 
 ```javascript
-window.addEventListener('onEventReceived', (obj) => {
-    // Filters for chat messages only
-    if (data.listener !== "message" && data.listener !== "onMessage") return;
-    // Processes username, message, and user role
-    // Adds message to display with proper styling
+window.addEventListener("onEventReceived", (obj) => {
+  // Filters for chat messages only
+  if (data.listener !== "message" && data.listener !== "onMessage") return;
+  // Processes username, message, and user role
+  // Adds message to display with proper styling
 });
 ```
 
 ## Customization
 
 ### Colors
+
 Modify the CSS variables in `widget.css` to change the color scheme:
 
 ```css
-.chat-message.broadcaster { border-left-color: #your-color; }
-.username { color: #your-color; }
+.chat-message.broadcaster {
+  border-left-color: #your-color;
+}
+.username {
+  color: #your-color;
+}
 ```
 
 ### Size
+
 Adjust the widget dimensions in `widget.css`:
 
 ```css
 .chat-widget {
-    width: 400px;  /* Change width */
-    height: 300px; /* Change height */
+  width: 400px; /* Change width */
+  height: 300px; /* Change height */
 }
 ```
 
 ### Message Limit
+
 Change the default message limit in `widget.js` or use the configuration field.
 
 ## Browser Compatibility

@@ -54,7 +54,7 @@ body {
 }
 
 .card-title {
-    font-size: 32px;
+    font-size: var(--card-title-font-size, 32px);
     font-weight: 700;
     color: #feb6de;
     margin-bottom: 32px;

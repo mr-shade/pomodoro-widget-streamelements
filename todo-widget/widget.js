@@ -247,6 +247,11 @@ class TodoWidget {
     if (cardTitle) {
       cardTitle.textContent = fieldData.cardTitle || "MY TASKS";
       cardTitle.style.color = fieldData.cardTitleColor || "#feb6de";
+      
+      // Apply custom font size
+      const titleFontSize = fieldData.cardTitleFontSize || 32;
+      cardTitle.style.setProperty('--card-title-font-size', `${titleFontSize}px`);
+      cardTitle.style.fontSize = `${titleFontSize}px`;
     }
 
     const progressLabel = document.querySelector('.progress-label');
@@ -675,8 +680,18 @@ class TodoWidget {
     const cmd = parts[0].toLowerCase();
     let task = '';
 
+    // Get custom command names from fieldData, with fallbacks
+    const addTaskCmd = (this.fieldData.addTaskCommand || '!addtask').toLowerCase();
+    const completeTaskCmd = (this.fieldData.completeTaskCommand || '!complete').toLowerCase();
+    const removeTaskCmd = (this.fieldData.removeTaskCommand || '!remove').toLowerCase();
+    const clearTasksCmd = (this.fieldData.clearTasksCommand || '!clear').toLowerCase();
+    const resetTasksCmd = (this.fieldData.resetTasksCommand || '!reset').toLowerCase();
+    const lockCmd = (this.fieldData.lockCommand || '!lock').toLowerCase();
+    const unlockCmd = (this.fieldData.unlockCommand || '!unlock').toLowerCase();
+    const highlightCmd = (this.fieldData.highlightCommand || '!highlight').toLowerCase();
+
     // Define admin commands that require mod/broadcaster permissions
-    const adminCommands = ['!lock', '!unlock', '!clear', '!reset'];
+    const adminCommands = [lockCmd, unlockCmd, clearTasksCmd, resetTasksCmd];
     
     // Check admin command permissions
     if (adminCommands.includes(cmd)) {
@@ -710,58 +725,39 @@ class TodoWidget {
       }
     }
 
-    // Process commands
-    switch (cmd) {
-      case '!addtask':
-      case '!newtask':
-        if (task && this.fieldData.enableAddTask !== false) {
-          this.addTask(task, user, null, priority);
-        }
-        break;
-        
-      case '!complete':
-      case '!donetask':
-        if (task && this.fieldData.enableCompleteTask !== false) {
-          this.completeTaskByName(task, user, role);
-        }
-        break;
-        
-      case '!remove':
-      case '!cleartask':
-        if (task && this.fieldData.enableRemoveTask !== false) {
-          this.removeTaskByName(task, user, role);
-        }
-        break;
-        
-      case '!clear':
-      case '!reset':
-        if (this.fieldData.enableClearTasks !== false) {
-          this.clearTasks(user);
-        }
-        break;
-        
-      case '!lock':
-        if (this.fieldData.enableLockUnlock !== false) {
-          this.isLocked = true;
-          console.log(`Widget locked by ${user}`);
-        }
-        break;
-        
-      case '!unlock':
-        if (this.fieldData.enableLockUnlock !== false) {
-          this.isLocked = false;
-          console.log(`Widget unlocked by ${user}`);
-        }
-        break;
-        
-      case '!highlight':
-        if (this.fieldData.enableHighlight !== false) {
-          this.highlightRandomTask(user);
-        }
-        break;
-        
-      default:
-        console.log(`Unknown command: ${cmd}`);
+    // Process commands using custom command names
+    if (cmd === addTaskCmd || cmd === '!newtask') {
+      if (task && this.fieldData.enableAddTask !== false) {
+        this.addTask(task, user, null, priority);
+      }
+    } else if (cmd === completeTaskCmd || cmd === '!donetask') {
+      if (task && this.fieldData.enableCompleteTask !== false) {
+        this.completeTaskByName(task, user, role);
+      }
+    } else if (cmd === removeTaskCmd || cmd === '!cleartask') {
+      if (task && this.fieldData.enableRemoveTask !== false) {
+        this.removeTaskByName(task, user, role);
+      }
+    } else if (cmd === clearTasksCmd || cmd === resetTasksCmd) {
+      if (this.fieldData.enableClearTasks !== false) {
+        this.clearTasks(user);
+      }
+    } else if (cmd === lockCmd) {
+      if (this.fieldData.enableLockUnlock !== false) {
+        this.isLocked = true;
+        console.log(`Widget locked by ${user}`);
+      }
+    } else if (cmd === unlockCmd) {
+      if (this.fieldData.enableLockUnlock !== false) {
+        this.isLocked = false;
+        console.log(`Widget unlocked by ${user}`);
+      }
+    } else if (cmd === highlightCmd) {
+      if (this.fieldData.enableHighlight !== false) {
+        this.highlightRandomTask(user);
+      }
+    } else {
+      console.log(`Unknown command: ${cmd}`);
     }
   }
 

@@ -14,6 +14,14 @@
     "label": "Card Title Color",
     "value": "#feb6de"
   },
+  "cardTitleFontSize": {
+    "type": "slider",
+    "label": "Card Title Font Size (px)",
+    "value": 32,
+    "min": 16,
+    "max": 64,
+    "step": 2
+  },
   "taskTextColor": {
     "type": "colorpicker",
     "label": "Task Text Color",
@@ -187,6 +195,31 @@
     "type": "text",
     "label": "Highlight Random Task Command",
     "value": "!highlight"
+  },
+  "addTaskCommand": {
+    "type": "text",
+    "label": "Add Task Command",
+    "value": "!addtask"
+  },
+  "completeTaskCommand": {
+    "type": "text",
+    "label": "Complete Task Command",
+    "value": "!complete"
+  },
+  "removeTaskCommand": {
+    "type": "text",
+    "label": "Remove Task Command",
+    "value": "!remove"
+  },
+  "clearTasksCommand": {
+    "type": "text",
+    "label": "Clear All Tasks Command",
+    "value": "!clear"
+  },
+  "resetTasksCommand": {
+    "type": "text",
+    "label": "Reset Tasks Command (Alternative)",
+    "value": "!reset"
   },
   "enableConfetti": {
     "type": "checkbox",

@@ -56,6 +56,8 @@
             <button onclick="testLockToggle()">Toggle Lock</button>
             <button onclick="testClearAll()">Clear All Tasks</button>
             <button onclick="testAutoScroll()">Test Auto-scroll</button>
+            <button onclick="testTitleFontSize()">Test Title Font Size</button>
+            <button onclick="testCustomCommands()">Test Custom Commands</button>
         </div>
     </div>
     
@@ -78,6 +80,7 @@
                         tasklistTitle: "Tasklist",
                         progressLabel: "Progress Bar",
                         cardTitleColor: "#feb6de",
+                        cardTitleFontSize: 32,
                         taskTextColor: "#ffffff",
                         cardBackgroundColor: "#010161",
                         cardBorderColor: "#bee5fc",
@@ -90,6 +93,15 @@
                         scrollbarColor: "#6aaafe",
                         commandsEnabled: true,
                         enableConfetti: true,
+                        // Custom command names
+                        addTaskCommand: "!addtask",
+                        completeTaskCommand: "!complete",
+                        removeTaskCommand: "!remove",
+                        clearTasksCommand: "!clear",
+                        resetTasksCommand: "!reset",
+                        lockCommand: "!lock",
+                        unlockCommand: "!unlock",
+                        highlightCommand: "!highlight",
                         confettiColor1: "#ff6b6b",
                         confettiColor2: "#4ecdc4",
                         confettiColor3: "#45b7d1",
@@ -291,6 +303,44 @@
                     <button onclick="testChatCommand('!unlock')">Test !unlock</button>
                 `;
                 testControls.appendChild(chatTestsDiv);
+            }
+        }
+
+        function testTitleFontSize() {
+            if (window._todoWidget) {
+                const sizes = [16, 24, 32, 48, 64];
+                let currentIndex = 0;
+                
+                const intervalId = setInterval(() => {
+                    const cardTitle = document.querySelector('.card-title');
+                    if (cardTitle) {
+                        const newSize = sizes[currentIndex];
+                        cardTitle.style.fontSize = `${newSize}px`;
+                        console.log(`Title font size changed to: ${newSize}px`);
+                        currentIndex++;
+                        
+                        if (currentIndex >= sizes.length) {
+                            clearInterval(intervalId);
+                            // Reset to default
+                            cardTitle.style.fontSize = '32px';
+                            console.log('Title font size reset to default: 32px');
+                        }
+                    }
+                }, 1000);
+            }
+        }
+
+        function testCustomCommands() {
+            if (window._todoWidget) {
+                console.log('Testing custom commands...');
+                
+                // Test custom add command
+                setTimeout(() => testChatCommand('!newtodo Custom add command test'), 500);
+                setTimeout(() => testChatCommand('!done Custom complete command test'), 1500);
+                setTimeout(() => testChatCommand('!del Custom remove command test'), 2500);
+                setTimeout(() => testChatCommand('!reset Custom clear command test'), 3500);
+                
+                console.log('Custom command tests completed. Check console for results.');
             }
         }
 

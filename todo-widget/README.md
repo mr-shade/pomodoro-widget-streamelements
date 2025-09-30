@@ -12,6 +12,8 @@ A comprehensive StreamElements widget for managing TODO lists with advanced chat
 - **Fixed Progress Bar**: No more "NaN%" - progress calculation now handles empty lists properly
 - **Customizable Border Width**: Adjust card border thickness (1-10px)
 - **Custom Scrollbar Colors**: Match scrollbar to your StreamElements dashboard theme
+- **NEW: Title Font Size Customization**: Adjust the task list title font size from 16px to 64px
+- **NEW: Custom Command Names**: Customize all command names (!add, !complete, !remove, !clear, !reset, !lock, !unlock, !highlight)
 
 ### 🎯 Smart UI Updates  
 - **Dynamic Task Counter**: The "More Tasks" button shows the actual number of additional tasks (e.g., "3+" instead of hardcoded "5+")
@@ -98,6 +100,37 @@ The celebration confetti system is fully customizable with:
 - **Duration Control**: Set confetti duration from 1-10 seconds
 - **Auto-cleanup**: Particles automatically clear after duration expires
 - **Performance Optimized**: Uses requestAnimationFrame for smooth 60fps animation
+
+## 🎨 NEW CUSTOMIZATION FEATURES
+
+### Title Font Size Customization
+Configure the task list title font size to match your overlay design:
+- **Range**: 16px to 64px
+- **Step**: 2px increments
+- **Default**: 32px
+- **Location**: StreamElements Dashboard → Widget Settings → "Card Title Font Size"
+
+### Custom Command Names
+Personalize all chat commands to match your community's preferences:
+
+| Default Command | Customizable Field | Purpose |
+|----------------|-------------------|---------|
+| `!addtask` | Add Task Command | Add new tasks to the list |
+| `!complete` | Complete Task Command | Mark tasks as completed |
+| `!remove` | Remove Task Command | Remove tasks from the list |
+| `!clear` | Clear All Tasks Command | Clear all tasks at once |
+| `!reset` | Reset Tasks Command | Alternative clear command |
+| `!lock` | Lock Command | Lock widget (mods only) |
+| `!unlock` | Unlock Command | Unlock widget (mods only) |
+| `!highlight` | Highlight Command | Highlight random task |
+
+**Examples of Custom Commands:**
+- Change `!addtask` to `!newtodo` or `!task`
+- Change `!complete` to `!done` or `!finish`
+- Change `!remove` to `!delete` or `!del`
+- Change `!clear` to `!reset` or `!clean`
+
+**Note**: Custom commands must include the `!` prefix and should be unique to avoid conflicts.
 
 **Color Options:**
 - Confetti Color 1-8: Individual color pickers for complete customization
