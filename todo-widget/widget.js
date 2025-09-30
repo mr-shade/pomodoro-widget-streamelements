@@ -1,101 +1,56 @@
 
 // StreamElements TODO Widget
 window.addEventListener('onWidgetLoad', function (obj) {
-console.log("StreamElements widget loaded");
+  console.log("StreamElements widget loaded");
 
-// Get field data from StreamElements
-const fieldData = obj.detail.fieldData;
-console.log("Field data:", fieldData);
+  // Get field data from StreamElements
+  const fieldData = obj.detail.fieldData;
+  console.log("Field data:", fieldData);
 
-// Initialize the TODO widget
-const _todoWidget = new TodoWidget(fieldData);
-
-// Make widget accessible globally for testing
-window._todoWidget = _todoWidget;
+  // Initialize the TODO widget
+  const _todoWidget = new TodoWidget(fieldData);
+  
+  // Make widget accessible globally for testing
+  window._todoWidget = _todoWidget;
 });
 
 class TodoWidget {
-constructor(fieldData) {
-this.completedTasks = 0; // Start with 0 completed tasks
-this.totalTasks = 0; // Start with 0 total tasks
-this.fieldData = fieldData;
-this.blacklistedUsers = this.parseBlacklistedUsers(fieldData.blacklistedUsers);
-this.tasks = []; // Will store task data
-this.isLocked = false; // Widget lock state
-this.completedTasksCount = 0; // Track completed tasks for auto-scroll
+  constructor(fieldData) {
+    this.completedTasks = 0; // Start with 0 completed tasks
+    this.totalTasks = 0; // Start with 0 total tasks
+    this.fieldData = fieldData;
+    this.blacklistedUsers = this.parseBlacklistedUsers(fieldData.blacklistedUsers);
+    this.tasks = []; // Will store task data
+    this.isLocked = false; // Widget lock state
+    this.completedTasksCount = 0; // Track completed tasks for auto-scroll
 
-// Sound properties
-this.taskCompleteAudio = null;
-this.allTasksCompleteAudio = null;
+    // Sound properties
+    this.taskCompleteAudio = null;
+    this.allTasksCompleteAudio = null;
 
-// Confetti properties
-this.confettiParticles = [];
-this.confettiCanvas = null;
-this.confettiCtx = null;
+    // Confetti properties
+    this.confettiParticles = [];
+    this.confettiCanvas = null;
+    this.confettiCtx = null;
 
-console.log("TodoWidget fieldData:", this.fieldData);
+    console.log("TodoWidget fieldData:", this.fieldData);
 
-this.init();
-}
-
-init() {
-console.log("TodoWidget init() called");
-this.countActualTasks();
-this.initializeSounds();
-this.initializeConfetti();
-this.applyCustomStyling();
-this.setupEventListeners();
-this.updateProgress();
-this.updateMoreTasksButton();
-this.initializeChatCommands();
-this.loadManualTasks();
-console.log("TodoWidget initialization complete");
-}
-
-initializeChatCommands() {
-console.log("Initializing chat commands...");
-
-// Correct StreamElements event listener for chat messages
-window.addEventListener('onEventReceived', (obj) => {
-  try {
-    if (!obj.detail.event) return;
-    const data = obj.detail.event;
-    
-    // Filter only chat messages
-    if (data.listener !== "message" && data.listener !== "onMessage") return;
-
-    const user = data.data?.nick || data.data?.user_name || 'unknown user';
-    const role = data.data?.tags?.badges || 'viewer';
-
-    console.log(`Message received - User: ${user} Role: ${role}`, data);
-
-    let userRole = 'viewer';
-    if (role) {
-      if (role.includes('broadcaster')) {
-        userRole = 'broadcaster';
-      } else if (role.includes('moderator')) {
-        userRole = 'moderator';
-      } else if (role.includes('vip')) {
-        userRole = 'vip';
-      } else if (role.includes('subscriber')) {
-        userRole = 'subscriber';
-      } else if (role.includes('founder')) {
-        userRole = 'founder';
-      }
-    }
-
-    console.log(`Determined Role: ${userRole}`);
-
-    if (data.renderedText) {
-      this.handleChatCommand(data.renderedText, user, userRole);
-    }
-  } catch (error) {
-    console.error("Error handling chat command:", error);
+    this.init();
   }
-});
 
-console.log("Chat commands initialized");
-}
+  init() {
+    console.log("TodoWidget init() called");
+    this.countActualTasks();
+    this.initializeSounds();
+    this.initializeConfetti();
+    this.applyCustomStyling();
+    this.setupEventListeners();
+    this.updateProgress();
+    this.updateMoreTasksButton();
+    this.initializeChatCommands();
+    this.loadManualTasks();
+    console.log("TodoWidget initialization complete");
+  }
 
   parseBlacklistedUsers(blacklistString) {
     if (!blacklistString) return [];
@@ -497,6 +452,47 @@ console.log("Chat commands initialized");
     if (progressCount) progressCount.textContent = `${this.completedTasks}/${this.totalTasks}`;
     if (progressPercentage) progressPercentage.textContent = `${percentage}%`;
     if (progressFill) progressFill.style.width = `${percentage}%`;
+  }
+
+  // StreamElements Chat Commands Integration
+  initializeChatCommands() {
+    console.log("Initializing chat commands...");
+    
+    // StreamElements event listener for chat messages (following working implementation)
+    window.addEventListener('onEventReceived', (obj) => {
+      try {
+        const data = obj.detail.event;
+        const user = data.data?.nick || data.data?.user_name || 'unknown user';
+        const role = data.data?.tags?.badges || 'viewer';
+
+        console.log(`Message received - User: ${user} Role: ${role}`, data);
+
+        let userRole = 'viewer';
+        if (role) {
+          if (role.includes('broadcaster')) {
+            userRole = 'broadcaster';
+          } else if (role.includes('moderator')) {
+            userRole = 'moderator';
+          } else if (role.includes('vip')) {
+            userRole = 'vip';
+          } else if (role.includes('subscriber')) {
+            userRole = 'subscriber';
+          } else if (role.includes('founder')) {
+            userRole = 'founder';
+          }
+        }
+
+        console.log(`Determined Role: ${userRole}`);
+
+        if (data.renderedText) {
+          this.handleChatCommand(data.renderedText, user, userRole);
+        }
+      } catch (error) {
+        console.error("Error handling chat command:", error);
+      }
+    });
+    
+    console.log("Chat commands initialized");
   }
 
   loadManualTasks() {
