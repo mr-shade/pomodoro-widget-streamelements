@@ -256,3 +256,24 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+/* Sleep mode styling */
+.timer-widget.sleep-mode-active::after {
+    content: '😴';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: #ffd700;
+    color: #333;
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+/* Reset button (up arrow) active state */
+.control.reset-active,
+.control:hover {
+    background-color: #ffd700 !important;
+    color: #333 !important;
+}

@@ -275,12 +275,29 @@ body {
     position: absolute;
     top: -10px;
     left: -10px;
-    background: #6b46c1;
-    color: white;
+    background: #ffd700;
+    color: #333;
     font-size: 16px;
     padding: 4px 8px;
     border-radius: 8px;
     z-index: 10;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+/* Reset button (up arrow) active state */
+.control.reset-active,
+.control:hover {
+    background-color: #ffd700 !important;
+    color: #333 !important;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Moon icon active state */
+.moon-active,
+.sleep-indicator.active {
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
 }
 
 /* Popup styling */
