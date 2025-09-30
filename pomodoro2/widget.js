@@ -73,6 +73,9 @@ class PomodoroTimer {
         this.enableBlacklist = this.fieldData.enableBlacklist === true;
         this.blacklistUsers = this.fieldData.blacklistUsers ? 
             this.fieldData.blacklistUsers.toLowerCase().split(',').map(u => u.trim()) : [];
+        
+        // New comprehensive blacklist from fieldData
+        this.blacklistedUsers = this.parseBlacklistedUsers(this.fieldData.blacklistedUsers);
 
         // Custom commands
         this.startCommand = this.fieldData.startCommand || '!start';
@@ -91,6 +94,11 @@ class PomodoroTimer {
         this.bindEvents();
         this.initializeCommands();
         this.initializeStreamElementsEvents();
+    }
+
+    parseBlacklistedUsers(blacklistString) {
+        if (!blacklistString) return [];
+        return blacklistString.split(',').map(user => user.trim().toLowerCase()).filter(user => user.length > 0);
     }
 
     applyCustomColors() {
@@ -149,33 +157,125 @@ class PomodoroTimer {
     }
 
     handleCommand(data) {
-        const message = data.message || data.text || '';
+        const message = data.message || data.text || data.renderedText || '';
         const command = message.toLowerCase().trim();
-        const username = (data.username || data.displayName || '').toLowerCase();
+        const username = (data.username || data.displayName || data.nick || data.user_name || '').toLowerCase();
+        
+        // Determine user role from StreamElements data
+        let userRole = this.determineUserRole(data);
 
-        console.log("Pomodoro command received:", command, "from:", username);
+        console.log("Pomodoro command received:", command, "from:", username, "role:", userRole);
 
-        // Check blacklist
-        if (this.enableBlacklist && this.blacklistUsers.includes(username)) {
+        // Check if commands are enabled
+        if (this.fieldData.commandsEnabled === false) {
+            console.log("Commands are disabled");
+            return;
+        }
+
+        // Check comprehensive blacklist
+        if (this.isUserBlacklisted({ username: username })) {
             console.log("Command ignored - user is blacklisted:", username);
             return;
         }
 
-        // Handle custom commands
+        // Check legacy blacklist
+        if (this.enableBlacklist && this.blacklistUsers.includes(username)) {
+            console.log("Command ignored - user is in legacy blacklist:", username);
+            return;
+        }
+
+        // Handle custom commands with role permissions
         if (command === this.startCommand.toLowerCase()) {
-            if (!this.isRunning) {
-                this.startTimer();
-                this.sendNotification('Pomodoro started! 🍅');
+            if (this.hasPermission(userRole, this.fieldData.startCommandPermission)) {
+                if (!this.isRunning) {
+                    this.startTimer();
+                    this.sendNotification('Pomodoro started! 🍅');
+                } else {
+                    console.log("Timer is already running");
+                }
+            } else {
+                console.log(`User ${username} (${userRole}) not authorized for start command`);
             }
         } else if (command === this.pauseCommand.toLowerCase()) {
-            if (this.isRunning) {
-                this.pauseTimer();
-                this.sendNotification('Pomodoro paused ⏸️');
+            if (this.hasPermission(userRole, this.fieldData.pauseCommandPermission)) {
+                if (this.isRunning) {
+                    this.pauseTimer();
+                    this.sendNotification('Pomodoro paused ⏸️');
+                } else {
+                    console.log("Timer is not running");
+                }
+            } else {
+                console.log(`User ${username} (${userRole}) not authorized for pause command`);
             }
         } else if (command === this.resetCommand.toLowerCase()) {
-            this.resetTimer();
-            this.sendNotification('Pomodoro reset 🔄');
+            if (this.hasPermission(userRole, this.fieldData.resetCommandPermission)) {
+                this.resetTimer();
+                this.sendNotification('Pomodoro reset 🔄');
+            } else {
+                console.log(`User ${username} (${userRole}) not authorized for reset command`);
+            }
         }
+    }
+
+    determineUserRole(data) {
+        // Handle StreamElements badge format
+        const badges = data.badges || [];
+        const badgeTypes = badges.map(badge => badge.type || badge.name || badge).filter(Boolean);
+        
+        // Also check tags for Twitch-style badges
+        const tags = data.tags || {};
+        const twitchBadges = tags.badges ? tags.badges.split(',').map(b => b.split('/')[0]) : [];
+        
+        // Combine all badge information
+        const allBadges = [...badgeTypes, ...twitchBadges];
+        
+        // Check for broadcaster
+        if (allBadges.includes('broadcaster') || allBadges.includes('streamer') || data.username === data.channel) {
+            return 'broadcaster';
+        }
+        
+        // Check for moderator
+        if (allBadges.includes('moderator') || allBadges.includes('mod') || tags.mod === '1') {
+            return 'moderator';
+        }
+        
+        // Check for VIP
+        if (allBadges.includes('vip') || tags.vip === '1') {
+            return 'vip';
+        }
+        
+        // Check for subscriber
+        if (allBadges.includes('subscriber') || allBadges.includes('founder') || tags.subscriber === '1') {
+            return 'subscriber';
+        }
+        
+        return 'viewer';
+    }
+
+    hasPermission(userRole, requiredPermission) {
+        if (!requiredPermission) return true; // Default allow if not specified
+        
+        const permission = requiredPermission.toLowerCase();
+        
+        switch (permission) {
+            case 'broadcaster':
+                return userRole === 'broadcaster';
+            case 'moderator':
+                return userRole === 'broadcaster' || userRole === 'moderator';
+            case 'vip':
+                return userRole === 'broadcaster' || userRole === 'moderator' || userRole === 'vip';
+            case 'subscriber':
+                return userRole === 'broadcaster' || userRole === 'moderator' || userRole === 'vip' || userRole === 'subscriber';
+            case 'everyone':
+            default:
+                return true;
+        }
+    }
+
+    isUserBlacklisted(data) {
+        if (!data.username) return false;
+        const username = data.username.toLowerCase();
+        return this.blacklistedUsers.includes(username);
     }
 
     sendNotification(message) {
@@ -259,12 +359,38 @@ class PomodoroTimer {
     }
 
     initializeStreamElementsEvents() {
+        console.log("Initializing StreamElements events and chat commands...");
+        
         if (window.SE_API) {
-            // Listen for StreamElements events
+            // Listen for StreamElements events (donations, follows, etc.)
             window.SE_API.onEvent = (event) => {
                 this.handleStreamElementsEvent(event);
             };
         }
+        
+        // StreamElements event listener for chat messages
+        window.addEventListener('onEventReceived', (obj) => {
+            try {
+                const data = obj.detail.event;
+                const user = data.data?.nick || data.data?.user_name || 'unknown user';
+                const role = data.data?.tags?.badges || 'viewer';
+
+                console.log(`Message received - User: ${user} Role: ${role}`, data);
+
+                if (data.renderedText) {
+                    this.handleCommand({
+                        ...data.data,
+                        renderedText: data.renderedText,
+                        username: user,
+                        tags: data.data?.tags || {}
+                    });
+                }
+            } catch (error) {
+                console.error("Error handling chat command:", error);
+            }
+        });
+        
+        console.log("StreamElements events and chat commands initialized");
     }
 
     handleStreamElementsEvent(event) {

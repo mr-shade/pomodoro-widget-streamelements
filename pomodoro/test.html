@@ -86,7 +86,17 @@
             timerTextColor: "#FFFFFF",
             enableTickSound: "true",
             tickSoundFile: "",
-            tickSoundVolume: 50
+            tickSoundVolume: 50,
+            // Role permission features
+            commandsEnabled: true,
+            startCommandPermission: "everyone",
+            pauseCommandPermission: "moderator",
+            resetCommandPermission: "moderator",
+            blacklistedUsers: "",
+            // Custom commands
+            startCommand: "!start",
+            pauseCommand: "!pause",
+            resetCommand: "!reset"
         };
 
         setTimeout(() => {
@@ -186,7 +196,67 @@
                     }
                 }
 
-                console.log('Test controls loaded. Use Ctrl+1 (start), Ctrl+2 (pause), Ctrl+3 (reset)');
+                // Test role permissions with different user types
+                function testRolePermissions() {
+                    console.log('Testing role permissions...');
+                    
+                    // Test as viewer (should be able to start only)
+                    setTimeout(() => testChatCommand('!start', 'viewer', 'testviewer'), 500);
+                    
+                    // Test as subscriber
+                    setTimeout(() => testChatCommand('!pause', 'subscriber', 'testsubscriber'), 1000);
+                    
+                    // Test as moderator (should be able to do everything)
+                    setTimeout(() => testChatCommand('!reset', 'moderator', 'testmod'), 1500);
+                }
+
+                function testChatCommand(command, role = 'viewer', username = 'testuser') {
+                    console.log(`Testing ${command} as ${role}`);
+                    
+                    // Create mock StreamElements event data
+                    const mockData = {
+                        detail: {
+                            event: {
+                                data: {
+                                    nick: username,
+                                    user_name: username,
+                                    tags: {
+                                        badges: role === 'broadcaster' ? 'broadcaster/1' :
+                                               role === 'moderator' ? 'moderator/1' :
+                                               role === 'vip' ? 'vip/1' :
+                                               role === 'subscriber' ? 'subscriber/1' : '',
+                                        mod: role === 'moderator' ? '1' : '0',
+                                        subscriber: role === 'subscriber' ? '1' : '0',
+                                        vip: role === 'vip' ? '1' : '0'
+                                    },
+                                    badges: role === 'broadcaster' ? [{ type: 'broadcaster' }] :
+                                           role === 'moderator' ? [{ type: 'moderator' }] :
+                                           role === 'vip' ? [{ type: 'vip' }] :
+                                           role === 'subscriber' ? [{ type: 'subscriber' }] : []
+                                },
+                                renderedText: command
+                            }
+                        }
+                    };
+
+                    // Dispatch the event
+                    const event = new CustomEvent('onEventReceived', mockData);
+                    window.dispatchEvent(event);
+                }
+
+                // Add role permission testing to keyboard shortcuts
+                document.addEventListener('keydown', function(e) {
+                    if (e.ctrlKey) {
+                        switch(e.key) {
+                            case '4':
+                                e.preventDefault();
+                                testRolePermissions();
+                                break;
+                        }
+                    }
+                });
+
+                console.log('Test controls loaded. Use Ctrl+1 (start), Ctrl+2 (pause), Ctrl+3 (reset), Ctrl+4 (test permissions)');
             }, 500);
         });
     </script>

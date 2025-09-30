@@ -17,9 +17,32 @@ A customizable Pomodoro timer widget with chat command integration and tick soun
 
 ## Chat Commands
 
+The timer supports chat commands with customizable role permissions:
+
 - `!start` - Start the Pomodoro timer
-- `!pause` - Pause the running timer
+- `!pause` - Pause the running timer  
 - `!reset` - Reset timer to initial duration
+
+### 🔒 **NEW: Role Permission System**
+
+Configure who can use each timer command:
+
+#### Permission Levels
+- **Everyone**: All viewers can use the command
+- **Subscribers+**: Subscribers, VIPs, Moderators, and Broadcaster
+- **VIP+**: VIPs, Moderators, and Broadcaster
+- **Moderators+**: Moderators and Broadcaster only
+- **Broadcaster Only**: Only the channel owner
+
+#### Default Permissions
+- **Start Timer**: Everyone (viewers can start focus sessions)
+- **Pause Timer**: Moderators+ (prevent spam pausing)
+- **Reset Timer**: Moderators+ (prevent spam resetting)
+
+#### Additional Security Features
+- **Enable/Disable Commands**: Toggle chat commands on/off
+- **Blacklist System**: Block specific users from using any commands
+- **Custom Command Names**: Customize the command names (!start, !pause, !reset)
 
 ## Customization Options
 
@@ -27,6 +50,16 @@ The widget provides these customization options through the StreamElements dashb
 
 ### Timer Settings
 - **Pomodoro Duration**: Set timer length from 1-120 minutes (default: 25 minutes)
+
+### 🔒 **NEW: Role Permission Settings**
+- **Enable Chat Commands**: Toggle chat command functionality on/off
+- **Who Can Start Timer**: Set permission level for !start command
+- **Who Can Pause Timer**: Set permission level for !pause command  
+- **Who Can Reset Timer**: Set permission level for !reset command
+- **Blacklisted Users**: Comma-separated list of users blocked from all commands
+- **Custom Start Command**: Customize the start command (default: !start)
+- **Custom Pause Command**: Customize the pause command (default: !pause)
+- **Custom Reset Command**: Customize the reset command (default: !reset)
 
 ### Sound Settings
 - **Enable Tick Sound Every Second**: Enable/disable tick sound when timer is running
