@@ -60,9 +60,9 @@ body {
 
 .time-label {
     position: absolute;
-    top: 50%;
-    right: -8px;
-    transform: translateY(-50%) rotate(-15deg);
+    bottom: -3px;
+    right: -4px;
+    transform: rotate(-15deg);
     background: #FFB6C1;
     color: #333;
     font-size: 10px;
@@ -142,18 +142,21 @@ body {
 .control-bar {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     background: transparent;
     width: 100%;
-    justify-content: center;
+    justify-content: left;
     margin-top: 4px;
+    height: 20px;
+    padding-left: 6px;
+    margin-top: -2px;
 }
 
 .control {
-    width: 40px;
-    height: 34px;
+    width: 32px;
+    height: 28px;
     background: #6caaff;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,8 +165,8 @@ body {
 .control svg { pointer-events: none; }
 
 .control-bar .play-button {
-    width: 40px;
-    height: 34px;
+    width: 32px;
+    height: 28px;
     margin-left: 0;
     background: #6caaff;
 }
@@ -172,7 +175,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
     color: white;
     /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
