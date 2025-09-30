@@ -1,0 +1,353 @@
+{
+    "commandsEnabled": {
+        "type": "checkbox",
+        "label": "Enable Chat Commands",
+        "value": true
+    },
+    "marathonStartCommand": {
+        "type": "text",
+        "label": "Marathon Start Command",
+        "value": "!marathon-start"
+    },
+    "marathonPauseCommand": {
+        "type": "text",
+        "label": "Marathon Pause Command",
+        "value": "!marathon-pause"
+    },
+    "marathonResetCommand": {
+        "type": "text",
+        "label": "Marathon Reset Command",
+        "value": "!marathon-reset"
+    },
+    "marathonPowerUpCommand": {
+        "type": "text",
+        "label": "Marathon Power-Up Command",
+        "value": "!marathon-powerup"
+    },
+    "marathonSleepCommand": {
+        "type": "text",
+        "label": "Marathon Sleep Command",
+        "value": "!marathon-sleep"
+    },
+    "startingHours": {
+        "type": "number",
+        "label": "Starting Hours",
+        "value": 10,
+        "min": 0,
+        "max": 99
+    },
+    "startingMinutes": {
+        "type": "number",
+        "label": "Starting Minutes",
+        "value": 0,
+        "min": 0,
+        "max": 59
+    },
+    "startingSeconds": {
+        "type": "number",
+        "label": "Starting Seconds",
+        "value": 0,
+        "min": 0,
+        "max": 59
+    },
+    "maxCapHours": {
+        "type": "number",
+        "label": "Maximum Cap Hours",
+        "value": 24,
+        "min": 1,
+        "max": 99
+    },
+    "maxCapMinutes": {
+        "type": "number",
+        "label": "Maximum Cap Minutes",
+        "value": 0,
+        "min": 0,
+        "max": 59
+    },
+    "warningThresholdMinutes": {
+        "type": "number",
+        "label": "Warning Threshold (Minutes)",
+        "value": 5,
+        "min": 1,
+        "max": 60
+    },
+    "autoLockOnZero": {
+        "type": "checkbox",
+        "label": "Auto-lock when timer reaches zero",
+        "value": true
+    },
+    "startPermission": {
+        "type": "dropdown",
+        "label": "Start Command Permission",
+        "value": "moderator",
+        "options": {
+            "broadcaster": "Broadcaster Only",
+            "moderator": "Moderator+",
+            "vip": "VIP+",
+            "subscriber": "Subscriber+",
+            "everyone": "Everyone"
+        }
+    },
+    "pausePermission": {
+        "type": "dropdown",
+        "label": "Pause Command Permission",
+        "value": "moderator",
+        "options": {
+            "broadcaster": "Broadcaster Only",
+            "moderator": "Moderator+",
+            "vip": "VIP+",
+            "subscriber": "Subscriber+",
+            "everyone": "Everyone"
+        }
+    },
+    "resetPermission": {
+        "type": "dropdown",
+        "label": "Reset Command Permission",
+        "value": "broadcaster",
+        "options": {
+            "broadcaster": "Broadcaster Only",
+            "moderator": "Moderator+",
+            "vip": "VIP+",
+            "subscriber": "Subscriber+",
+            "everyone": "Everyone"
+        }
+    },
+    "blacklistedUsers": {
+        "type": "text",
+        "label": "Blacklisted Users (comma-separated)",
+        "value": ""
+    },
+    "followReward": {
+        "type": "number",
+        "label": "Follow Reward (seconds)",
+        "value": 30,
+        "min": 0,
+        "max": 3600
+    },
+    "tier1SubReward": {
+        "type": "number",
+        "label": "Tier 1 Sub Reward (seconds)",
+        "value": 60,
+        "min": 0,
+        "max": 3600
+    },
+    "tier2SubReward": {
+        "type": "number",
+        "label": "Tier 2 Sub Reward (seconds)",
+        "value": 120,
+        "min": 0,
+        "max": 3600
+    },
+    "tier3SubReward": {
+        "type": "number",
+        "label": "Tier 3 Sub Reward (seconds)",
+        "value": 360,
+        "min": 0,
+        "max": 3600
+    },
+    "cheerRewardPer100": {
+        "type": "number",
+        "label": "Cheer Reward per 100 bits (seconds)",
+        "value": 10,
+        "min": 0,
+        "max": 300
+    },
+    "donationRewardPerDollar": {
+        "type": "number",
+        "label": "Donation Reward per Dollar (seconds)",
+        "value": 20,
+        "min": 0,
+        "max": 300
+    },
+    "raidReward": {
+        "type": "number",
+        "label": "Raid Reward (seconds)",
+        "value": 120,
+        "min": 0,
+        "max": 3600
+    },
+    "hostReward": {
+        "type": "number",
+        "label": "Host Reward (seconds)",
+        "value": 90,
+        "min": 0,
+        "max": 3600
+    },
+    "enablePowerUp": {
+        "type": "checkbox",
+        "label": "Enable Power-Up Mode",
+        "value": true
+    },
+    "powerUp2xPermission": {
+        "type": "dropdown",
+        "label": "2x Power-Up Permission",
+        "value": "subscriber",
+        "options": {
+            "broadcaster": "Broadcaster Only",
+            "moderator": "Moderator+",
+            "vip": "VIP+",
+            "subscriber": "Subscriber+",
+            "everyone": "Everyone"
+        }
+    },
+    "powerUp3xPermission": {
+        "type": "dropdown",
+        "label": "3x Power-Up Permission",
+        "value": "vip",
+        "options": {
+            "broadcaster": "Broadcaster Only",
+            "moderator": "Moderator+",
+            "vip": "VIP+",
+            "subscriber": "Subscriber+",
+            "everyone": "Everyone"
+        }
+    },
+    "powerUp5xPermission": {
+        "type": "dropdown",
+        "label": "5x Power-Up Permission",
+        "value": "moderator",
+        "options": {
+            "broadcaster": "Broadcaster Only",
+            "moderator": "Moderator+",
+            "vip": "VIP+",
+            "subscriber": "Subscriber+",
+            "everyone": "Everyone"
+        }
+    },
+    "powerUpDefaultDuration": {
+        "type": "number",
+        "label": "Power-Up Default Duration (minutes)",
+        "value": 5,
+        "min": 1,
+        "max": 60
+    },
+    "enableSleepMode": {
+        "type": "checkbox",
+        "label": "Enable Sleep Mode",
+        "value": true
+    },
+    "sleepModePermission": {
+        "type": "dropdown",
+        "label": "Sleep Mode Permission",
+        "value": "moderator",
+        "options": {
+            "broadcaster": "Broadcaster Only",
+            "moderator": "Moderator+",
+            "vip": "VIP+",
+            "subscriber": "Subscriber+",
+            "everyone": "Everyone"
+        }
+    },
+    "sleepModeDefaultDuration": {
+        "type": "number",
+        "label": "Sleep Mode Default Duration (minutes)",
+        "value": 10,
+        "min": 1,
+        "max": 120
+    },
+    "sleepModeReduction": {
+        "type": "number",
+        "label": "Sleep Mode Reward Reduction (0.1-1.0)",
+        "value": 0.5,
+        "min": 0.1,
+        "max": 1.0,
+        "step": 0.1
+    },
+    "timerBackgroundColor": {
+        "type": "colorpicker",
+        "label": "Timer Background Color",
+        "value": "#010161"
+    },
+    "timerBorderColor": {
+        "type": "colorpicker",
+        "label": "Timer Border Color",
+        "value": "#fcfabc"
+    },
+    "numberColor": {
+        "type": "colorpicker",
+        "label": "Number Color",
+        "value": "#ffffff"
+    },
+    "warningColor": {
+        "type": "colorpicker",
+        "label": "Warning Color",
+        "value": "#ff0000"
+    },
+    "playButtonColor": {
+        "type": "colorpicker",
+        "label": "Play Button Color",
+        "value": "#63B3ED"
+    },
+    "controlButtonColor": {
+        "type": "colorpicker",
+        "label": "Control Button Color",
+        "value": "#6caaff"
+    },
+    "enableSounds": {
+        "type": "checkbox",
+        "label": "Enable Sound Effects",
+        "value": true
+    },
+    "soundVolume": {
+        "type": "number",
+        "label": "Sound Volume (0-100)",
+        "value": 70,
+        "min": 0,
+        "max": 100
+    },
+    "startSound": {
+        "type": "sound-input",
+        "label": "Timer Start Sound"
+    },
+    "pauseSound": {
+        "type": "sound-input",
+        "label": "Timer Pause Sound"
+    },
+    "completeSound": {
+        "type": "sound-input",
+        "label": "Timer Complete Sound"
+    },
+    "warningSound": {
+        "type": "sound-input",
+        "label": "Warning Sound"
+    },
+    "enableConfetti": {
+        "type": "checkbox",
+        "label": "Enable Confetti on Timer Complete",
+        "value": true
+    },
+    "confettiColor1": {
+        "type": "colorpicker",
+        "label": "Confetti Color 1",
+        "value": "#ff6b6b"
+    },
+    "confettiColor2": {
+        "type": "colorpicker",
+        "label": "Confetti Color 2",
+        "value": "#4ecdc4"
+    },
+    "confettiColor3": {
+        "type": "colorpicker",
+        "label": "Confetti Color 3",
+        "value": "#45b7d1"
+    },
+    "confettiColor4": {
+        "type": "colorpicker",
+        "label": "Confetti Color 4",
+        "value": "#96ceb4"
+    },
+    "confettiExplosionCount": {
+        "type": "number",
+        "label": "Confetti Explosion Count",
+        "value": 3,
+        "min": 1,
+        "max": 10
+    },
+    "confettiAnimationDuration": {
+        "type": "number",
+        "label": "Confetti Animation Duration (seconds)",
+        "value": 5,
+        "min": 1,
+        "max": 30
+    }
+}
