@@ -125,7 +125,6 @@ body {
 
 }
 
-
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -142,6 +141,7 @@ body {
     color: white;
     /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
 }
+
 .play-button:hover {
     transform: scale(1.05);
 }
@@ -185,4 +185,73 @@ body {
         transform: translateX(0);
         opacity: 1;
     }
+}
+
+/* New control row matching the mock */
+.control-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    width: 100%;
+    justify-content: left;
+    margin-top: 4px;
+    height: 20px;
+    padding-left: 6px;
+    margin-bottom: -10px;
+}
+
+.control {
+    width: 32px;
+    height: 28px;
+    background: #6caaff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control svg { pointer-events: none; }
+
+.control-bar .play-button {
+    width: 32px;
+    height: 28px;
+    margin-left: 0;
+    background: #6caaff;
+}
+
+.secondcard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
+}
+
+.play-button:hover {
+    transform: scale(1.05);
+}
+
+.play-button:active {
+    transform: scale(0.95);
+}
+
+.play-button svg {
+    margin-left: 2px;
+}
+
+#dev-commands {
+    display: none;
+}
+
+.control-btn {
+    width: 20px;
+    height: 20px;
+    background: #6caaff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
