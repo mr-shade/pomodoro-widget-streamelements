@@ -1,0 +1,14 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<div id="container">
+  <div id="event-info-container">
+    <div id="timer"></div>
+    <div id="event-details" class="inline-container">
+      <div id="event-name" class="text-left"></div>
+      <div class="text-right">
+          <div id="event-goal"><span id="donation-progress"></span>/<span id="donation-goal"></span></div>
+      </div>
+    </div>
+  </div>
+  <div id="donation-goals-list"></div>
+</div>

@@ -1,0 +1,283 @@
+{
+  	"eventName": {
+        "type": "text",
+        "label": "Name of your event",
+        "value": "Subathon",
+      	"group": "Widget settings"
+    },
+    "showTime": {
+        "type": "checkbox",
+        "label": "Show timer/title",
+        "value": true,
+      	"group": "Widget settings"
+    },
+    "startTime": {
+        "type": "number",
+        "label": "Start time on timer (in minutes)",
+        "value": 0,
+      	"group": "Widget settings"
+    },
+    "startSubs": {
+        "type": "number",
+        "label": "Start sub counter",
+        "value": 0,
+      	"group": "Widget settings"
+    },
+  	"timerStartCommand": {
+      	"type": "text",
+      	"label": "Timer start command",
+      	"value": "!starttimer",
+      	"group": "Widget settings"
+    },
+  	"timerEndCommand": {
+      	"type": "text",
+      	"label": "Timer end command",
+      	"value": "!endtimer",
+      	"group": "Widget settings"
+    },
+  	"goalUpdateCommand": {
+      	"type": "text",
+      	"label": "Goal update (!updategoal 100)",
+      	"value": "!updategoal",
+      	"group": "Widget settings"
+    },
+  	"goalAddCommand": {
+      	"type": "text",
+      	"label": "Goal add (!addgoal 'Goal6' 60)",
+      	"value": "!addgoal",
+      	"group": "Widget settings"
+    },
+  	"googleFont": {
+        "type": "googleFont",
+        "label": "Select font",
+        "value": "Montserrat",
+      	"group": "Display settings"
+    },
+  	"googleFontWeight": {
+        "type": "dropdown",
+        "label": "Font boldness",
+        "value": "normal",
+        "options": {
+          "normal": "Normal",
+          "bold": "Bold"
+        },
+      	"group": "Display settings"
+    },
+    "borderRadius": {
+        "type": "number",
+        "label": "Corner roundness (in px)",
+        "value": 0,
+      	"group": "Display settings"
+    },
+  	"timerMainFontSize": {
+        "type": "number",
+        "label": "Timer font size (in px)",
+        "value": 50,
+      	"group": "Display settings"
+    },
+  	"timerSubFontSize": {
+        "type": "number",
+        "label": "Timer details font size (in px)",
+        "value": 16,
+      	"group": "Display settings"
+    },
+    "timerBackground": {
+        "type": "colorpicker",
+        "label": "Timer background color",
+        "value": "#d2b9eb",
+      	"group": "Display settings"
+    },
+    "timerColor": {
+        "type": "colorpicker",
+        "label": "Timer text color",
+        "value": "#8e6fad",
+      	"group": "Display settings"
+    },
+    "timerBorderColor": {
+        "type": "colorpicker",
+        "label": "Timer border color",
+        "value": "#8e6fad",
+      	"group": "Display settings"
+    },
+    "timerBorder": {
+        "type": "number",
+        "label": "Timer border (in px)",
+        "value": 0,
+      	"group": "Display settings"
+    },
+  	"goalFontSize": {
+        "type": "number",
+        "label": "Goal item font size (in px)",
+        "value": 14,
+      	"group": "Display settings"
+    },
+  	"goalFontSize": {
+        "type": "number",
+        "label": "Goal item font size (in px)",
+        "value": 14,
+      	"group": "Display settings"
+    },
+    "goalBackground": {
+        "type": "colorpicker",
+        "label": "Goal item background color",
+        "value": "#7774a3",
+      	"group": "Display settings"
+    },
+    "goalColor": {
+        "type": "colorpicker",
+        "label": "Goal item text color",
+        "value": "#c6b9eb",
+      	"group": "Display settings"
+    },
+    "goalFadedBackground": {
+        "type": "colorpicker",
+        "label": "Goal item completed background color",
+        "value": "#ecdcf2",
+      	"group": "Display settings"
+    },
+    "goalFadedColor": {
+        "type": "colorpicker",
+        "label": "Goal item completed text color",
+        "value": "#7774a3",
+      	"group": "Display settings"
+    },
+    "goalLineColor": {
+        "type": "colorpicker",
+        "label": "Goal item completed line color",
+        "value": "#ffffff",
+      	"group": "Display settings"
+    },
+    "goalBorderColor": {
+        "type": "colorpicker",
+        "label": "Goal item border color",
+        "value": "#8e6fad",
+      	"group": "Display settings"
+    },
+    "goalBorder": {
+        "type": "number",
+        "label": "Goal item border thickness (in px)",
+        "value": 0,
+      	"group": "Display settings"
+    },
+    "donationGoal": {
+        "type": "number",
+        "label": "Donation goal",
+        "value": 50,
+     	"group": "Goal settings"
+    },
+    "donationGoalValues": {
+        "type": "text",
+        "label": "Donation milestone values (comma separated)",
+        "value": "10,20,30,40,50",
+     	"group": "Goal settings"
+    },
+    "donationGoalNames": {
+        "type": "text",
+        "label": "Donation milestone names (comma separated)",
+        "value": "Goal1,Goal2,Goal3,Goal4,Goal5",
+     	"group": "Goal settings"
+    },
+  	"t1SubValue": {
+        "type": "number",
+        "label": "T1 sub value",
+        "value": 1,
+     	"group": "Goal settings"
+    },
+  	"t2SubValue": {
+        "type": "number",
+        "label": "T2 sub value",
+        "value": 2,
+     	"group": "Goal settings"
+    },
+  	"t3SubValue": {
+        "type": "number",
+        "label": "T3 sub value",
+        "value": 3,
+     	"group": "Goal settings"
+    },
+    "tipsSubValue": {
+        "type": "number",
+        "label": "Tips value (in dollars)",
+        "value": 5,
+     	"group": "Goal settings"
+    },
+    "bitsSubValue": {
+        "type": "number",
+        "label": "Bits value",
+        "value": 500,
+     	"group": "Goal settings"
+    },
+  	"t1TimeValue": {
+        "type": "number",
+        "label": "Time per T1 sub (in minutes)",
+        "value": 5,
+        "group": "Timer settings"
+    },
+  	"t2TimeValue": {
+        "type": "number",
+        "label": "Time per T2 sub (in minutes)",
+        "value": 7,
+        "group": "Timer settings"
+    },
+  	"t3TimeValue": {
+        "type": "number",
+        "label": "Time per T3 sub (in minutes)",
+        "value": 10,
+        "group": "Timer settings"
+    },
+    "tipsTimeValue": {
+        "type": "number",
+        "label": "Time per $5 (in minutes)",
+        "value": 5,
+        "group": "Timer settings"
+    },
+    "bitsTimeValue": {
+        "type": "number",
+        "label": "Time per to 500 bits (in minutes)",
+        "value": 5,
+        "group": "Timer settings"
+    },
+    "simulateSubs": {
+        "type": "number",
+        "label": "Simulate T1 Sub donation value",
+        "value": 0,
+      	"group": "Testing"
+    },
+    "simulateTip": {
+        "type": "number",
+        "label": "Simulate Tip donation value",
+        "value": 0,
+      	"group": "Testing"
+    },
+    "simulateBits": {
+        "type": "number",
+        "label": "Simulate Bits donation value",
+        "value": 0,
+      	"group": "Testing"
+    },
+  	"test1": {
+        "type": "button",
+        "label": "Test broadcaster start timer",
+        "group": "Testing"
+    },
+    "test2": {
+        "type": "button",
+        "label": "Test moderator stop timer",
+        "group": "Testing"
+    },
+    "test3": {
+        "type": "button",
+        "label": "Test user stop timer",
+        "group": "Testing"
+    },
+    "test4": {
+        "type": "button",
+        "label": "Test moderator update goal",
+        "group": "Testing"
+    },
+    "test5": {
+        "type": "button",
+        "label": "Test moderator add new goal",
+        "group": "Testing"
+    }
+}

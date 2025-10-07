@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css?family={{googleFont}}');
+
+* {
+  font-family: {{googleFont}};
+  font-weight: {{googleFontWeight}};
+}
+
+#event-info-container {
+  background-color: {{timerBackground}};
+  border: {{timerBorder}}px solid {{timerBorderColor}};
+  border-radius: {{borderRadius}}px;
+  margin-bottom: 8px;
+  padding: 8px;
+  color: {{timerColor}};
+}
+
+#timer {
+  font-size: {{timerMainFontSize}}px;
+  margin: 12px 0;
+  text-align: center;
+}
+
+#event-details {
+  font-size: {{timerSubFontSize}}px;
+}
+
+.goal-item {
+  position: relative;
+  background-color: {{goalBackground}};
+  border: {{goalBorder}}px solid {{goalBorderColor}};
+  border-radius: {{borderRadius}}px;
+  margin-bottom: 8px;
+  padding: 8px;
+  font-size: {{goalFontSize}}px;
+  color: {{goalColor}};
+}
+
+.inline-container {
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.overlay-image {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 2;
+}
+
+.text-left {
+  padding-left: .5em;
+  text-align: left;
+}
+
+.text-right {
+  padding-right: .5em;
+  text-align: right;
+}
+
+.goal-reached {
+  opacity: 50%;
+}

@@ -1,0 +1,450 @@
+// Donation data
+let donoCount = 0;
+let donoMilestones = [];
+
+// Sub conversion for subs, bits, and tips
+let t1SubValue = 1;
+let t2SubValue = 0;
+let t3SubValue = 0;
+let bitsSubValue = 0;
+let tipsSubValue = 0;
+let cumulativeBits = 0;
+let cumulativeTips = 0;
+
+// Testing values
+let simulateSubs = 0;
+let simulateTip = 0;
+let simulateBits = 0;
+
+// Number of milestones to show
+let slidingWindow = 3;
+
+let previousHighestGoal = -1;
+
+// Timer in seconds
+let timer = 0;
+let stopTimer = true;
+
+// Time conversion for subs, bits, and tips in minutes
+let t1TimeValue = 0;
+let t2TimeValue = 0;
+let t3TimeValue = 0;
+let bitsTimeValue = 0;
+let tipsTimeValue = 0;
+
+let timerStartCommand, timerEndCommand, goalUpdateCommand, goalAddCommand, goalFadedBackground, goalFadedColor, goalLineColor;
+
+let testStart, testStop, testUserStop, testUpdateGoal, testAddGoal;
+
+window.addEventListener('onWidgetLoad', function(obj) {
+    let fieldData = obj.detail.fieldData;
+  	
+    goalFadedBackground = fieldData.goalFadedBackground;  	
+    goalFadedColor = fieldData.goalFadedColor;  	
+    goalLineColor = fieldData.goalLineColor;
+  	timerStartCommand = fieldData.timerStartCommand;
+    timerEndCommand = fieldData.timerEndCommand;
+    goalUpdateCommand = fieldData.goalUpdateCommand;
+    goalAddCommand = fieldData.goalAddCommand;
+  	
+    var goalsProgressElement = document.getElementById('event-name');
+  	goalsProgressElement.textContent = fieldData.eventName;
+  
+    var goalsProgressElement = document.getElementById('donation-goal');
+  	goalsProgressElement.textContent = fieldData.donationGoal;
+  
+    donationGoalValues = fieldData.donationGoalValues.split(',').map(Number);
+	donationGoalNames = fieldData.donationGoalNames.split(',');
+	donoMilestones = donationGoalValues.map((value, index) => ({value, name: donationGoalNames[index] || '', achieved: false}));
+  
+    t1SubValue = fieldData.t1SubValue;
+    t2SubValue = fieldData.t2SubValue;
+    t3SubValue = fieldData.t3SubValue;
+    bitsSubValue = fieldData.bitsSubValue;
+    tipsSubValue = fieldData.tipsSubValue;
+
+    t1TimeValue = fieldData.t1TimeValue;
+    t2TimeValue = fieldData.t2TimeValue;
+    t3TimeValue = fieldData.t3TimeValue;
+    bitsTimeValue = fieldData.bitsTimeValue;
+    tipsTimeValue = fieldData.tipsTimeValue;
+
+    if (!fieldData.showTime) {
+        $('#timer, #event-name').hide();
+      	$('#event-details').css({
+            justifyContent: 'center',
+       	});
+    }
+  
+    /** START TESTING **/
+    simulateSubs = fieldData.simulateSubs;
+    simulateBits = fieldData.simulateBits;
+    simulateTip = fieldData.simulateTip;
+  
+  	if (simulateSubs + simulateBits + simulateTip > 0) {
+        if (simulateSubs) {
+            donoCount += t1SubValue * simulateSubs;
+            timer += t1TimeValue * simulateSubs * 60;
+        }
+        if (simulateBits) {
+            donoCount += Math.floor(simulateBits / bitsSubValue);
+            timer = (simulateTip / 5) * bitsTimeValue * 60;
+        }
+        if (simulateTip) {
+            donoCount += Math.floor(simulateTip / tipsSubValue);
+            timer = (simulateBits / 500) * tipsTimeValue * 60;
+        }
+    } else {
+        donoCount += fieldData.startSubs;
+        timer += fieldData.startTime * 60;
+    }
+  
+    testStart = new CustomEvent("onEventReceived", {
+        detail: {
+            listener: "message",
+            event: {
+                service: "twitch",
+                data: {
+                  	tags: {
+                        badges: "broadcaster/1",
+                    },
+                    text: timerStartCommand,
+                },
+            },
+        },
+    });
+    testStop = new CustomEvent("onEventReceived", {
+        detail: {
+            listener: "message",
+            event: {
+                service: "twitch",
+                data: {
+                  	tags: {
+                        badges: "moderator/1",
+                    },
+                  	text: timerEndCommand,
+                },
+            },
+        },
+    });
+    testUserStop = new CustomEvent("onEventReceived", {
+        detail: {
+            listener: "message",
+            event: {
+                service: "twitch",
+                data: {
+                    tags: {
+                      	badges: "",
+                    },
+                    text: timerEndCommand,
+                },
+            },
+        },
+    });
+    testUpdateGoal = new CustomEvent("onEventReceived", {
+        detail: {
+            listener: "message",
+            event: {
+                service: "twitch",
+                data: {
+                  	tags: {
+                        badges: "moderator/1",
+                    },
+                  	text: `${goalUpdateCommand} 1000`
+                },
+            },
+        },
+    });
+    testAddGoal = new CustomEvent("onEventReceived", {
+        detail: {
+            listener: "message",
+            event: {
+                service: "twitch",
+                data: {
+                  	tags: {
+                        badges: "moderator/1",
+                    },
+                  	text: `${goalAddCommand} 'NSFW \"feet reveal\" comm' 1000`
+                },
+            },
+        },
+    });
+    /** END TESTING **/
+
+    populateInitialMilestones();
+    updateMilestonesAchieved(donoCount);
+
+	setTime(timer);
+});
+
+window.addEventListener('onEventReceived', function (obj) {
+    const event = obj.detail.event;
+  
+    // Ignore gifted events that are part of bulkGifted and process bulk events instead
+    if (event.isCommunityGift) return;
+  
+  	/** FOR TESTING **/
+  	if (event.listener === 'widget-button') {
+        if (event.field === 'test1') {
+            window.dispatchEvent(testStart);
+        } else if (event.field === 'test2') {
+            window.dispatchEvent(testStop);
+        } else if (event.field === 'test3') {
+            window.dispatchEvent(testUserStop);
+        } else if (event.field === 'test4') {
+            window.dispatchEvent(testUpdateGoal);
+        } else if (event.field === 'test5') {
+            window.dispatchEvent(testAddGoal);
+        }
+      	return;
+    }
+    /** END FOR TESTING **/
+
+  	let timeToAdd = 0;
+    const listener = obj.detail.listener;
+    switch (listener) {
+        case 'subscriber-latest':
+        	let amount = 1;
+            if (event.bulkGifted) amount = event.amount;
+            const tier = event.tier;
+            if (tier === "2000" || tier === 2000) {
+              if (t2SubValue) donoCount += t2SubValue * amount;
+              if (t2TimeValue) timeToAdd = t2TimeValue * amount * 60;
+            } else if (tier === "3000" || tier === 3000) {
+              if (t3SubValue) donoCount += t3SubValue * amount;
+              if (t3TimeValue) timeToAdd = t3TimeValue * amount * 60;
+            } else {
+              donoCount += t1SubValue * amount;
+              if (t1TimeValue) timeToAdd = t1TimeValue * amount * 60;
+            }
+            break;
+        case 'cheer-latest':
+            const bits = event.amount;
+        	if (bitsSubValue) {
+                cumulativeBits += bits;
+                donoCount += Math.floor(cumulativeBits / bitsSubValue);
+                cumulativeBits %= bitsSubValue;
+            }
+        	if (bitsTimeValue) {
+                timeToAdd = (bits / 500) * bitsTimeValue * 60;
+            }
+            break;
+        case 'tip-latest':
+            const dollars = event.amount;
+        	if (tipsSubValue) {
+                cumulativeTips += dollars;
+                donoCount += Math.floor(cumulativeTips / tipsSubValue);
+                cumulativeTips %= tipsSubValue;
+            }
+        	if (tipsTimeValue) {
+              timeToAdd = (dollars / 5) * tipsTimeValue * 60;
+            }
+            break;
+        case 'message':
+        	let data = event.data;
+        
+        	if (!isModerator(data)) break;
+        
+        	if (data.text.startsWith(timerStartCommand)) {
+              	stopTimer = false;
+            } else if (data.text.includes(timerEndCommand)) {
+              	stopTimer = true;
+            } else if (data.text.includes(goalUpdateCommand)) {
+            	const newGoal = data.text.split(' ')[1];
+              	if (newGoal) {
+               		document.getElementById('donation-goal').textContent = newGoal;
+                }
+            } else if (data.text.includes(goalAddCommand)) {
+              	// Expecting format: !addnewgoal 'Goal name' 100
+                let regex = /'([^']*)'|\S+/g;
+                let parsed = [...data.text.matchAll(regex)].map(m => m[1] ? m[1] : m[0]);
+              	if (parsed.length === 3) {
+                  	const newMilestone = {value: parseInt(parsed[2]), name: parsed[1], achieved: false};
+                    donoMilestones.push(newMilestone);
+                  	if (previousHighestGoal < donoMilestones.length - 3) return;
+                  	
+                    slide(newMilestone)
+                }
+            }
+        	return;
+    }
+
+    updateMilestonesAchieved(donoCount);
+  
+    timer += timeToAdd;
+  
+    setTime(timer);
+});
+
+function updateMilestonesAchieved(count) {
+    donoMilestones.forEach(function(goal) {
+        if (count >= goal.value && !goal.achieved) {
+            goal.achieved = true;
+        }
+    });
+  
+    updateGoalsDisplay();
+}
+
+function updateGoalsDisplay() {
+    var goalsProgressElement = document.getElementById('donation-progress');
+  	goalsProgressElement.textContent = donoCount;
+  
+    updateMilestones();
+}
+
+function populateInitialMilestones() {
+    var goalsListElement = document.getElementById('donation-goals-list');
+  
+    let highestAchievedIndex = donoMilestones.findIndex(goal => !goal.achieved);
+    if (highestAchievedIndex === -1) highestAchievedIndex = donoMilestones.length - 1;
+
+    let initialGoals = donoMilestones.slice(highestAchievedIndex, highestAchievedIndex + slidingWindow);
+    initialGoals.forEach((goal) => {
+        let goalElem = createGoal(goal);
+        goalsListElement.appendChild(goalElem);
+    });
+}
+
+async function updateMilestones() {
+    var goalsListElement = document.getElementById('donation-goals-list');
+  
+    let highestAchievedGoal = -1;
+    for (let i = 0; i < donoMilestones.length; i++) {
+        let goal = donoMilestones[i];
+        if (goal.achieved) {
+            highestAchievedGoal = i;
+        }
+    }
+    if (highestAchievedGoal == previousHighestGoal) return;
+
+	while(previousHighestGoal < highestAchievedGoal) {
+		previousHighestGoal++
+      
+		let completedGoal;
+      	if (previousHighestGoal === 0) {
+      		completedGoal = goalsListElement.childNodes[0];
+        } else if (previousHighestGoal === donoMilestones.length - 1) {
+      		completedGoal = goalsListElement.childNodes[2];
+        } else {
+      		completedGoal = goalsListElement.childNodes[1];
+        }
+
+      	const img = createStrikethroughImg();
+        completedGoal.appendChild(img);
+        await new Promise(resolve => {
+            $(img).animate({
+                opacity: 1,
+              	width: '100%',
+            }, 'normal', resolve);
+        });
+        await new Promise(resolve => {
+            $(completedGoal).animate({
+              	backgroundColor: goalFadedBackground,
+              	color: goalFadedColor,
+            }, 'normal', resolve);
+        });
+      
+      	await sleep(200);
+
+      	if (previousHighestGoal > 0
+            && previousHighestGoal + slidingWindow <= donoMilestones.length) {
+          	await slide(donoMilestones[previousHighestGoal + slidingWindow - 1]);
+        }
+    }
+}
+
+async function slide(newMilestone) {
+    var goalsListElement = document.getElementById('donation-goals-list');
+
+    await new Promise(resolve => {
+        $(goalsListElement.childNodes[0]).animate({
+            height: 0,
+            opacity: 0
+        }, 'normal', function () {
+            goalsListElement.removeChild(goalsListElement.childNodes[0]);
+            resolve();
+        });
+    });
+
+    // Add the next element with animation
+    let goalElem = createGoal(newMilestone);
+    goalElem.style.height = '0';
+    goalElem.style.opacity = '0';
+    goalsListElement.appendChild(goalElem);
+    $(goalElem).animate({ opacity: 1, height: '100%' }, 'normal');
+
+    await sleep(200);
+}
+
+function createGoal(goal) {
+    let listItem = document.createElement('div');
+    listItem.classList.add('goal-item');
+  
+  	let goalItem = document.createElement('div');
+    goalItem.classList.add('inline-container');
+  
+    let goalName = document.createElement('div');
+    goalName.textContent = goal.name;
+    goalName.classList.add('text-left');
+    let goalValue = document.createElement('div');
+    goalValue.textContent = goal.value;
+    goalValue.classList.add('text-right');
+
+    goalItem.appendChild(goalName);
+    goalItem.appendChild(goalValue);
+  
+  	listItem.appendChild(goalItem);
+
+    return listItem;
+}
+
+function createStrikethroughImg() {
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    svg.setAttribute('width', '0%');
+    line.setAttribute('x1', '2%');
+    line.setAttribute('y1', '0');
+    line.setAttribute('x2', '98%');
+    line.setAttribute('y2', '0');
+    line.style.stroke = goalLineColor;
+    line.style.strokeWidth = "6";
+    svg.appendChild(line);
+    svg.setAttribute("class", "overlay-image");
+    svg.style.opacity = 0;
+    return svg;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/** TIMER FUNCTIONS **/
+function setTime(totalTime) {
+    document.getElementById('timer').textContent = formatTime(totalTime);
+};
+
+function formatTime(totalSeconds) {
+    var seconds = totalSeconds % 60;
+    var minutes = Math.floor(totalSeconds / 60) % 60;
+    var hours = Math.floor(totalSeconds / 3600);
+    return hours.toString().padStart(2, '0') + ":" + 
+           minutes.toString().padStart(2, '0') + ":" + 
+           seconds.toString().padStart(2, '0') +"";
+};
+
+function isModerator(data) {
+    let badges = data.tags.badges;
+    if (badges.includes('broadcaster') || badges.includes('moderator')) {
+        return true;
+    }
+  	return false;
+};
+
+setInterval(() => {
+  	if (stopTimer) return;
+    if (timer > 0) {
+        timer -= 1;
+        setTime(timer);
+    }
+}, 1000);
