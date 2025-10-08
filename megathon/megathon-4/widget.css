@@ -1,0 +1,146 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: transparent;
+}
+
+#milestone-container {
+    width: 100%;
+    max-width: 450px;
+    background: #1e1b4b;
+    border: 3px solid #ffd700;
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+}
+
+/* Progress Section */
+#progress-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+#progress-bar-container {
+    flex: 1;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+#progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700 0%, #f59e0b 100%);
+    border-radius: 16px;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+#timer-display {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffd700;
+    white-space: nowrap;
+    min-width: 120px;
+    text-align: right;
+}
+
+/* Milestones List */
+#milestones-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.milestone-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 14px 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.milestone-item.completed {
+    opacity: 0.6;
+}
+
+.milestone-item.completed .milestone-text {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+.checkmark {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #10b981;
+    margin-right: 14px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.milestone-item:not(.completed) .checkmark {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.milestone-item:not(.completed) .checkmark::after {
+    content: '';
+}
+
+.milestone-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.milestone-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+}
+
+.milestone-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffd700;
+}
+
+/* Animation for new milestone */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.milestone-item.new {
+    animation: slideIn 0.4s ease;
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone Widget Test</title>
+    <link rel="stylesheet" href="widget.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div style="padding: 40px; background: #0f172a; min-height: 100vh;">
+        <h1 style="color: white; margin-bottom: 20px;">Milestone Widget Test</h1>
+        
+        <!-- Widget Container -->
+        <div id="widget-area">
+            <!-- Include widget HTML content here -->
+            <div id="milestone-container">
+                <div id="progress-section">
+                    <div id="progress-bar-container">
+                        <div id="progress-bar"></div>
+                    </div>
+                    <div id="timer-display">
+                        <span id="current-value">0</span>:<span id="goal-value">500</span>
+                    </div>
+                </div>
+                <div id="milestones-list"></div>
+            </div>
+        </div>
+
+        <!-- Test Controls -->
+        <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+            <h2 style="color: white; margin-bottom: 15px;">Test Controls</h2>
+            <button onclick="testSub(1)" style="margin: 5px; padding: 10px 20px; background: #ffd700; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Tier 1 Sub</button>
+            <button onclick="testSub(2)" style="margin: 5px; padding: 10px 20px; background: #ffd700; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Tier 2 Sub</button>
+            <button onclick="testSub(3)" style="margin: 5px; padding: 10px 20px; background: #ffd700; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Tier 3 Sub</button>
+            <button onclick="testCheer()" style="margin: 5px; padding: 10px 20px; background: #9146ff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add 500 Bits</button>
+            <button onclick="testTip()" style="margin: 5px; padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add $5 Tip</button>
+            <button onclick="testRaid()" style="margin: 5px; padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Raid (50 viewers)</button>
+            <button onclick="reset()" style="margin: 5px; padding: 10px 20px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Reset Progress</button>
+        </div>
+    </div>
+
+    <script src="widget.js"></script>
+    <script>
+        // Simulate StreamElements widget load
+        function simulateWidgetLoad() {
+            const event = new CustomEvent('onWidgetLoad', {
+                detail: {
+                    fieldData: {
+                        milestoneNames: "First Milestone,Second Milestone,Third Milestone,Fourth Milestone,Final Goal",
+                        milestoneValues: "100,250,500,750,1000",
+                        startingProgress: "0",
+                        subT1Value: "1",
+                        subT2Value: "2",
+                        subT3Value: "6",
+                        bitsPerCount: "500",
+                        tipsPerCount: "5",
+                        cheerValue: "1",
+                        tipValue: "1",
+                        raidValue: "1",
+                        hostValue: "1"
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        // Test functions
+        function testSub(tier) {
+            const tierMap = {1: "1000", 2: "2000", 3: "3000"};
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "subscriber-latest",
+                    event: {
+                        tier: tierMap[tier],
+                        amount: 1
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function testCheer() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "cheer-latest",
+                    event: {
+                        amount: 500
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function testTip() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "tip-latest",
+                    event: {
+                        amount: 5
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function testRaid() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "raid-latest",
+                    event: {
+                        amount: 50
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function reset() {
+            simulateWidgetLoad();
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            simulateWidgetLoad();
+        });
+    </script>
+</body>
+</html>

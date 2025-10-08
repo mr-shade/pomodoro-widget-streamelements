@@ -1,0 +1,62 @@
+{
+  "milestoneNames": {
+    "type": "text",
+    "label": "Milestone Names (comma separated)",
+    "value": "First Goal,Second Goal,Third Goal,Fourth Goal,Final Goal"
+  },
+  "milestoneValues": {
+    "type": "text",
+    "label": "Milestone Values (comma separated)",
+    "value": "100,250,500,750,1000"
+  },
+  "startingProgress": {
+    "type": "number",
+    "label": "Starting Progress",
+    "value": 0
+  },
+  "subT1Value": {
+    "type": "number",
+    "label": "Tier 1 Sub Value",
+    "value": 1
+  },
+  "subT2Value": {
+    "type": "number",
+    "label": "Tier 2 Sub Value",
+    "value": 2
+  },
+  "subT3Value": {
+    "type": "number",
+    "label": "Tier 3 Sub Value",
+    "value": 6
+  },
+  "bitsPerCount": {
+    "type": "number",
+    "label": "Bits Per Count (e.g., 500 bits = 1 count)",
+    "value": 500
+  },
+  "cheerValue": {
+    "type": "number",
+    "label": "Value Per Cheer Count",
+    "value": 1
+  },
+  "tipsPerCount": {
+    "type": "number",
+    "label": "Tips Per Count (e.g., $5 = 1 count)",
+    "value": 5
+  },
+  "tipValue": {
+    "type": "number",
+    "label": "Value Per Tip Count",
+    "value": 1
+  },
+  "raidValue": {
+    "type": "number",
+    "label": "Value Per Raid (10+ viewers)",
+    "value": 1
+  },
+  "hostValue": {
+    "type": "number",
+    "label": "Value Per Host (10+ viewers)",
+    "value": 1
+  }
+}
