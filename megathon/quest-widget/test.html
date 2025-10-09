@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Widget Test</title>
+    <link rel="stylesheet" href="widget.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body style="background: #0f172a; padding: 40px; min-height: 100vh;">
+    <h1 style="color: white; margin-bottom: 20px;">Megathon Quest Widget Test</h1>
+    
+    <!-- Widget -->
+    <div id="quest-container" class="quest-hidden">
+        <div id="quest-card" class="quest-card">
+            <div class="quest-header">
+                <span class="quest-status-text">NEW QUEST!</span>
+                <span class="quest-timer-display">5:00</span>
+            </div>
+            <div class="quest-content">
+                <h2 class="quest-title">Quest Title</h2>
+                <p class="quest-description">Quest description goes here</p>
+            </div>
+            <div class="quest-progress-container">
+                <div class="quest-progress-bar"></div>
+                <span class="quest-progress-text">0 / 500</span>
+            </div>
+        </div>
+        <div class="quest-glow"></div>
+    </div>
+    <canvas id="quest-confetti-canvas"></canvas>
+
+    <!-- Test Controls -->
+    <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+        <h2 style="color: white; margin-bottom: 15px;">Test Controls</h2>
+        <button onclick="testSub(1)" style="margin: 5px; padding: 10px 20px; background: #ffd700; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Tier 1 Sub (+10 pts)</button>
+        <button onclick="testSub(2)" style="margin: 5px; padding: 10px 20px; background: #ffd700; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Tier 2 Sub (+30 pts)</button>
+        <button onclick="testSub(3)" style="margin: 5px; padding: 10px 20px; background: #ffd700; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Tier 3 Sub (+60 pts)</button>
+        <button onclick="testCheer()" style="margin: 5px; padding: 10px 20px; background: #9146ff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add 500 Bits (+50 pts)</button>
+        <button onclick="testTip()" style="margin: 5px; padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add $5 Tip (+10 pts)</button>
+        <button onclick="testFollow()" style="margin: 5px; padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add Follow (+10 pts)</button>
+        <br>
+        <button onclick="addBulkPoints()" style="margin: 5px; padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Add 200 Points (Fast Test)</button>
+        <button onclick="triggerQuest()" style="margin: 5px; padding: 10px 20px; background: #8b5cf6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Trigger New Quest</button>
+        <button onclick="testPause()" style="margin: 5px; padding: 10px 20px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Pause Quests</button>
+        <button onclick="testResume()" style="margin: 5px; padding: 10px 20px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Resume Quests</button>
+    </div>
+
+    <script src="widget.js"></script>
+    <script>
+        // Simulate StreamElements widget load
+        function simulateWidgetLoad() {
+            const event = new CustomEvent('onWidgetLoad', {
+                detail: {
+                    fieldData: {
+                        testingMode: "false",
+                        rollStyle: "default",
+                        questInterval: "1", // 1 minute for testing
+                        questChance: "100",
+                        pointsToComplete: "500",
+                        exitDuration: "5000",
+                        warningTime: "30",
+                        expireTime: "120", // 2 minutes for testing
+                        
+                        questNames: "Sub Squad,Bit Bonanza,Donation Drive,Follower Frenzy,Raid Rally",
+                        questDescriptions: "Get 5 new subscribers!,Collect 1000 bits!,Receive $50 in donations!,Gain 10 new followers!,Get raided by 50+ viewers!",
+                        questPoints: "500,1000,500,300,250",
+                        
+                        questFollowPoints: "10",
+                        questSubT1Points: "10",
+                        questSubT2Points: "30",
+                        questSubT3Points: "60",
+                        questBitsPerPoint: "100",
+                        questCheerPointValue: "10",
+                        questTipPerPoint: "5",
+                        questTipPointValue: "10",
+                        questRaidPoints: "50",
+                        questHostPoints: "30",
+                        
+                        questBgColor: "#1a1a2e",
+                        questBorderColor: "#ffd700",
+                        questBorderWidth: "3",
+                        questBorderRadius: "20",
+                        questWidth: "450",
+                        questPositionTop: "50%",
+                        questPositionLeft: "50%",
+                        
+                        questStatusColor: "#ffd700",
+                        questWarningColor: "#ff4500",
+                        questCompleteColor: "#00ff7f",
+                        questFailedColor: "#dc143c",
+                        questTitleColor: "#ffffff",
+                        questDescColor: "#b0b0b0",
+                        questTimerColor: "#ffffff",
+                        questProgressColor: "#ffd700",
+                        questProgressColorEnd: "#f59e0b",
+                        
+                        questGlowColor: "#ffd700",
+                        questWarningGlowColor: "#ff4500",
+                        questCompleteGlowColor: "#00ff7f",
+                        questFailedGlowColor: "#dc143c",
+                        
+                        questFontFamily: "Inter",
+                        questTitleFontSize: "26",
+                        questDescFontSize: "16",
+                        questStatusFontSize: "18",
+                        questTimerFontSize: "24",
+                        
+                        completeConfettiExplosions: "3",
+                        completeConfettiAmount: "50",
+                        completeConfettiColor: "#00ff7f",
+                        
+                        failedConfettiExplosions: "1",
+                        failedConfettiAmount: "30",
+                        failedConfettiColor: "#dc143c",
+                        
+                        questPauseCommand: "!questpause",
+                        questResumeCommand: "!questresume",
+                        questCommandPermission: "moderator"
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        // Test functions
+        function testSub(tier) {
+            const tierMap = {1: "1000", 2: "2000", 3: "3000"};
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "subscriber-latest",
+                    event: {
+                        tier: tierMap[tier],
+                        amount: 1
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function testCheer() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "cheer-latest",
+                    event: {
+                        amount: 500
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function testTip() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "tip-latest",
+                    event: {
+                        amount: 5
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function testFollow() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "follower-latest",
+                    event: {
+                        name: "TestFollower"
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function addBulkPoints() {
+            if (window.questSystem && window.questSystem.currentQuest) {
+                window.questSystem.addPoints(200);
+            }
+        }
+
+        function triggerQuest() {
+            if (window.questSystem) {
+                window.questSystem.attemptQuestRoll();
+            }
+        }
+
+        function testPause() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "message",
+                    event: {
+                        text: "!questpause",
+                        badges: [{type: "moderator"}]
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        function testResume() {
+            const event = new CustomEvent('onEventReceived', {
+                detail: {
+                    listener: "message",
+                    event: {
+                        text: "!questresume",
+                        badges: [{type: "moderator"}]
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        }
+
+        // Auto-trigger a quest on load for testing
+        window.addEventListener('load', function() {
+            simulateWidgetLoad();
+            setTimeout(triggerQuest, 1000);
+        });
+    </script>
+</body>
+</html>

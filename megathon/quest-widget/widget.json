@@ -1,0 +1,450 @@
+{
+  "testingMode": {
+    "type": "dropdown",
+    "label": "Testing Mode (disable before going live)",
+    "value": "false",
+    "options": {
+      "true": "Enabled",
+      "false": "Disabled"
+    },
+    "group": "General Settings"
+  },
+  "rollStyle": {
+    "type": "dropdown",
+    "label": "Quest Roll Style",
+    "value": "default",
+    "options": {
+      "default": "Default (re-enter pool, no consecutive repeats)",
+      "deplete": "Deplete (remove completed until reset)"
+    },
+    "group": "General Settings"
+  },
+  "questInterval": {
+    "type": "number",
+    "label": "New Quest Every (minutes)",
+    "value": 10,
+    "min": 1,
+    "max": 120,
+    "group": "General Settings"
+  },
+  "questChance": {
+    "type": "slider",
+    "label": "% Chance of New Quest",
+    "value": 100,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "General Settings"
+  },
+  "pointsToComplete": {
+    "type": "number",
+    "label": "Default Points to Complete Quest",
+    "value": 500,
+    "group": "General Settings"
+  },
+  "exitDuration": {
+    "type": "number",
+    "label": "Exit After Finished (milliseconds)",
+    "value": 5000,
+    "min": 1000,
+    "max": 30000,
+    "group": "General Settings"
+  },
+  "warningTime": {
+    "type": "number",
+    "label": "Warning Time (seconds)",
+    "value": 30,
+    "min": 5,
+    "max": 300,
+    "group": "General Settings"
+  },
+  "expireTime": {
+    "type": "number",
+    "label": "Quest Expire Time (seconds)",
+    "value": 300,
+    "min": 30,
+    "max": 1800,
+    "group": "General Settings"
+  },
+  
+  "questNames": {
+    "type": "text",
+    "label": "Quest Names (comma separated)",
+    "value": "Sub Squad,Bit Bonanza,Donation Drive,Follower Frenzy,Raid Rally",
+    "group": "Quest Configuration"
+  },
+  "questDescriptions": {
+    "type": "text",
+    "label": "Quest Descriptions (comma separated)",
+    "value": "Get 5 new subscribers!,Collect 1000 bits!,Receive $50 in donations!,Gain 10 new followers!,Get raided by 50+ viewers!",
+    "group": "Quest Configuration"
+  },
+  "questPoints": {
+    "type": "text",
+    "label": "Quest Point Requirements (comma separated)",
+    "value": "500,1000,500,300,250",
+    "group": "Quest Configuration"
+  },
+  
+  "questFollowPoints": {
+    "type": "number",
+    "label": "Points Per Follow",
+    "value": 10,
+    "group": "Event Point Values"
+  },
+  "questSubT1Points": {
+    "type": "number",
+    "label": "Points Per Tier 1 Sub",
+    "value": 10,
+    "group": "Event Point Values"
+  },
+  "questSubT2Points": {
+    "type": "number",
+    "label": "Points Per Tier 2 Sub",
+    "value": 30,
+    "group": "Event Point Values"
+  },
+  "questSubT3Points": {
+    "type": "number",
+    "label": "Points Per Tier 3 Sub",
+    "value": 60,
+    "group": "Event Point Values"
+  },
+  "questBitsPerPoint": {
+    "type": "number",
+    "label": "Bits Per Point Calculation",
+    "value": 100,
+    "group": "Event Point Values"
+  },
+  "questCheerPointValue": {
+    "type": "number",
+    "label": "Points Per Cheer Calculation",
+    "value": 10,
+    "group": "Event Point Values"
+  },
+  "questTipPerPoint": {
+    "type": "number",
+    "label": "Tip Amount Per Point ($)",
+    "value": 5,
+    "group": "Event Point Values"
+  },
+  "questTipPointValue": {
+    "type": "number",
+    "label": "Points Per Tip Calculation",
+    "value": 10,
+    "group": "Event Point Values"
+  },
+  "questRaidPoints": {
+    "type": "number",
+    "label": "Points Per Raid",
+    "value": 50,
+    "group": "Event Point Values"
+  },
+  "questHostPoints": {
+    "type": "number",
+    "label": "Points Per Host",
+    "value": 30,
+    "group": "Event Point Values"
+  },
+  
+  "questBgColor": {
+    "type": "colorpicker",
+    "label": "Card Background Color",
+    "value": "#1a1a2e",
+    "group": "Visual Customization"
+  },
+  "questBorderColor": {
+    "type": "colorpicker",
+    "label": "Border Color",
+    "value": "#ffd700",
+    "group": "Visual Customization"
+  },
+  "questBorderWidth": {
+    "type": "number",
+    "label": "Border Width (px)",
+    "value": 3,
+    "min": 0,
+    "max": 10,
+    "group": "Visual Customization"
+  },
+  "questBorderRadius": {
+    "type": "number",
+    "label": "Border Radius (px)",
+    "value": 20,
+    "min": 0,
+    "max": 50,
+    "group": "Visual Customization"
+  },
+  "questWidth": {
+    "type": "number",
+    "label": "Quest Card Width (px)",
+    "value": 450,
+    "min": 300,
+    "max": 800,
+    "group": "Visual Customization"
+  },
+  "questPositionTop": {
+    "type": "text",
+    "label": "Position Top (%, px, or CSS value)",
+    "value": "50%",
+    "group": "Visual Customization"
+  },
+  "questPositionLeft": {
+    "type": "text",
+    "label": "Position Left (%, px, or CSS value)",
+    "value": "50%",
+    "group": "Visual Customization"
+  },
+  
+  "questStatusColor": {
+    "type": "colorpicker",
+    "label": "New Quest Text Color",
+    "value": "#ffd700",
+    "group": "Color Customization"
+  },
+  "questWarningColor": {
+    "type": "colorpicker",
+    "label": "Quest Warning Color",
+    "value": "#ff4500",
+    "group": "Color Customization"
+  },
+  "questCompleteColor": {
+    "type": "colorpicker",
+    "label": "Quest Completed Color",
+    "value": "#00ff7f",
+    "group": "Color Customization"
+  },
+  "questFailedColor": {
+    "type": "colorpicker",
+    "label": "Quest Failed Color",
+    "value": "#dc143c",
+    "group": "Color Customization"
+  },
+  "questTitleColor": {
+    "type": "colorpicker",
+    "label": "Quest Title Color",
+    "value": "#ffffff",
+    "group": "Color Customization"
+  },
+  "questDescColor": {
+    "type": "colorpicker",
+    "label": "Quest Description Color",
+    "value": "#b0b0b0",
+    "group": "Color Customization"
+  },
+  "questTimerColor": {
+    "type": "colorpicker",
+    "label": "Timer Text Color",
+    "value": "#ffffff",
+    "group": "Color Customization"
+  },
+  "questProgressColor": {
+    "type": "colorpicker",
+    "label": "Progress Bar Start Color",
+    "value": "#ffd700",
+    "group": "Color Customization"
+  },
+  "questProgressColorEnd": {
+    "type": "colorpicker",
+    "label": "Progress Bar End Color",
+    "value": "#f59e0b",
+    "group": "Color Customization"
+  },
+  
+  "questGlowColor": {
+    "type": "colorpicker",
+    "label": "Default Glow Color",
+    "value": "#ffd700",
+    "group": "Glow Effects"
+  },
+  "questWarningGlowColor": {
+    "type": "colorpicker",
+    "label": "Warning Glow Color",
+    "value": "#ff4500",
+    "group": "Glow Effects"
+  },
+  "questCompleteGlowColor": {
+    "type": "colorpicker",
+    "label": "Quest Complete Glow Color",
+    "value": "#00ff7f",
+    "group": "Glow Effects"
+  },
+  "questFailedGlowColor": {
+    "type": "colorpicker",
+    "label": "Quest Failed Glow Color",
+    "value": "#dc143c",
+    "group": "Glow Effects"
+  },
+  
+  "questFontFamily": {
+    "type": "googleFont",
+    "label": "Font Family",
+    "value": "Inter",
+    "group": "Font Settings"
+  },
+  "questTitleFontSize": {
+    "type": "number",
+    "label": "Title Font Size (px)",
+    "value": 26,
+    "min": 12,
+    "max": 48,
+    "group": "Font Settings"
+  },
+  "questDescFontSize": {
+    "type": "number",
+    "label": "Description Font Size (px)",
+    "value": 16,
+    "min": 10,
+    "max": 32,
+    "group": "Font Settings"
+  },
+  "questStatusFontSize": {
+    "type": "number",
+    "label": "Status Font Size (px)",
+    "value": 18,
+    "min": 12,
+    "max": 36,
+    "group": "Font Settings"
+  },
+  "questTimerFontSize": {
+    "type": "number",
+    "label": "Timer Font Size (px)",
+    "value": 24,
+    "min": 12,
+    "max": 48,
+    "group": "Font Settings"
+  },
+  
+  "newQuestSound": {
+    "type": "sound-input",
+    "label": "New Quest Sound",
+    "value": "",
+    "group": "Sound Effects"
+  },
+  "newQuestVolume": {
+    "type": "slider",
+    "label": "New Quest Volume",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Sound Effects"
+  },
+  "warningSound": {
+    "type": "sound-input",
+    "label": "Quest Warning Sound",
+    "value": "",
+    "group": "Sound Effects"
+  },
+  "warningVolume": {
+    "type": "slider",
+    "label": "Warning Volume",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Sound Effects"
+  },
+  "completedSound": {
+    "type": "sound-input",
+    "label": "Quest Completed Sound",
+    "value": "",
+    "group": "Sound Effects"
+  },
+  "completedVolume": {
+    "type": "slider",
+    "label": "Completed Volume",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Sound Effects"
+  },
+  "failedSound": {
+    "type": "sound-input",
+    "label": "Quest Failed Sound",
+    "value": "",
+    "group": "Sound Effects"
+  },
+  "failedVolume": {
+    "type": "slider",
+    "label": "Failed Volume",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Sound Effects"
+  },
+  
+  "completeConfettiExplosions": {
+    "type": "number",
+    "label": "Complete: Confetti Explosions",
+    "value": 3,
+    "min": 1,
+    "max": 10,
+    "group": "Confetti - Complete"
+  },
+  "completeConfettiAmount": {
+    "type": "number",
+    "label": "Complete: Confetti Amount",
+    "value": 50,
+    "min": 10,
+    "max": 200,
+    "group": "Confetti - Complete"
+  },
+  "completeConfettiColor": {
+    "type": "colorpicker",
+    "label": "Complete: Confetti Color",
+    "value": "#00ff7f",
+    "group": "Confetti - Complete"
+  },
+  
+  "failedConfettiExplosions": {
+    "type": "number",
+    "label": "Failed: Confetti Explosions",
+    "value": 1,
+    "min": 1,
+    "max": 10,
+    "group": "Confetti - Failed"
+  },
+  "failedConfettiAmount": {
+    "type": "number",
+    "label": "Failed: Confetti Amount",
+    "value": 30,
+    "min": 10,
+    "max": 200,
+    "group": "Confetti - Failed"
+  },
+  "failedConfettiColor": {
+    "type": "colorpicker",
+    "label": "Failed: Confetti Color",
+    "value": "#dc143c",
+    "group": "Confetti - Failed"
+  },
+  
+  "questPauseCommand": {
+    "type": "text",
+    "label": "Quest Pause Command",
+    "value": "!questpause",
+    "group": "Commands"
+  },
+  "questResumeCommand": {
+    "type": "text",
+    "label": "Quest Resume Command",
+    "value": "!questresume",
+    "group": "Commands"
+  },
+  "questCommandPermission": {
+    "type": "dropdown",
+    "label": "Command Permission Level",
+    "value": "moderator",
+    "options": {
+      "everyone": "Everyone",
+      "subscriber": "Subscribers+",
+      "vip": "VIPs+",
+      "moderator": "Moderators+",
+      "broadcaster": "Broadcaster Only"
+    },
+    "group": "Commands"
+  }
+}

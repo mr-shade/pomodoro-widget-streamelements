@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Megathon Quest Widget</title>
+</head>
+<body>
+    <!-- Quest Popup Container -->
+    <div id="quest-container" class="quest-hidden">
+        <!-- Quest Card -->
+        <div id="quest-card" class="quest-card">
+            <!-- Quest Header -->
+            <div class="quest-header">
+                <span class="quest-status-text">NEW QUEST!</span>
+                <span class="quest-timer-display">5:00</span>
+            </div>
+            
+            <!-- Quest Content -->
+            <div class="quest-content">
+                <h2 class="quest-title">Quest Title</h2>
+                <p class="quest-description">Quest description goes here</p>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="quest-progress-container">
+                <div class="quest-progress-bar"></div>
+                <span class="quest-progress-text">0 / 500</span>
+            </div>
+        </div>
+        
+        <!-- Glow Effect Layer -->
+        <div class="quest-glow"></div>
+    </div>
+    
+    <!-- Confetti Canvas -->
+    <canvas id="quest-confetti-canvas"></canvas>
+</body>
+</html>
