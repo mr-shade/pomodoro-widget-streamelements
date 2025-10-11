@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Customization Test</title>
+    <link rel="stylesheet" href="widget.css">
+    <style>
+        body {
+            padding: 40px;
+            background: #f0f0f0;
+        }
+        .test-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 300px;
+            z-index: 1000;
+        }
+        .test-controls h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .test-controls label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .test-controls input, .test-controls select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .test-controls button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .test-controls button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-controls">
+        <h3>Font Customization Test</h3>
+        
+        <label for="fontFamily">Font Family:</label>
+        <select id="fontFamily">
+            <option value="system">System Default</option>
+            <option value="arial">Arial</option>
+            <option value="helvetica">Helvetica</option>
+            <option value="roboto">Roboto</option>
+            <option value="georgia">Georgia</option>
+            <option value="times">Times New Roman</option>
+            <option value="poppins">Poppins</option>
+            <option value="montserrat">Montserrat</option>
+            <option value="opensans">Open Sans</option>
+            <option value="lato">Lato</option>
+            <option value="raleway">Raleway</option>
+            <option value="nunito">Nunito</option>
+        </select>
+
+        <label for="fontSize">Font Size (px):</label>
+        <input type="range" id="fontSize" min="10" max="32" value="18">
+        <span id="fontSizeValue">18px</span>
+
+        <label for="fontWeight">Font Weight:</label>
+        <select id="fontWeight">
+            <option value="100">Thin (100)</option>
+            <option value="200">Extra Light (200)</option>
+            <option value="300">Light (300)</option>
+            <option value="normal" selected>Normal (400)</option>
+            <option value="500">Medium (500)</option>
+            <option value="600">Semi Bold (600)</option>
+            <option value="bold">Bold (700)</option>
+            <option value="800">Extra Bold (800)</option>
+            <option value="900">Black (900)</option>
+        </select>
+
+        <label for="lineHeight">Line Height:</label>
+        <input type="range" id="lineHeight" min="1.0" max="2.0" step="0.1" value="1.4">
+        <span id="lineHeightValue">1.4</span>
+
+        <label for="letterSpacing">Letter Spacing (px):</label>
+        <input type="range" id="letterSpacing" min="-2" max="5" step="0.1" value="0">
+        <span id="letterSpacingValue">0px</span>
+
+        <button onclick="applyChanges()">Apply Changes</button>
+        <button onclick="resetToDefaults()">Reset to Defaults</button>
+    </div>
+
+    <div class="tasklist-container">
+        <div class="task-card">
+            <h2 class="card-title">MY TASKS</h2>
+
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Complete the project documentation</span>
+                </div>
+                <div class="task-item">
+                    <div class="checkbox checked">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="task-text">Review code changes</span>
+                </div>
+                <div class="task-item completed">
+                    <div class="checkbox checked">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 8L6 12L16 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="task-text">Test font customization features - this is a longer task text to see how line height and letter spacing affects readability</span>
+                </div>
+                <div class="task-item">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Deploy to production</span>
+                </div>
+                <div class="task-item high-priority">
+                    <div class="checkbox"></div>
+                    <span class="task-text">High priority task example</span>
+                </div>
+                <div class="task-item medium-priority">
+                    <div class="checkbox"></div>
+                    <span class="task-text">Medium priority task example</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-bar-container">
+                <div class="progress-info">
+                    <span class="progress-count">2/6</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 33%;"></div>
+                </div>
+                <div class="progress-info">
+                    <span class="progress-percentage">33%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getFontFamily(fontOption) {
+            const fontMap = {
+                'system': '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+                'arial': 'Arial, sans-serif',
+                'helvetica': 'Helvetica, Arial, sans-serif',
+                'roboto': 'Roboto, sans-serif',
+                'georgia': 'Georgia, serif',
+                'times': 'Times New Roman, serif',
+                'poppins': 'Poppins, sans-serif',
+                'montserrat': 'Montserrat, sans-serif',
+                'opensans': '"Open Sans", sans-serif',
+                'lato': 'Lato, sans-serif',
+                'raleway': 'Raleway, sans-serif',
+                'nunito': 'Nunito, sans-serif'
+            };
+            return fontMap[fontOption] || fontMap['system'];
+        }
+
+        function applyChanges() {
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = document.getElementById('fontSize').value;
+            const fontWeight = document.getElementById('fontWeight').value;
+            const lineHeight = document.getElementById('lineHeight').value;
+            const letterSpacing = document.getElementById('letterSpacing').value;
+
+            // Apply CSS variables like the widget does
+            document.documentElement.style.setProperty('--task-font-family', getFontFamily(fontFamily));
+            document.documentElement.style.setProperty('--task-font-size', `${fontSize}px`);
+            document.documentElement.style.setProperty('--task-font-weight', fontWeight);
+            document.documentElement.style.setProperty('--task-line-height', lineHeight);
+            document.documentElement.style.setProperty('--task-letter-spacing', `${letterSpacing}px`);
+
+            console.log('Applied font settings:', {
+                fontFamily: getFontFamily(fontFamily),
+                fontSize: `${fontSize}px`,
+                fontWeight,
+                lineHeight,
+                letterSpacing: `${letterSpacing}px`
+            });
+        }
+
+        function resetToDefaults() {
+            document.getElementById('fontFamily').value = 'system';
+            document.getElementById('fontSize').value = 18;
+            document.getElementById('fontWeight').value = 'normal';
+            document.getElementById('lineHeight').value = 1.4;
+            document.getElementById('letterSpacing').value = 0;
+            
+            updateDisplayValues();
+            applyChanges();
+        }
+
+        function updateDisplayValues() {
+            document.getElementById('fontSizeValue').textContent = document.getElementById('fontSize').value + 'px';
+            document.getElementById('lineHeightValue').textContent = document.getElementById('lineHeight').value;
+            document.getElementById('letterSpacingValue').textContent = document.getElementById('letterSpacing').value + 'px';
+        }
+
+        // Update display values when sliders change
+        document.getElementById('fontSize').addEventListener('input', function() {
+            updateDisplayValues();
+            applyChanges();
+        });
+        document.getElementById('lineHeight').addEventListener('input', function() {
+            updateDisplayValues();
+            applyChanges();
+        });
+        document.getElementById('letterSpacing').addEventListener('input', function() {
+            updateDisplayValues();
+            applyChanges();
+        });
+        document.getElementById('fontFamily').addEventListener('change', applyChanges);
+        document.getElementById('fontWeight').addEventListener('change', applyChanges);
+
+        // Initialize display values
+        updateDisplayValues();
+
+        // Apply default styling on load
+        window.addEventListener('load', applyChanges);
+    </script>
+</body>
+</html>

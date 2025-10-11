@@ -22,6 +22,65 @@
     "max": 64,
     "step": 2
   },
+  "taskFontFamily": {
+    "type": "dropdown",
+    "label": "Task Text Font Family",
+    "value": "system",
+    "options": {
+      "system": "System Default",
+      "arial": "Arial",
+      "helvetica": "Helvetica",
+      "roboto": "Roboto",
+      "georgia": "Georgia",
+      "times": "Times New Roman",
+      "poppins": "Poppins",
+      "montserrat": "Montserrat",
+      "opensans": "Open Sans",
+      "lato": "Lato",
+      "raleway": "Raleway",
+      "nunito": "Nunito"
+    }
+  },
+  "taskFontSize": {
+    "type": "slider",
+    "label": "Task Text Font Size (px)",
+    "value": 16,
+    "min": 10,
+    "max": 32,
+    "step": 1
+  },
+  "taskFontWeight": {
+    "type": "dropdown",
+    "label": "Task Text Font Weight",
+    "value": "normal",
+    "options": {
+      "100": "Thin (100)",
+      "200": "Extra Light (200)",
+      "300": "Light (300)",
+      "normal": "Normal (400)",
+      "500": "Medium (500)",
+      "600": "Semi Bold (600)",
+      "bold": "Bold (700)",
+      "800": "Extra Bold (800)",
+      "900": "Black (900)"
+    }
+  },
+  "taskLineHeight": {
+    "type": "slider",
+    "label": "Task Text Line Height",
+    "value": 1.4,
+    "min": 1.0,
+    "max": 2.0,
+    "step": 0.1
+  },
+  "taskLetterSpacing": {
+    "type": "slider",
+    "label": "Task Text Letter Spacing (px)",
+    "value": 0,
+    "min": -2,
+    "max": 5,
+    "step": 0.1
+  },
   "taskTextColor": {
     "type": "colorpicker",
     "label": "Task Text Color",

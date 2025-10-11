@@ -284,10 +284,31 @@ class TodoWidget {
       console.log("task-card element not found");
     }
 
-    // Apply task text color
+    // Apply task text color and font customizations using CSS variables
     document.querySelectorAll('.task-text').forEach(text => {
       text.style.color = this.fieldData.taskTextColor;
     });
+    
+    // Set task font CSS variables on document root (like card title font size)
+    if (this.fieldData.taskFontFamily) {
+      document.documentElement.style.setProperty('--task-font-family', this.getFontFamily(this.fieldData.taskFontFamily));
+    }
+    
+    if (this.fieldData.taskFontSize) {
+      document.documentElement.style.setProperty('--task-font-size', `${this.fieldData.taskFontSize}px`);
+    }
+    
+    if (this.fieldData.taskFontWeight) {
+      document.documentElement.style.setProperty('--task-font-weight', this.fieldData.taskFontWeight);
+    }
+    
+    if (this.fieldData.taskLineHeight) {
+      document.documentElement.style.setProperty('--task-line-height', this.fieldData.taskLineHeight);
+    }
+    
+    if (this.fieldData.taskLetterSpacing) {
+      document.documentElement.style.setProperty('--task-letter-spacing', `${this.fieldData.taskLetterSpacing}px`);
+    }
 
     // Apply checkbox border color and tick color
     document.querySelectorAll('.checkbox').forEach(checkbox => {
@@ -377,7 +398,13 @@ class TodoWidget {
       'helvetica': 'Helvetica, Arial, sans-serif',
       'roboto': 'Roboto, sans-serif',
       'georgia': 'Georgia, serif',
-      'times': 'Times New Roman, serif'
+      'times': 'Times New Roman, serif',
+      'poppins': 'Poppins, sans-serif',
+      'montserrat': 'Montserrat, sans-serif',
+      'opensans': '"Open Sans", sans-serif',
+      'lato': 'Lato, sans-serif',
+      'raleway': 'Raleway, sans-serif',
+      'nunito': 'Nunito, sans-serif'
     };
 
     return fontMap[fontOption] || fontMap['system'];
