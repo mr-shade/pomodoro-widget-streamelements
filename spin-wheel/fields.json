@@ -1,0 +1,416 @@
+[
+  {
+    "type": "checkbox",
+    "name": "enableSpinCommand",
+    "label": "Enable Spin Command",
+    "value": true
+  },
+  {
+    "type": "text",
+    "name": "spinCommand",
+    "label": "Spin Command",
+    "value": "!spin"
+  },
+  {
+    "type": "dropdown",
+    "name": "whoCanParticipate",
+    "label": "Who can participate",
+    "value": "everyone",
+    "options": {
+      "everyone": "Everyone (Viewers)",
+      "subscribers": "Subscribers+",
+      "vips": "VIPs+",
+      "mods": "Moderators+",
+      "broadcaster": "Broadcaster Only"
+    }
+  },
+  {
+    "type": "dropdown",
+    "name": "cooldownType",
+    "label": "Cooldown Type",
+    "value": "default",
+    "options": {
+      "default": "Default (10 seconds)",
+      "custom": "Custom"
+    }
+  },
+  {
+    "type": "number",
+    "name": "customCooldown",
+    "label": "Custom Cooldown (seconds)",
+    "value": 60
+  },
+  {
+    "type": "text",
+    "name": "wheelOptions",
+    "label": "Wheel Options (comma separated)",
+    "value": "Prize 1,Prize 2,Prize 3,Lucky Draw,Bonus Points,Try Again,Special Gift,Winner"
+  },
+  {
+    "type": "colorpicker",
+    "name": "primaryColor",
+    "label": "Primary Wheel Color",
+    "value": "#d6bcfd"
+  },
+  {
+    "type": "colorpicker",
+    "name": "secondaryColor",
+    "label": "Secondary Wheel Color",
+    "value": "#a4a0ec"
+  },
+  {
+    "type": "colorpicker",
+    "name": "borderColor",
+    "label": "Border Color",
+    "value": "#1e14ea"
+  },
+  {
+    "type": "colorpicker",
+    "name": "innerRingColor",
+    "label": "Inner Ring Color",
+    "value": "#9476df"
+  },
+  {
+    "type": "colorpicker",
+    "name": "outerRingColor",
+    "label": "Outer Ring Color",
+    "value": "#342140"
+  },
+  {
+    "type": "colorpicker",
+    "name": "confettiColor1",
+    "label": "Confetti Color 1",
+    "value": "#9476df"
+  },
+  {
+    "type": "colorpicker",
+    "name": "confettiColor2",
+    "label": "Confetti Color 2",
+    "value": "#fcd580"
+  },
+  {
+    "type": "colorpicker",
+    "name": "iconColor",
+    "label": "Icon Color",
+    "value": "#13e5d6"
+  },
+  {
+    "type": "colorpicker",
+    "name": "highlighterColor",
+    "label": "Highlighter Color",
+    "value": "#13e5d6"
+  },
+  {
+    "type": "colorpicker",
+    "name": "textColor",
+    "label": "Text Color",
+    "value": "#342140"
+  },
+  {
+    "type": "colorpicker",
+    "name": "starColor",
+    "label": "Star Color",
+    "value": "#fee3aa"
+  },
+  {
+    "type": "dropdown",
+    "name": "centerImageType",
+    "label": "Center Button Type",
+    "value": "star",
+    "options": {
+      "star": "Golden Star (Default)",
+      "image": "Custom Image",
+      "text": "Custom Text"
+    }
+  },
+  {
+    "type": "image-input",
+    "name": "centerCustomImage",
+    "label": "Custom Center Image",
+    "value": ""
+  },
+  {
+    "type": "number",
+    "name": "centerImageSize",
+    "label": "Center Image Size (%)",
+    "value": 70
+  },
+  {
+    "type": "text",
+    "name": "centerCustomText",
+    "label": "Custom Center Text",
+    "value": "SPIN"
+  },
+  {
+    "type": "number",
+    "name": "centerTextSize",
+    "label": "Center Text Size (px)",
+    "value": 16
+  },
+  {
+    "type": "colorpicker",
+    "name": "centerTextColor",
+    "label": "Center Text Color",
+    "value": "#333333"
+  },
+  {
+    "type": "checkbox",
+    "name": "enableWinnerPopup",
+    "label": "Enable Winner Popup",
+    "value": false
+  },
+  {
+    "type": "checkbox",
+    "name": "enableConfetti",
+    "label": "Enable Confetti",
+    "value": true
+  },
+  {
+    "type": "checkbox",
+    "name": "enableManualSpin",
+    "label": "Manual Spin Option",
+    "value": true
+  },
+  {
+    "type": "dropdown",
+    "name": "spinSpeed",
+    "label": "Spin Speed & Rotations",
+    "value": "normal",
+    "options": {
+      "slow": "Slow (8 seconds)",
+      "normal": "Normal (6 seconds)",
+      "fast": "Fast (4 seconds)"
+    }
+  },
+  {
+    "type": "number",
+    "name": "minimumSpinCount",
+    "label": "Minimum Spin Count",
+    "value": 2
+  },
+  {
+    "type": "number",
+    "name": "pointsThreshold",
+    "label": "Points Threshold for Spin",
+    "value": 50
+  },
+  {
+    "type": "checkbox",
+    "name": "trackTips",
+    "label": "Track Tips",
+    "value": false
+  },
+  {
+    "type": "checkbox",
+    "name": "trackSubscriptions",
+    "label": "Track Subscriptions",
+    "value": false
+  },
+  {
+    "type": "checkbox",
+    "name": "trackResubscriptions",
+    "label": "Track Re-subscriptions",
+    "value": false
+  },
+  {
+    "type": "checkbox",
+    "name": "trackGiftSubs",
+    "label": "Track Gift Subscriptions",
+    "value": false
+  },
+  {
+    "type": "checkbox",
+    "name": "trackDirectGifts",
+    "label": "Track Direct Gifts",
+    "value": false
+  },
+  {
+    "type": "checkbox",
+    "name": "trackCheers",
+    "label": "Track Cheers",
+    "value": false
+  },
+  {
+    "type": "number",
+    "name": "pointsPerTip",
+    "label": "Points per tip amount = 1",
+    "value": 1
+  },
+  {
+    "type": "number",
+    "name": "pointsPerFollow",
+    "label": "Points per follow = 1",
+    "value": 1
+  },
+  {
+    "type": "number",
+    "name": "pointsPerSub",
+    "label": "Points per sub = 5",
+    "value": 5
+  },
+  {
+    "type": "number",
+    "name": "pointsPerResub",
+    "label": "Points per re-sub = 5",
+    "value": 5
+  },
+  {
+    "type": "number",
+    "name": "pointsPerGift",
+    "label": "Points per gift = 5",
+    "value": 5
+  },
+  {
+    "type": "number",
+    "name": "pointsPerDirectGift",
+    "label": "Points per direct gift = 5",
+    "value": 5
+  },
+  {
+    "type": "number",
+    "name": "pointsPerCheer",
+    "label": "Points per 100 cheer/bits = 1",
+    "value": 1
+  },
+  {
+    "type": "text",
+    "name": "subMessageFormat",
+    "label": "Sub Message format",
+    "value": "<username> subscribed"
+  },
+  {
+    "type": "text",
+    "name": "resubMessageFormat",
+    "label": "Re-sub message format",
+    "value": "<username> re-subbed"
+  },
+  {
+    "type": "dropdown",
+    "name": "wheelTextFont",
+    "label": "Wheel Text Font Family",
+    "value": "Arial",
+    "options": {
+      "Arial": "Arial",
+      "Helvetica": "Helvetica",
+      "Times New Roman": "Times New Roman",
+      "Georgia": "Georgia",
+      "Verdana": "Verdana",
+      "Trebuchet MS": "Trebuchet MS",
+      "Impact": "Impact",
+      "Comic Sans MS": "Comic Sans MS",
+      "Courier New": "Courier New",
+      "Lucida Console": "Lucida Console",
+      "Tahoma": "Tahoma",
+      "Palatino": "Palatino",
+      "Garamond": "Garamond",
+      "Bookman": "Bookman",
+      "Avant Garde": "Avant Garde"
+    }
+  },
+  {
+    "type": "text",
+    "name": "customFontFamily",
+    "label": "Custom Font Family (Google Fonts, etc.)",
+    "value": ""
+  },
+  {
+    "type": "number",
+    "name": "wheelTextSize",
+    "label": "Wheel Text Size (px)",
+    "value": 14
+  },
+  {
+    "type": "dropdown",
+    "name": "wheelTextWeight",
+    "label": "Wheel Text Weight",
+    "value": "normal",
+    "options": {
+      "100": "Thin (100)",
+      "200": "Extra Light (200)",
+      "300": "Light (300)",
+      "500": "Medium (500)",
+      "600": "Semi Bold (600)",
+      "800": "Extra Bold (800)",
+      "900": "Black (900)",
+      "normal": "Normal (400)",
+      "bold": "Bold (700)"
+    }
+  },
+  {
+    "type": "dropdown",
+    "name": "wheelTextStyle",
+    "label": "Wheel Text Style",
+    "value": "normal",
+    "options": {
+      "normal": "Normal",
+      "italic": "Italic",
+      "oblique": "Oblique"
+    }
+  },
+  {
+    "type": "dropdown",
+    "name": "wheelTextTransform",
+    "label": "Wheel Text Transform",
+    "value": "none",
+    "options": {
+      "none": "None",
+      "uppercase": "UPPERCASE",
+      "lowercase": "lowercase",
+      "capitalize": "Capitalize"
+    }
+  },
+  {
+    "type": "number",
+    "name": "wheelTextLetterSpacing",
+    "label": "Wheel Text Letter Spacing (px)",
+    "value": 0
+  },
+  {
+    "type": "checkbox",
+    "name": "enableTextShadow",
+    "label": "Enable Text Shadow",
+    "value": false
+  },
+  {
+    "type": "colorpicker",
+    "name": "textShadowColor",
+    "label": "Text Shadow Color",
+    "value": "#000000"
+  },
+  {
+    "type": "number",
+    "name": "textShadowBlur",
+    "label": "Text Shadow Blur (px)",
+    "value": 2
+  },
+  {
+    "type": "number",
+    "name": "textShadowOffsetX",
+    "label": "Text Shadow Offset X (px)",
+    "value": 1
+  },
+  {
+    "type": "number",
+    "name": "textShadowOffsetY",
+    "label": "Text Shadow Offset Y (px)",
+    "value": 1
+  },
+  {
+    "type": "checkbox",
+    "name": "enableTextStroke",
+    "label": "Enable Text Stroke/Outline",
+    "value": false
+  },
+  {
+    "type": "colorpicker",
+    "name": "textStrokeColor",
+    "label": "Text Stroke Color",
+    "value": "#ffffff"
+  },
+  {
+    "type": "number",
+    "name": "textStrokeWidth",
+    "label": "Text Stroke Width (px)",
+    "value": 1
+  }
+]

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Spinning Wheel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+    media="screen" type="text/css" />
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css'>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+  <div id="wrapper">
+
+    <div id="wheel">
+      <div id="inner-wheel">
+        <!-- Sections will be populated dynamically by JavaScript -->
+      </div>
+
+      <div id="spin">
+        <div id="inner-spin">
+          <!-- Center Star (Default) -->
+          <div id="center-star" class="center-content">
+            <svg width="40" height="40" viewBox="0 0 131 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M62.6465 5.48926C63.5445 2.72534 67.4555 2.72531 68.3535 5.48926L79.5977 40.0967C80.8026 43.8047 84.2583 46.3154 88.1572 46.3154H124.545C127.451 46.3154 128.66 50.0339 126.309 51.7422L96.8701 73.1309C93.7159 75.4226 92.3959 79.4843 93.6006 83.1924L104.845 117.8C105.743 120.564 102.58 122.862 100.229 121.153L70.79 99.7656C67.6357 97.4738 63.3643 97.4738 60.21 99.7656L30.7715 121.153C28.4204 122.861 25.2573 120.564 26.1553 117.8L37.3994 83.1924C38.6041 79.4843 37.2841 75.4226 34.1299 73.1309L4.69141 51.7422C2.34045 50.0339 3.54895 46.3154 6.45508 46.3154H42.8428C46.7417 46.3154 50.1974 43.8047 51.4023 40.0967L62.6465 5.48926Z"
+                fill="#FECF6A" stroke="black" stroke-width="6" />
+            </svg>
+          </div>
+
+          <!-- Center Custom Image -->
+          <div id="center-image" class="center-content" style="display: none;">
+            <img src="" alt="Center Image" style="max-width: 70%; max-height: 70%; object-fit: contain;">
+          </div>
+
+          <!-- Center Custom Text -->
+          <div id="center-text" class="center-content"
+            style="display: none; font-size: 16px; color: #333333; font-weight: bold; text-align: center; line-height: 1;">
+            SPIN
+          </div>
+        </div>
+      </div>
+
+      <div id="shine"></div>
+    </div>
+    <svg id="winner-pointer" width="50" height="50" viewBox="0 0 109 177" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M55.4551 3C73.2797 3 86.4873 10.3008 94.9189 20.9775C103.401 31.7182 107.167 46.033 105.685 60.1367C103.172 84.0418 90.1331 112.729 77.499 135.687C71.2121 147.11 65.0828 157.016 60.5254 164.063C58.4875 167.215 56.7638 169.792 55.4844 171.677C54.1412 169.658 52.3004 166.857 50.1104 163.425C45.3764 156.007 39.0115 145.658 32.4883 133.934C19.3637 110.343 5.87881 81.6709 3.34961 60.1006C0.0680184 32.1114 19.9873 3.00023 55.4551 3Z"
+        fill="#8C52FE" stroke="black" stroke-width="6" />
+      <path
+        d="M55 19.0005C73.1865 19.0005 88 33.9598 88 52.5005C88 71.0412 73.1865 86.0005 55 86.0005C36.8135 86.0005 22 71.0412 22 52.5005C22 33.9598 36.8135 19.0005 55 19.0005Z"
+        fill="#FFF5F7" stroke="black" stroke-width="6" />
+      <path
+        d="M55 36C64.4609 36 72 43.4584 72 52.5C72 61.5416 64.4609 69 55 69C45.5391 69 38 61.5416 38 52.5C38 43.4584 45.5391 36 55 36Z"
+        fill="#D6BCFD" stroke="black" stroke-width="6" />
+    </svg>
+
+    <!-- Decorative Stars -->
+    <div class="star star1">
+      <svg width="30" height="30" viewBox="0 0 86 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M61.3431 4.01079C63.408 2.8385 65.9518 4.41641 65.8197 6.78709L64.7341 26.2028C64.5833 28.9021 65.6541 31.5267 67.6501 33.3501L82.006 46.4649C83.7593 48.0666 83.045 50.9738 80.7491 51.5804L61.9495 56.5478C59.3356 57.2385 57.1704 59.0671 56.053 61.5289L48.016 79.235C47.0345 81.3973 44.0494 81.6169 42.7629 79.6211L32.2295 63.276C30.7649 61.0035 28.3556 59.5093 25.669 59.2073L6.34545 57.0355C3.98573 56.7701 2.85498 53.9979 4.35582 52.1577L16.6462 37.0894C18.3548 34.9943 19.0306 32.2419 18.4877 29.5935L14.5825 10.5449C14.1055 8.21872 16.3916 6.28657 18.6055 7.14493L36.735 14.177C39.2555 15.1547 42.0826 14.9475 44.4336 13.6127L61.3431 4.01079Z"
+          fill="#FECF6A" stroke="black" stroke-width="6" />
+      </svg>
+
+    </div>
+    <div class="star star2">
+      <svg width="15" height="15" viewBox="0 0 71 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M41.5472 4.4348C43.2156 2.65204 46.2007 3.50256 46.6789 5.89692L50.3079 24.0733C50.676 25.9167 51.6123 27.5992 52.9849 28.8835L66.5191 41.5475C68.3019 43.2159 67.4514 46.201 65.057 46.6792L46.8806 50.3082C45.0372 50.6763 43.3547 51.6126 42.0704 52.9852L29.4064 66.5194C27.738 68.3022 24.7529 67.4517 24.2747 65.0573L20.6457 46.8809C20.2776 45.0375 19.3413 43.355 17.9687 42.0707L4.43448 29.4067C2.65174 27.7383 3.50224 24.7532 5.8966 24.275L24.073 20.646C25.9164 20.278 27.5989 19.3416 28.8832 17.969L41.5472 4.4348Z"
+          fill="#FECF6A" stroke="black" stroke-width="6" />
+      </svg>
+
+
+    </div>
+
+    <div class="star star3">
+      <svg width="30" height="30" viewBox="0 0 86 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M61.3431 4.01079C63.408 2.8385 65.9518 4.41641 65.8197 6.78709L64.7341 26.2028C64.5833 28.9021 65.6541 31.5267 67.6501 33.3501L82.006 46.4649C83.7593 48.0666 83.045 50.9738 80.7491 51.5804L61.9495 56.5478C59.3356 57.2385 57.1704 59.0671 56.053 61.5289L48.016 79.235C47.0345 81.3973 44.0494 81.6169 42.7629 79.6211L32.2295 63.276C30.7649 61.0035 28.3556 59.5093 25.669 59.2073L6.34545 57.0355C3.98573 56.7701 2.85498 53.9979 4.35582 52.1577L16.6462 37.0894C18.3548 34.9943 19.0306 32.2419 18.4877 29.5935L14.5825 10.5449C14.1055 8.21872 16.3916 6.28657 18.6055 7.14493L36.735 14.177C39.2555 15.1547 42.0826 14.9475 44.4336 13.6127L61.3431 4.01079Z"
+          fill="#FECF6A" stroke="black" stroke-width="6" />
+      </svg>
+
+    </div>
+    <div class="star star4">
+      <svg width="20" height="20" viewBox="0 0 71 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M41.5472 4.4348C43.2156 2.65204 46.2007 3.50256 46.6789 5.89692L50.3079 24.0733C50.676 25.9167 51.6123 27.5992 52.9849 28.8835L66.5191 41.5475C68.3019 43.2159 67.4514 46.201 65.057 46.6792L46.8806 50.3082C45.0372 50.6763 43.3547 51.6126 42.0704 52.9852L29.4064 66.5194C27.738 68.3022 24.7529 67.4517 24.2747 65.0573L20.6457 46.8809C20.2776 45.0375 19.3413 43.355 17.9687 42.0707L4.43448 29.4067C2.65174 27.7383 3.50224 24.7532 5.8966 24.275L24.073 20.646C25.9164 20.278 27.5989 19.3416 28.8832 17.969L41.5472 4.4348Z"
+          fill="#FECF6A" stroke="black" stroke-width="6" />
+      </svg>
+    </div>
+
+    <!-- <div id="txt"></div> -->
+
+    <!-- Winner Display Modal -->
+    <div id="winner-display" class="winner-modal hidden">
+      <div class="winner-content">
+        <h2>🎉 Winner! 🎉</h2>
+        <div id="winner-text" class="winner-text">You won!</div>
+        <button id="close-winner" class="close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+  <!-- partial -->
+  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>
