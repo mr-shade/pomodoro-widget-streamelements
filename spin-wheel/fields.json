@@ -1,15 +1,34 @@
 [
   {
+    "type": "text",
+    "name": "spinCommand",
+    "label": "Custom Spin Command",
+    "value": "!spin"
+  },
+  {
     "type": "checkbox",
-    "name": "enableSpinCommand",
-    "label": "Enable Spin Command",
+    "name": "commandsEnabled",
+    "label": "Enable Chat Commands",
     "value": true
   },
   {
+    "type": "dropdown",
+    "name": "spinCommandPermission",
+    "label": "Who Can Spin",
+    "value": "everyone",
+    "options": {
+      "everyone": "Everyone",
+      "subscriber": "Subscribers+",
+      "vip": "VIP+",
+      "moderator": "Moderators+",
+      "broadcaster": "Broadcaster Only"
+    }
+  },
+  {
     "type": "text",
-    "name": "spinCommand",
-    "label": "Spin Command",
-    "value": "!spin"
+    "name": "blacklistedUsers",
+    "label": "Blacklisted Users (comma separated)",
+    "value": ""
   },
   {
     "type": "dropdown",

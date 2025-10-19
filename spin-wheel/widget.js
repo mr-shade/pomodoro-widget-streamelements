@@ -7,8 +7,10 @@
 // StreamElements Widget Variables
 let widget = {
     config: {
-        enableSpinCommand: true,
+        commandsEnabled: true,
         spinCommand: '!spin',
+        spinCommandPermission: 'everyone',
+        blacklistedUsers: '',
         cooldown: 10,
         whoCanParticipate: 'everyone',
         enableWinnerPopup: false,
@@ -78,7 +80,8 @@ let widget = {
     winnerText: "",
     degree: 1800,
     clicks: 0,
-    initialized: false
+    initialized: false,
+    blacklistedUsers: []
 };
 
 // Main initialization - StreamElements standard pattern
@@ -117,65 +120,67 @@ function processFieldData(data) {
             console.log('[SE Widget] Detected array format fieldData');
             // Map array indices to field names based on fields.json order
             const fieldMapping = [
-                'enableSpinCommand',    // 0
-                'spinCommand',          // 1
-                'whoCanParticipate',    // 2
-                'cooldownType',         // 3
-                'customCooldown',       // 4
-                'wheelOptions',         // 5
-                'primaryColor',         // 6
-                'secondaryColor',       // 7
-                'borderColor',          // 8
-                'innerRingColor',       // 9
-                'outerRingColor',       // 10
-                'confettiColor1',       // 11
-                'confettiColor2',       // 12
-                'iconColor',            // 13
-                'highlighterColor',     // 14
-                'textColor',            // 15
-                'starColor',            // 16
-                'centerImageType',      // 17
-                'centerCustomImage',    // 18
-                'centerImageSize',      // 19
-                'centerCustomText',     // 20
-                'centerTextSize',       // 21
-                'centerTextColor',      // 22
-                'enableWinnerPopup',    // 23
-                'enableConfetti',       // 24
-                'enableManualSpin',     // 25
-                'spinSpeed',            // 26
-                'minimumSpinCount',     // 27
-                'pointsThreshold',      // 28
-                'trackTips',            // 29
-                'trackSubscriptions',   // 30
-                'trackResubscriptions', // 31
-                'trackGiftSubs',        // 32
-                'trackDirectGifts',     // 33
-                'trackCheers',          // 34
-                'pointsPerTip',         // 35
-                'pointsPerFollow',      // 36
-                'pointsPerSub',         // 37
-                'pointsPerResub',       // 38
-                'pointsPerGift',        // 39
-                'pointsPerDirectGift',  // 40
-                'pointsPerCheer',       // 41
-                'subMessageFormat',     // 42
-                'resubMessageFormat',   // 43
-                'wheelTextFont',        // 44
-                'customFontFamily',     // 45
-                'wheelTextSize',        // 46
-                'wheelTextWeight',      // 47
-                'wheelTextStyle',       // 48
-                'wheelTextTransform',   // 49
-                'wheelTextLetterSpacing', // 50
-                'enableTextShadow',     // 51
-                'textShadowColor',      // 52
-                'textShadowBlur',       // 53
-                'textShadowOffsetX',    // 54
-                'textShadowOffsetY',    // 55
-                'enableTextStroke',     // 56
-                'textStrokeColor',      // 57
-                'textStrokeWidth'       // 58
+                'spinCommand',          // 0
+                'commandsEnabled',      // 1
+                'spinCommandPermission', // 2
+                'blacklistedUsers',     // 3
+                'whoCanParticipate',    // 4
+                'cooldownType',         // 5
+                'customCooldown',       // 6
+                'wheelOptions',         // 7
+                'primaryColor',         // 8
+                'secondaryColor',       // 9
+                'borderColor',          // 10
+                'innerRingColor',       // 11
+                'outerRingColor',       // 12
+                'confettiColor1',       // 13
+                'confettiColor2',       // 14
+                'iconColor',            // 15
+                'highlighterColor',     // 16
+                'textColor',            // 17
+                'starColor',            // 18
+                'centerImageType',      // 19
+                'centerCustomImage',    // 20
+                'centerImageSize',      // 21
+                'centerCustomText',     // 22
+                'centerTextSize',       // 23
+                'centerTextColor',      // 24
+                'enableWinnerPopup',    // 25
+                'enableConfetti',       // 26
+                'enableManualSpin',     // 27
+                'spinSpeed',            // 28
+                'minimumSpinCount',     // 29
+                'pointsThreshold',      // 30
+                'trackTips',            // 31
+                'trackSubscriptions',   // 32
+                'trackResubscriptions', // 33
+                'trackGiftSubs',        // 34
+                'trackDirectGifts',     // 35
+                'trackCheers',          // 36
+                'pointsPerTip',         // 37
+                'pointsPerFollow',      // 38
+                'pointsPerSub',         // 39
+                'pointsPerResub',       // 40
+                'pointsPerGift',        // 41
+                'pointsPerDirectGift',  // 42
+                'pointsPerCheer',       // 43
+                'subMessageFormat',     // 44
+                'resubMessageFormat',   // 45
+                'wheelTextFont',        // 46
+                'customFontFamily',     // 47
+                'wheelTextSize',        // 48
+                'wheelTextWeight',      // 49
+                'wheelTextStyle',       // 50
+                'wheelTextTransform',   // 51
+                'wheelTextLetterSpacing', // 52
+                'enableTextShadow',     // 53
+                'textShadowColor',      // 54
+                'textShadowBlur',       // 55
+                'textShadowOffsetX',    // 56
+                'textShadowOffsetY',    // 57
+                'enableTextStroke',     // 58
+                'textStrokeColor',      // 59
+                'textStrokeWidth'       // 60
             ];
 
             // Convert array format to named properties
@@ -252,14 +257,24 @@ function processFieldData(data) {
         console.log('[SE Widget] Wheel colors before override:', [...widget.wheelColors]);
 
         // Override basic settings with fieldData values
-        if (fieldValues.enableSpinCommand !== undefined) {
-            widget.config.enableSpinCommand = fieldValues.enableSpinCommand;
-            console.log('[SE Widget] Override enableSpinCommand:', fieldValues.enableSpinCommand);
+        if (fieldValues.commandsEnabled !== undefined) {
+            widget.config.commandsEnabled = fieldValues.commandsEnabled;
+            console.log('[SE Widget] Override commandsEnabled:', fieldValues.commandsEnabled);
         }
 
         if (fieldValues.spinCommand !== undefined && fieldValues.spinCommand !== '') {
             widget.config.spinCommand = fieldValues.spinCommand.toLowerCase();
             console.log('[SE Widget] Override spinCommand:', fieldValues.spinCommand);
+        }
+
+        if (fieldValues.spinCommandPermission !== undefined) {
+            widget.config.spinCommandPermission = fieldValues.spinCommandPermission;
+            console.log('[SE Widget] Override spinCommandPermission:', fieldValues.spinCommandPermission);
+        }
+
+        if (fieldValues.blacklistedUsers !== undefined && fieldValues.blacklistedUsers !== '') {
+            widget.blacklistedUsers = fieldValues.blacklistedUsers.split(',').map(user => user.trim().toLowerCase()).filter(user => user.length > 0);
+            console.log('[SE Widget] Override blacklistedUsers:', widget.blacklistedUsers);
         }
 
         if (fieldValues.cooldownType !== undefined && fieldValues.customCooldown !== undefined) {
@@ -924,13 +939,103 @@ function createConfetti() {
 
 // Handle chat commands
 function handleChatMessage(data) {
-    if (!widget.config.enableSpinCommand) return;
+    const message = data.message || data.text || data.renderedText || '';
+    const command = message.toLowerCase().trim();
+    const username = (data.username || data.displayName || data.nick || data.user_name || '').toLowerCase();
 
-    const message = (data.text || '').trim().toLowerCase();
-    const username = data.displayName || data.username || data.nick || 'Unknown';
+    // Determine user role from StreamElements data
+    let userRole = determineUserRole(data);
 
-    if (message === widget.config.spinCommand) {
-        handleSpinCommand(username, data);
+    console.log("[SE Widget] Spin command received:", command, "from:", username, "role:", userRole);
+
+    // Check if commands are enabled
+    if (widget.config.commandsEnabled === false) {
+        console.log("Commands are disabled");
+        return;
+    }
+
+    // Check blacklist
+    if (isUserBlacklisted({ username: username })) {
+        console.log("Command ignored - user is blacklisted:", username);
+        return;
+    }
+
+    // Handle spin command with role permissions
+    if (command === widget.config.spinCommand.toLowerCase()) {
+        if (hasPermission(userRole, widget.config.spinCommandPermission)) {
+            handleSpinCommand(username, data);
+        } else {
+            console.log(`User ${username} (${userRole}) not authorized for spin command`);
+        }
+    }
+}
+
+function determineUserRole(data) {
+    // Handle StreamElements badge format
+    const badges = data.badges || [];
+    const badgeTypes = badges.map(badge => badge.type || badge.name || badge).filter(Boolean);
+
+    // Also check tags for Twitch-style badges
+    const tags = data.tags || {};
+    const twitchBadges = tags.badges ? tags.badges.split(',').map(b => b.split('/')[0]) : [];
+
+    // Combine all badge information
+    const allBadges = [...badgeTypes, ...twitchBadges];
+
+    // Check for broadcaster
+    if (allBadges.includes('broadcaster') || allBadges.includes('streamer') || data.username === data.channel) {
+        return 'broadcaster';
+    }
+
+    // Check for moderator
+    if (allBadges.includes('moderator') || allBadges.includes('mod') || tags.mod === '1') {
+        return 'moderator';
+    }
+
+    // Check for VIP
+    if (allBadges.includes('vip') || tags.vip === '1') {
+        return 'vip';
+    }
+
+    // Check for subscriber
+    if (allBadges.includes('subscriber') || allBadges.includes('founder') || tags.subscriber === '1') {
+        return 'subscriber';
+    }
+
+    return 'viewer';
+}
+
+function hasPermission(userRole, requiredPermission) {
+    if (!requiredPermission) return true; // Default allow if not specified
+
+    const permission = requiredPermission.toLowerCase();
+
+    switch (permission) {
+        case 'broadcaster':
+            return userRole === 'broadcaster';
+        case 'moderator':
+            return userRole === 'broadcaster' || userRole === 'moderator';
+        case 'vip':
+            return userRole === 'broadcaster' || userRole === 'moderator' || userRole === 'vip';
+        case 'subscriber':
+            return userRole === 'broadcaster' || userRole === 'moderator' || userRole === 'vip' || userRole === 'subscriber';
+        case 'everyone':
+        default:
+            return true;
+    }
+}
+
+function isUserBlacklisted(data) {
+    if (!data.username) return false;
+    const username = data.username.toLowerCase();
+    return widget.blacklistedUsers.includes(username);
+}
+
+function sendNotification(message) {
+    console.log(`Spin Wheel: ${message}`);
+
+    if (window.SE_API && window.SE_API.sendMessage) {
+        window.SE_API.sendMessage(message);
     }
 }
 
@@ -949,53 +1054,68 @@ function handleSpinCommand(username, data) {
         return;
     }
 
-    // Permission checks based on whoCanParticipate setting
-    const userTags = data.tags || {};
-    const userBadges = userTags.badges || '';
-
-    // Check if user is broadcaster
-    const isBroadcaster = userTags.mod === '1' && userBadges.includes('broadcaster');
-
-    // Check if user is moderator
-    const isModerator = userTags.mod === '1' || userBadges.includes('moderator');
-
-    // Check if user is VIP
-    const isVIP = userTags.vip === '1' || userBadges.includes('vip');
-
-    // Check if user is subscriber
-    const isSubscriber = userTags.subscriber === '1' || userBadges.includes('subscriber');
-
-    // Permission logic based on whoCanParticipate setting
-    let hasPermission = false;
-
-    switch (widget.config.whoCanParticipate) {
-        case 'broadcaster':
-            hasPermission = isBroadcaster;
-            break;
-        case 'mods':
-            hasPermission = isBroadcaster || isModerator;
-            break;
-        case 'vips':
-            hasPermission = isBroadcaster || isModerator || isVIP;
-            break;
-        case 'subscribers':
-            hasPermission = isBroadcaster || isModerator || isVIP || isSubscriber;
-            break;
-        case 'everyone':
-        default:
-            hasPermission = true;
-            break;
-    }
-
-    if (!hasPermission) {
-        console.log(`[SE Widget] ${username} does not have permission to spin (required: ${widget.config.whoCanParticipate})`);
-        return;
-    }
-
     console.log(`[SE Widget] ${username} triggered a spin!`);
     widget.currentUser = username;
     widget.lastSpinTime = now;
     performSpin();
+    sendNotification(`${username} spun the wheel! 🎰`);
+}
+
+// Initialize StreamElements Events and Chat Commands
+function initializeStreamElementsEvents() {
+    console.log("Initializing StreamElements events and chat commands...");
+
+    if (window.SE_API) {
+        // Listen for StreamElements events (donations, follows, etc.)
+        window.SE_API.onEvent = (event) => {
+            handleStreamElementsEvent(event);
+        };
+
+        // Listen for chat messages via SE_API
+        if (window.SE_API.onMessage) {
+            window.SE_API.onMessage((data) => {
+                handleChatMessage(data);
+            });
+        }
+    }
+
+    // StreamElements event listener for chat messages
+    window.addEventListener('onEventReceived', (obj) => {
+        try {
+            const data = obj.detail.event;
+            const user = data.data?.nick || data.data?.user_name || 'unknown user';
+            const role = data.data?.tags?.badges || 'viewer';
+
+            console.log(`Message received - User: ${user} Role: ${role}`, data);
+
+            if (data.renderedText) {
+                handleChatMessage({
+                    ...data.data,
+                    renderedText: data.renderedText,
+                    username: user,
+                    tags: data.data?.tags || {}
+                });
+            }
+        } catch (error) {
+            console.error("Error handling chat command:", error);
+        }
+    });
+
+    console.log("StreamElements events and chat commands initialized");
+}
+
+function handleStreamElementsEvent(event) {
+    const { type, username, amount } = event;
+    const user = (username || '').toLowerCase();
+
+    // Check blacklist for events
+    if (isUserBlacklisted({ username: user })) {
+        console.log("Event ignored - user is blacklisted:", user);
+        return;
+    }
+
+    // Handle tracking events as before
+    handleTrackingEvent(type, { username: user, amount: amount });
 }
 
 // StreamElements Event Listeners - Standard Pattern
@@ -1191,6 +1311,9 @@ function initializeWidget() {
 
     // Initialize center button
     initializeCenterButton();
+
+    // Initialize StreamElements events and chat commands
+    initializeStreamElementsEvents();
 
     // Set up click handlers
     $(document).ready(function () {
